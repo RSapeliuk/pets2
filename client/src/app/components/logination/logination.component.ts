@@ -14,7 +14,6 @@ export class LoginationComponent implements OnInit {
   ngOnInit() {
   }
  login() {
-   // tslint:disable-next-line:max-line-length
     this.loginUserService.loginUser(this.user).subscribe(response => {const token = response.headers.get('Authorization');
                                                                       console.log(token);
                                                                       localStorage.setItem('token', token); });
