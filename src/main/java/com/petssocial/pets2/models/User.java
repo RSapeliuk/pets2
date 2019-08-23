@@ -1,9 +1,13 @@
 package com.petssocial.pets2.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,13 +24,42 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String username;
     private String password;
+    @Column(unique = true)
     private String email;
+    @JsonIgnore
     private boolean accountNotExpired = true;
     private boolean accountNotLocked = true;
     private boolean credentialsNonExpired = true;
-    @ElementCollection
     @Enumerated(EnumType.STRING)
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<Role> roles = Arrays.asList(Role.ROLE_USER);
+    private boolean enabled = true;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", accountNotExpired=" + accountNotExpired +
+                ", accountNotLocked=" + accountNotLocked +
+                ", credentialsNonExpired=" + credentialsNonExpired +
+                ", roles=" + roles +
+                ", enabled=" + enabled +
+                '}';
+    }
+
+        public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Post> posts;
 
     public void setAccountNotExpired(boolean accountNotExpired) {
         this.accountNotExpired = accountNotExpired;
@@ -34,7 +68,7 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String username, String password, String email, boolean accountNotExpired, boolean accountNotLocked, boolean credentialsNonExpired,  boolean enabled) {
+    public User(String username, String password, String email, boolean accountNotExpired, boolean accountNotLocked, boolean credentialsNonExpired, boolean enabled, List<Role> role) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -42,6 +76,7 @@ public class User implements UserDetails {
         this.accountNotLocked = accountNotLocked;
         this.credentialsNonExpired = credentialsNonExpired;
         this.enabled = enabled;
+        this.roles = role;
     }
 
     public void setAccountNotLocked(boolean accountNotLocked) {
@@ -56,20 +91,22 @@ public class User implements UserDetails {
         this.enabled = enabled;
     }
 
-    private boolean enabled = true;
+    public List<Role> getRoles() {
+        return roles;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        if (authorities.stream().count() >= 1) {
-            authorities.add(new SimpleGrantedAuthority(roles.get(0).toString()));
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        if (authorities.stream().count() >= 0) {
+            authorities.add(new SimpleGrantedAuthority(this.roles.get(0).toString()));
             return authorities;
-        }else if(authorities.stream().count() >= 2){
+        } else if (authorities.stream().count() >= 2) {
             List<SimpleGrantedAuthority> simpleGrantedAuthorities = authorities.stream().map(simpleGrantedAuthority ->
-                new SimpleGrantedAuthority(simpleGrantedAuthority.toString())
+                    new SimpleGrantedAuthority(simpleGrantedAuthority.toString())
             ).collect(Collectors.toList());
             return simpleGrantedAuthorities;
-        }else{
+        } else {
             return null;
         }
     }

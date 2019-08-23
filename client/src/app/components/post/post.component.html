@@ -1,0 +1,21 @@
+<form (ngSubmit)="savePost()">
+  <input matInput placeholder="Title"
+         [(ngModel)]="post.title"
+         name="title"><hr>
+  <textarea matInput placeholder="Additional info"
+            [(ngModel)]="post.optional_field"
+            name="additional_info"></textarea><hr>
+  <input matInput [matDatepicker]="picker" placeholder="Choose a date"
+         [(ngModel)]="post.date"
+         name="date"><hr>
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+  <hr>
+  <input matInput [matDatepicker]="exppicker" placeholder="Choose expiration date"
+         [(ngModel)]="post.expirationDate"
+         name="expirationDate"><hr>
+  <mat-datepicker-toggle matSuffix [for]="exppicker"></mat-datepicker-toggle>
+  <mat-datepicker #exppicker></mat-datepicker>
+  <hr>
+  <button mat-button type="submit">Submit</button>
+</form>

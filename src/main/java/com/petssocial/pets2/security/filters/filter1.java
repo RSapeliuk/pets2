@@ -1,46 +1,94 @@
-//package com.pethelper.pets.security.filters;
 //
-//import io.jsonwebtoken.Jwts;
-//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-//import org.springframework.security.core.Authentication;
-//import org.springframework.security.core.context.SecurityContextHolder;
-//import org.springframework.web.filter.GenericFilterBean;
+//// if user without token (first attempt to login)
+//public class CustomAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 //
-//import javax.servlet.FilterChain;
-//import javax.servlet.ServletException;
-//import javax.servlet.ServletRequest;
-//import javax.servlet.ServletResponse;
-//import javax.servlet.http.HttpServletRequest;
-//import java.io.IOException;
-//import java.util.Collections;
+//    AuthenticationManager authenticationManager;
 //
-//public class FilterThatCheckTokenOnEveryRequest1 extends GenericFilterBean {
+//    public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
+//        super(new AntPathRequestMatcher("/loginURL","POST"));
+//        this.authenticationManager = authenticationManager;
+//    }
 //
-//    // react on every url (but we can change it if implement another filter)
+//    // на основе имеющихся в запросе данных наполнить объект индентификации
 //    @Override
-//    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-//        Authentication authentication = null;
-////
+//    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+//        System.out.println("attempt");
+//        try {
+//            User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
+//            System.out.println(user);
+////            System.out.println(request.getParameter("username"));
+////            System.out.println(request.getParameter("password"));
+//            System.out.println(user + "USER!!!!!!!!!!!!!");
+//            if (user.getUsername().equals("user") && user.getPassword().equals("pass")) {
 //
-//        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-//        // and check presents of token in header Authorization
-//        String token = httpServletRequest.getHeader("Authorization");
-//        // if present
-//        if (token != null) {
-//            // parse it and retrive body subject from
-//            String user = Jwts.parser()
-//                    .setSigningKey("yes".getBytes())
-//                    .parseClaimsJws(token.replace("Bearer", ""))
-//                    .getBody()
-//                    .getSubject();
-//            System.out.println(user + "!!!!!!!!!!!---!!!!!");
-//
-//            //after parse of token we create Authentication object
-//            authentication = new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
+//                return new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), user.getRoles());
+//            } else {
+//                return null;
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            throw new RuntimeException();
 //        }
-//        // and set it to global security context
-//        SecurityContextHolder.getContext()
-//                .setAuthentication(authentication);
+//
+//    }
+//
+//    @Override
+//    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+//        System.out.println(authResult + "!!!!!!!!!!!!!!!!!");
+//    }
+//}
+//
+//public class CustomAuthorizationFilter extends BasicAuthenticationFilter  {
+//    public CustomAuthorizationFilter(AuthenticationManager authenticationManager) {
+//        super(authenticationManager);
+//    }
+//
+//
+//    @Override
+//    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+//        String dirtyToken = request.getHeader("token");
+//        System.out.println(dirtyToken+ " token");
+//        UsernamePasswordAuthenticationToken authenticationToken = null;
+//        if (StringUtils.isEmpty(dirtyToken) || !dirtyToken.startsWith("yes")) {
+//            chain.doFilter(request, response);
+//            return;
+//        } else {
+//            String clearToken = dirtyToken.replace("yes ", "");
+//            String username = clearToken.replace("name=", "");
+//            // найти юзера по имени ... сформировать объект индентификации
+//            authenticationToken = new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
+//        }
+//        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 //        chain.doFilter(request, response);
+//
+//    }
+//}
+//
+//@EnableWebSecurity
+//@Configuration
+//public class SecurityConfig extends WebSecurityConfigurerAdapter {
+//
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.inMemoryAuthentication().withUser("user").password("{noop}pass").roles("ADMIN");
+//    }
+//
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http
+//                .authorizeRequests()
+//                .anyRequest().permitAll()
+////                .antMatchers(HttpMethod.POST, "/login", "/save").permitAll()
+////                .antMatchers("/", "/home").permitAll()
+////                .anyRequest().authenticated()
+////                .antMatchers("/admin/**").hasRole("ADMIN")
+//                .and()
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .addFilterBefore(new CustomAuthenticationFilter(authenticationManager()), CustomAuthorizationFilter.class)
+////                .addFilterBefore(new CustomAuthorizationFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class)
+//                .csrf().disable();
+//
 //    }
 //}
