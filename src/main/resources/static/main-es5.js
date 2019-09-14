@@ -52,7 +52,7 @@ module.exports = "<form (ngSubmit)=\"login()\">\n  <label>Name: </label> <br>\n 
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<form (ngSubmit)=\"savePost()\">\n  <input matInput placeholder=\"Title\"\n         [(ngModel)]=\"post.title\"\n         name=\"title\"><hr>\n  <textarea matInput placeholder=\"Additional info\"\n            [(ngModel)]=\"post.optional_field\"\n            name=\"additional_info\"></textarea><hr>\n  <input matInput [matDatepicker]=\"picker\" placeholder=\"Choose a date\"\n         [(ngModel)]=\"post.date\"\n         name=\"date\"><hr>\n  <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n  <mat-datepicker #picker></mat-datepicker>\n  <hr>\n  <input matInput [matDatepicker]=\"exppicker\" placeholder=\"Choose expiration date\"\n         [(ngModel)]=\"post.expirationDate\"\n         name=\"expirationDate\"><hr>\n  <mat-datepicker-toggle matSuffix [for]=\"exppicker\"></mat-datepicker-toggle>\n  <mat-datepicker #exppicker></mat-datepicker>\n  <hr>\n  <button mat-button type=\"submit\">Submit</button>\n</form>\n"
+module.exports = "<form class=\"view\" (ngSubmit)=\"savePost()\">\n  <mat-form-field>\n    <input matInput placeholder=\"Title\"\n           [(ngModel)]=\"post.title\"\n           name=\"title\">\n  </mat-form-field>\n  <mat-form-field>\n    <textarea matInput placeholder=\"Additional info\"\n              [(ngModel)]=\"post.optionalField\"\n              name=\"optional_field\"></textarea>\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput [matDatepicker]=\"picker\" placeholder=\"Choose a date\"\n           [(ngModel)]=\"post.date\"\n           name=\"date\">\n    <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n    <mat-datepicker #picker></mat-datepicker>\n  </mat-form-field>\n\n  <mat-form-field>\n    <input matInput [matDatepicker]=\"exppicker\" placeholder=\"Choose expiration date\"\n           [(ngModel)]=\"post.expirationDate\"\n           name=\"expirationDate\">\n    <mat-datepicker-toggle matSuffix [for]=\"exppicker\"></mat-datepicker-toggle>\n    <mat-datepicker #exppicker></mat-datepicker>\n  </mat-form-field>\n  <mat-form-field>\n    <mat-label>Kind of post</mat-label>\n    <mat-select>\n      <mat-option>\n        {{post.kind[0]}}\n      </mat-option>\n      <mat-option>\n        {{post.kind[1]}}\n      </mat-option>\n    </mat-select>\n  </mat-form-field>\n    <input type=\"file\">\n    <button mat-button type=\"submit\">Submit</button>\n</form>\n\n"
 
 /***/ }),
 
@@ -211,7 +211,8 @@ var AppModule = /** @class */ (function () {
                 _angular_material__WEBPACK_IMPORTED_MODULE_10__["MatButtonModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_10__["MatDatepickerModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_10__["MatNativeDateModule"],
-                _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_11__["BrowserAnimationsModule"]
+                _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_11__["BrowserAnimationsModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_10__["MatSelectModule"]
             ],
             providers: [],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"]]
@@ -301,7 +302,7 @@ var LoginationComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".example-card {\r\n  max-width: 400px;\r\n}\r\n\r\n.example-header-image {\r\n  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');\r\n  background-size: cover;\r\n}\r\n\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9wb3N0L3Bvc3QuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGdCQUFnQjtBQUNsQjs7QUFFQTtFQUNFLG1GQUFtRjtFQUNuRixzQkFBc0I7QUFDeEIiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL3Bvc3QvcG9zdC5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmV4YW1wbGUtY2FyZCB7XHJcbiAgbWF4LXdpZHRoOiA0MDBweDtcclxufVxyXG5cclxuLmV4YW1wbGUtaGVhZGVyLWltYWdlIHtcclxuICBiYWNrZ3JvdW5kLWltYWdlOiB1cmwoJ2h0dHBzOi8vbWF0ZXJpYWwuYW5ndWxhci5pby9hc3NldHMvaW1nL2V4YW1wbGVzL3NoaWJhMS5qcGcnKTtcclxuICBiYWNrZ3JvdW5kLXNpemU6IGNvdmVyO1xyXG59XHJcbiJdfQ== */"
+module.exports = ".example-card {\r\n  max-width: 400px;\r\n}\r\n\r\n.example-header-image {\r\n  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');\r\n  background-size: cover;\r\n}\r\n\r\n.view{\r\n  display: -webkit-box;\r\n  display: flex;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-box-direction: normal;\r\n          flex-direction: column;\r\n}\r\n\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9wb3N0L3Bvc3QuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGdCQUFnQjtBQUNsQjs7QUFFQTtFQUNFLG1GQUFtRjtFQUNuRixzQkFBc0I7QUFDeEI7O0FBQ0E7RUFDRSxvQkFBYTtFQUFiLGFBQWE7RUFDYiw0QkFBc0I7RUFBdEIsNkJBQXNCO1VBQXRCLHNCQUFzQjtBQUN4QiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvcG9zdC9wb3N0LmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuZXhhbXBsZS1jYXJkIHtcclxuICBtYXgtd2lkdGg6IDQwMHB4O1xyXG59XHJcblxyXG4uZXhhbXBsZS1oZWFkZXItaW1hZ2Uge1xyXG4gIGJhY2tncm91bmQtaW1hZ2U6IHVybCgnaHR0cHM6Ly9tYXRlcmlhbC5hbmd1bGFyLmlvL2Fzc2V0cy9pbWcvZXhhbXBsZXMvc2hpYmExLmpwZycpO1xyXG4gIGJhY2tncm91bmQtc2l6ZTogY292ZXI7XHJcbn1cclxuLnZpZXd7XHJcbiAgZGlzcGxheTogZmxleDtcclxuICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xyXG59XHJcbiJdfQ== */"
 
 /***/ }),
 
@@ -427,21 +428,21 @@ var RegistrationComponent = /** @class */ (function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Post", function() { return Post; });
 var Post = /** @class */ (function () {
-    function Post(title, kind, photo, date, expirationDate, optional_field) {
+    function Post(title, kind, photo, date, expirationDate, optionalField) {
         this.title = title;
         this.kind = kind;
         this.photo = photo;
         this.date = date;
         this.expirationDate = expirationDate;
-        this.optional_field = optional_field;
+        this.optionalField = optionalField;
     }
     Post.ctorParameters = function () { return [
         { type: String },
-        { type: String },
+        { type: undefined },
         null,
         { type: Date },
         { type: Date },
-        { type: String }
+        { type: HTMLTextAreaElement }
     ]; };
     return Post;
 }());

@@ -1,17 +1,19 @@
 <form (ngSubmit)="login()">
-  <label>Name: </label> <br>
-  <input
+  <mat-form-field>
+  <input matInput
       #nameI="ngModel"
       type="text"
       name="name"
-      placeholder="Enter your name"
-      [(ngModel)]="user.username"> <br>
-  <label>Password: </label> <br>
-  <input type="text"
+      placeholder="Enter your username"
+      [(ngModel)]="user.username">
+  </mat-form-field>
+  <mat-form-field>
+  <input matInput type="text"
          name="password"
          placeholder="Enter your password"
-         [(ngModel)]="user.password"> <br>
-  <button type="Submit">Login</button>
+         [(ngModel)]="user.password">
+  </mat-form-field>
+  <button mat-button type="Submit">Login</button>
 </form>
 
 If you don't have an account <a routerLink="/register">register</a>

@@ -8,13 +8,13 @@ import {User} from '../models/User';
   providedIn: 'root'
 })
 export class AuthService {
-  url = '/authUser';
+  url = 'http://localhost:8080/';
 
   constructor(public http: HttpClient) {
   }
 
   auth(): Observable<User> {
-    return this.http.get<User>(this.url, {headers: new HttpHeaders({'Authorization': localStorage.getItem('token')})});
+    return this.http.get<User>(this.url + 'authUser', {headers: new HttpHeaders({'Authorization': localStorage.getItem('token')})});
   }
 
 }

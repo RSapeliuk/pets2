@@ -1,12 +1,12 @@
-import {User} from './User';
+import {Kind} from './Kind';
 
 export class Post {
   constructor(public title?: string,
-              public kind?: string,
-              public photo?,
+              public kind?: Kind,
+              public photo?: string,
               public date?: Date,
               public expirationDate?: Date,
-              public optional_field?: string,
+              public optionalField?: HTMLTextAreaElement,
               ) {
 
   }

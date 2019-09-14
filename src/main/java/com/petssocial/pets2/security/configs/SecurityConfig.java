@@ -2,6 +2,8 @@ package com.petssocial.pets2.security.configs;
 
 import com.petssocial.pets2.security.filters.FilterThatCheckTokenOnEveryRequest;
 import com.petssocial.pets2.security.filters.LoginCustomFilterThatCreateToken;
+
+import com.petssocial.pets2.security.services.FileService;
 import com.petssocial.pets2.security.services.PostService;
 import com.petssocial.pets2.security.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +16,16 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -31,6 +39,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Qualifier("postServiceImpl")
     private PostService postService;
 
+    @Autowired
+    @Qualifier("fileServiceImpl")
+    private FileService fileService;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -38,8 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .cors().disable()
+        http.cors().and()
                 .csrf()
                 .disable()
                 .authorizeRequests()
@@ -47,27 +58,50 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/signup").permitAll()
                 .antMatchers(HttpMethod.POST, "/user/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/addPost/**").hasRole("USER")
+                .antMatchers(HttpMethod.POST, "/addPost/**").permitAll()//hasRole("USER")
                 .antMatchers(HttpMethod.GET, "/users").hasRole("USER")
                 .antMatchers(HttpMethod.GET, "/posts").permitAll()
                 .antMatchers(HttpMethod.GET, "/authUser").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new FilterThatCheckTokenOnEveryRequest(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new LoginCustomFilterThatCreateToken("/login", authenticationManager(),userDetailsService), UsernamePasswordAuthenticationFilter.class);
-        }
-
-        @Bean
-        public DaoAuthenticationProvider authenticationProvider () {
-            DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-            provider.setUserDetailsService(userDetailsService);
-            provider.setPasswordEncoder(passwordEncoder());
-            return provider;
-        }
-
-        @Override
-        protected void configure (AuthenticationManagerBuilder auth) throws Exception {
-            auth.authenticationProvider(authenticationProvider());
-        }
+                .addFilterBefore(new LoginCustomFilterThatCreateToken("/login", authenticationManager(), userDetailsService), UsernamePasswordAuthenticationFilter.class);
     }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+        configuration.addAllowedHeader("*");
+        configuration.setAllowedMethods(Arrays.asList(
+                HttpMethod.GET.name(),
+                HttpMethod.HEAD.name(),
+                HttpMethod.POST.name(),
+                HttpMethod.PUT.name(),
+                HttpMethod.DELETE.name(),
+                HttpMethod.OPTIONS.name()));
+        configuration.addExposedHeader("Authorization");
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/", configuration);
+        source.registerCorsConfiguration("/login", configuration);
+        return source;
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authenticationProvider());
+    }
+
+}
+
 
 

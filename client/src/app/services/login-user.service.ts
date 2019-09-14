@@ -7,13 +7,13 @@ import {Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class LoginUserService {
-  url = '/login';
+  url = 'http://localhost:8080';
 
   constructor(public http: HttpClient) {
 
   }
 
   loginUser(loginUser: User) {
-    return this.http.post(this.url, loginUser, {observe: 'response', responseType: 'text'});
+    return this.http.post(this.url + '/login', loginUser, {observe: 'response'});
   }
 }

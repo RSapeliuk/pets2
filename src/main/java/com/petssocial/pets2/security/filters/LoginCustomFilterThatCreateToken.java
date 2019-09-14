@@ -1,12 +1,10 @@
 package com.petssocial.pets2.security.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.petssocial.pets2.dao.UserDAO;
 import com.petssocial.pets2.models.User;
 import com.petssocial.pets2.security.services.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,10 +23,7 @@ import java.util.Date;
 public class LoginCustomFilterThatCreateToken extends AbstractAuthenticationProcessingFilter {
 
     private AuthenticationManager authenticationManager;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private UserDAO userDAO;
+
     private UserService userDetailsService;
     public LoginCustomFilterThatCreateToken(String defaultFilterProcessesUrl, AuthenticationManager manager,UserService userDetailsService) {
         super(defaultFilterProcessesUrl);

@@ -7,11 +7,11 @@ import {Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class RegisterUserService {
- URL = '/signup';
+ URL = 'http://localhost:8080/';
   constructor(public http: HttpClient) {
   }
 
   saveUser(someUser: User): Observable<User> {
-    return this.http.post<User>(this.URL, someUser);
+    return this.http.post<User>(this.URL + 'signup', someUser);
   }
 }

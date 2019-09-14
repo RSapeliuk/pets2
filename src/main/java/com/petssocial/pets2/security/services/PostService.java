@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface PostService {
     void savePost(Post post);
     List<Post> findAll();
+    List<Post> findPostsByUserId(Integer id);
     Post findById(Integer id);
 }
