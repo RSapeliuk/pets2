@@ -8,7 +8,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {
   MatButtonModule,
   MatCardModule,
-  MatDatepickerModule,
+  MatDatepickerModule, MatDialogModule,
   MatFormFieldModule,
   MatInputModule,
   MatNativeDateModule, MatSelectModule,
@@ -22,7 +22,6 @@ import {MainPageComponent} from '../../components/main-page/main-page.component'
   declarations: [
     RegistrationComponent,
     LoginationComponent,
-    PostComponent,
     MainPageComponent],
   imports: [
     CommonModule,
@@ -36,8 +35,11 @@ import {MainPageComponent} from '../../components/main-page/main-page.component'
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
-    MainPageRoutingModule
-  ]
+    MainPageRoutingModule,
+    MatDialogModule
+  ],
+  providers: [],
+  entryComponents: [LoginationComponent]
 })
 export class MainPageModule {
 }

@@ -6,7 +6,8 @@ export class Post {
               public photo?: string,
               public date?: Date,
               public expirationDate?: Date,
-              public optionalField?: HTMLTextAreaElement,
+              public optionalField?: string,
+              public id?: number
               ) {
 
   }

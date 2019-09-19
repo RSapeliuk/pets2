@@ -11,14 +11,28 @@ export class PostService {
   constructor(public http: HttpClient) {
   }
 
-  url = 'http://localhost:8080/';
+  url = 'http://localhost:8080';
 
 
-  savePost(userPost: Post, user: User, formdata: FormData): Observable<any> {
+  savePost(userPost: Post, user: User): Observable<Post> {
+    const headers: HttpHeaders = new HttpHeaders();
+
+    headers.append('Authorization', localStorage.getItem('token'));
+    headers.append('Content-Type', 'application/json');
+    return this.http.post<Post>(this.url + '/user/' + user.id + '/addPost', userPost, {headers});
+  }
+
+  getAllPosts() {
     const headers: HttpHeaders = new HttpHeaders();
     headers.append('Authorization', localStorage.getItem('token'));
     headers.append('Content-Type', 'application/json');
-    return this.http.post<any>(this.url + 'user/' + user.id + '/addPost', userPost, {headers});
+    return this.http.get<any>(this.url + '/posts',{headers});
+  }
+  getPostById() {
+    const headers: HttpHeaders = new HttpHeaders();
+    headers.append('Authorization', localStorage.getItem('token'));
+    headers.append('Content-Type', 'application/json');
+    return this.http.get<any>(this.url + '/posts',{headers});
   }
 }
 

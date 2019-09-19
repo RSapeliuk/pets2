@@ -6,7 +6,6 @@ import com.petssocial.pets2.security.services.FileService;
 import com.petssocial.pets2.security.services.PostService;
 import com.petssocial.pets2.security.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,13 +31,28 @@ public class PostController {
     }
 
     @PostMapping("user/{id}/addPost")
-    public Post savePost(@RequestBody Post post, @PathVariable int id /*@RequestParam("file") MultipartFile file*/) throws IOException {
+    public Post savePost(@RequestBody Post post, @PathVariable int id) throws IOException {
         User user = userService.findOnebyID(id);
-        //fileService.storeFile(file);
-        //post.setPhoto(file.getOriginalFilename());
+        System.out.println(2);
         post.setUser(user);
         System.out.println(user);
         postService.savePost(post);
         return post;
     }
+    @PostMapping("/addPhoto")
+    public void savePhoto(@RequestParam("file") MultipartFile file) throws IOException {
+        fileService.storeFile(file);
+    }
+
+//    @GetMapping("/getPhoto1/{id}")
+//    public String getPhoto(@PathVariable("id") int id)  {
+//        Post byId = postService.findById(id);
+//        String photo = byId.getPhoto();
+//        return photo;
+//    }
+    @GetMapping("/post/{id}")
+    public Post getPostById(@PathVariable int id){
+        return postService.findById(id);
+    }
+
 }

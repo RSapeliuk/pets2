@@ -1,4 +1,4 @@
-<form class="view" (ngSubmit)="savePost()">
+<form #postForm="ngForm" class="view" (ngSubmit)="savePost(postForm)">
   <mat-form-field>
     <input matInput placeholder="Title"
            [(ngModel)]="post.title"
@@ -27,15 +27,18 @@
   <mat-form-field>
     <mat-label>Kind of post</mat-label>
     <mat-select>
-<!--      <mat-option>-->
-<!--        {{post.kind[0]}}-->
-<!--      </mat-option>-->
-<!--      <mat-option>-->
-<!--        {{post.kind[1]}}-->
-<!--      </mat-option>-->
+      <!--      <mat-option>-->
+      <!--        {{post.kind[0]}}-->
+      <!--      </mat-option>-->
+      <!--      <mat-option>-->
+      <!--        {{post.kind[1]}}-->
+      <!--      </mat-option>-->
     </mat-select>
   </mat-form-field>
-<!--    <input type="file" (change)="handleImage($event)" >-->
-    <button mat-button type="submit">Submit</button>
+  <input type="file" (change)="onFileUpload($event)">
+  <div>
+    <img [src]="imagePreview" alt=""*ngIf="imagePreview">
+  </div>
+  <button mat-button type="submit">Submit</button>
 </form>
 

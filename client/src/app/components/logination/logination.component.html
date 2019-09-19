@@ -13,8 +13,7 @@
          placeholder="Enter your password"
          [(ngModel)]="user.password">
   </mat-form-field>
-  <button mat-button type="Submit">Login</button>
+  <button mat-button type="Submit" (click)="onSubmit()">Login</button>
 </form>
 
-If you don't have an account <a routerLink="/register">register</a>
-<router-outlet></router-outlet>
+If you don't have an account <a routerLink="/register" (click)="onSubmit()">register</a>

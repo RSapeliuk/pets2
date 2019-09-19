@@ -9,7 +9,7 @@ const routes: Routes = [
   {path: '', component: MainPageComponent},
   {path: 'login', component: LoginationComponent},
   {path: 'register', component: RegistrationComponent},
-  {path: 'user', loadChildren: 'src/app/modules/user/user.module#UserModule'}
+  {path: 'user/:id', loadChildren: 'src/app/modules/user/user.module#UserModule'}
 ];
 
 

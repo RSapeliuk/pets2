@@ -5,6 +5,10 @@ import {AuthService} from '../../services/auth.service';
 import {User} from '../../models/User';
 import {ImageUploadService} from '../../services/image-upload.service';
 import {Router} from '@angular/router';
+import {LoginationComponent} from '../logination/logination.component';
+import {NgForm} from '@angular/forms';
+import * as uuid from 'uuid';
+
 
 @Component({
   selector: 'app-post',
@@ -14,36 +18,50 @@ import {Router} from '@angular/router';
 export class PostComponent implements OnInit {
   post: Post = new Post();
   user: User;
-  formData = new FormData();
-  file: any;
+  file: File;
+  namePhoto: any;
+  imagePreview: string | ArrayBuffer = '';
 
   constructor(public postService: PostService,
               public authService: AuthService,
-              public imageService: ImageUploadService,
-              public router: Router) { }
+              public router: Router,
+              public imageService: ImageUploadService) {
+  }
 
   ngOnInit() {
-    this.authService.auth().subscribe(value => {
+    this.authService.getUser().subscribe(value => {
       this.user = value;
       console.log(this.user);
     });
   }
 
-  handleImage(Event) {
-    this.file = Event.target.files[0];
-    this.formData.append('file', this.file);
-    console.log(this.file);
-  }
-
-  savePost() {
-    // this.post.photo = this.selectedFile;
-    console.log(this.formData);
-    this.postService.savePost(this.post, this.user, this.formData).subscribe(value => {
+  savePost(form: NgForm) {
+    console.log(form.value);
+    this.namePhoto = uuid();
+    if (this.file != null) {
+      const strings = this.file.name.split('.');
+      const format = strings.pop();
+      this.post.photo =  this.namePhoto + '.' + format;
+      this.imageService.uploadImage(this.file, this.post.photo).subscribe(value => {
+        console.log(value);
+      });
+    }
+    this.postService.savePost(this.post, this.user).subscribe(value => {
         console.log(value);
         this.router.navigateByUrl('/');
       }
     );
-    console.log(this.user);
+  }
+
+  onFileUpload(event: any) {
+    const image = event.target.files[0];
+    this.file = image;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result;
+    };
+    reader.readAsDataURL(image);
   }
 }
 

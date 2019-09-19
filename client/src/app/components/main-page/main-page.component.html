@@ -1,6 +1,24 @@
-<h1>Test routes</h1>
-<button mat-button routerLink="/login">Login</button>
-<button mat-button routerLink="/user/1/addPost">Add Post</button>
+<div>
+  <div class="header">
+    <h2>Pets couchsurfing</h2>
+  </div>
+    <button class="login" mat-button (click)="onCreate()">Login</button>
+    <!--<button mat-button routerLink="/user/{{this.user.id}}/addPost">Add Post</button>-->
+</div>
 <hr>
-<hr>
+<div class="cards">
+  <mat-card class="mat-card" *ngFor="let post of this.posts">
+    <mat-card-header>
+      <img mat-card-avatar >
+      <mat-card-subtitle>{{post.user.username}}</mat-card-subtitle>
+      <mat-card-title>{{post.title}}</mat-card-title>
+    </mat-card-header>
+    <img mat-card-image [src] = "'http://localhost:8080/images/'+ post.photo">
+    <mat-card-content>{{post.optionalField}}</mat-card-content>
+    <mat-card-actions>
+      <button mat-button>DETAILS</button>
+    </mat-card-actions>
+    <mat-card-footer>Creation date {{post.date}}</mat-card-footer>
+  </mat-card>
+</div>
 <router-outlet></router-outlet>
