@@ -29,20 +29,22 @@ export class LoginationComponent implements OnInit {
         const token = response.headers.get('Authorization');
         console.log(token);
         localStorage.setItem('token', token);
-        this.authService.getUser().subscribe(value => {
-          this.returnedUser = value;
-          console.log(this.returnedUser);
-          // @ts-ignore
-          if (this.returnedUser.roles[0] === 'ROLE_USER' && this.authService.$isLogined.next(true)) {
-            this.router.navigateByUrl(`/`);
-          } else if (this.returnedUser.roles[0] === 'ROLE_ADMIN' && this.authService.isLogined === true) {
-            this.router.navigateByUrl(`/admin/${this.returnedUser.id}`);
-          }
-        });
-        this.router.navigateByUrl(`/`);
         if (token != null) {
-          this.authService.isLogined = true;
-          console.log(this.authService.isLogined);
+          this.authService.$isLogined.next(true);
+          this.authService.getUser().subscribe(value => {
+            this.returnedUser = value;
+            this.authService.$authUser.next(value);
+            console.log(this.returnedUser);
+            // @ts-ignore
+            if (this.returnedUser.roles[0] === 'ROLE_USER' && this.authService.$isLogined.next(true)) {
+              this.router.navigateByUrl(`/`);
+            } else { // @ts-ignore
+              // @ts-ignore
+              if (this.returnedUser.roles[0] === 'ROLE_ADMIN' && this.authService.$isLogined.next(true)) {
+                this.router.navigateByUrl(`/admin/${this.returnedUser.id}`);
+              }
+            }
+          });
         }
       }
     );

@@ -2,8 +2,11 @@
   <div class="title">
     <h2>Pets couchsurfing</h2>
   </div>
-  <button class="login" mat-button (click)="onCreate()">Login</button>
-  <div *ngIf="authService.isLogined == true">
-  <button mat-button>Add Post</button>
+  <div *ngIf="this.logined === null">
+    <button class="login" mat-button (click)="onCreate()">Login</button>
+  </div>
+  <div *ngIf="this.logined === 'true'">
+    <button mat-button routerLink="/user/{{this.user.id}}/addPost">Add Post</button>
+    <button mat-button>My profile</button>
   </div>
 </div>
