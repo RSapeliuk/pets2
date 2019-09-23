@@ -1,0 +1,18 @@
+.header{
+  background: blueviolet;
+  margin: auto;
+  alignment: right;
+  text-align: center;
+  display: inline-block;
+  width: 100%;
+  height: 100px;
+}
+.login{
+  margin: 2.8%;
+  display: inline-block;
+  background: aqua;
+  left: 30%;
+}
+.title{
+  display: inline-block;
+}

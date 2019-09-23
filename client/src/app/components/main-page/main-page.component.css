@@ -1,3 +1,11 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+  font-family: 'proxima_nova_rgregular', Arial, sans-serif;
+}
+
 .mat-card{
   width: 20%;
   margin: 10px;
@@ -8,22 +16,13 @@
 .mat-card:hover{
   width: 22%;
 }
-.header{
-  background: blueviolet;
-  margin: auto;
-  alignment: right;
-  text-align: center;
-  display: inline-block;
-  width: 70%;
-}
-.login{
-  margin: auto;
-  display: inline-block;
-  background: aqua;
-}
+
 mat-card-footer{
   margin: 1%;
 }
 .cards{
   margin: 0%;
+}
+.postImage{
+  height: 300px;
 }

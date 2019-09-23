@@ -1,25 +1,60 @@
+<app-header></app-header>
+<h1>Registration</h1>
+
 <form (ngSubmit)="sendForm()">
-   <mat-form-field>
+  <mat-form-field>
+    <input matInput
+           #nameI="ngModel"
+           type="text"
+           name="name"
+           required
+           placeholder="Enter your name"
+           [(ngModel)]="user.name">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput
+           #nameI="ngModel"
+           type="text"
+           name="name"
+           placeholder="Enter your surname"
+           required
+           [(ngModel)]="user.surname">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
   <input matInput
     #nameI="ngModel"
     type="text"
          name="name"
-         placeholder="Enter your name"
+         placeholder="Enter your username"
+         required
   [(ngModel)]="user.username">
    </mat-form-field>
   <mat-form-field>
   <input matInput
          type="text"
          name="password"
+         required
          placeholder="Enter your password"
          [(ngModel)]="user.password">
   </mat-form-field>
+  <br>
   <mat-form-field>
   <input matInput
          type="text"
          name="email"
          placeholder="Enter your email"
+         required
          [(ngModel)]="user.email">
   </mat-form-field>
+  <mat-form-field>
+    <input matInput
+           type="text"
+           name="phone"
+           placeholder="Phone number"
+           [(ngModel)]="user.phoneNumber">
+  </mat-form-field>
+  <br>
+  <input type="file" name="avatar" (change)="onPhotoUpload($event)">
   <button mat-button type="Submit">Sign Up</button>
 </form>

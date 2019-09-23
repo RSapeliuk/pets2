@@ -16,23 +16,22 @@ export class PostService {
 
   savePost(userPost: Post, user: User): Observable<Post> {
     const headers: HttpHeaders = new HttpHeaders();
-
     headers.append('Authorization', localStorage.getItem('token'));
     headers.append('Content-Type', 'application/json');
     return this.http.post<Post>(this.url + '/user/' + user.id + '/addPost', userPost, {headers});
   }
 
-  getAllPosts() {
+  getAllPosts(): Observable<Post[]> {
     const headers: HttpHeaders = new HttpHeaders();
     headers.append('Authorization', localStorage.getItem('token'));
     headers.append('Content-Type', 'application/json');
-    return this.http.get<any>(this.url + '/posts',{headers});
+    return this.http.get<Post[]>(this.url + '/posts',{headers});
   }
-  getPostById() {
+  getPostById(post: Post): Observable<Post> {
     const headers: HttpHeaders = new HttpHeaders();
     headers.append('Authorization', localStorage.getItem('token'));
     headers.append('Content-Type', 'application/json');
-    return this.http.get<any>(this.url + '/posts',{headers});
+    return this.http.get<Post>(this.url + '/post' + post.id, {headers});
   }
 }
 

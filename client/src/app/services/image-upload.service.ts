@@ -19,4 +19,9 @@ export class ImageUploadService {
     formData.append('file', file, uuid);
     return this.http.post(this.apiURL + '/addPhoto', formData);
   }
+  uploadUserAvatar(file: File, uuid): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file, uuid);
+    return this.http.post(this.apiURL + '/addAvatar', formData);
+  }
 }

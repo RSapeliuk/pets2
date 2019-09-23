@@ -55,7 +55,7 @@ public class LoginCustomFilterThatCreateToken extends AbstractAuthenticationProc
         String token = Jwts.builder()
                 .setSubject(jwt_token)
                 .signWith(SignatureAlgorithm.HS512, "test".getBytes())
-                .setExpiration(new Date(System.currentTimeMillis() + 200000))
+                .setExpiration(new Date(System.currentTimeMillis() + 999999999))
                 .compact();
         System.out.println(token);
         //send token to user

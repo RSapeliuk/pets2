@@ -12,6 +12,7 @@ import {
   MatSelectModule
 } from '@angular/material';
 import {UserViewComponent} from '../../components/user-view/user-view.component';
+import {MainPageModule} from '../main-page/main-page.module';
 
 
 
@@ -27,7 +28,8 @@ import {UserViewComponent} from '../../components/user-view/user-view.component'
     MatSelectModule,
     MatButtonModule,
     MatDialogModule,
-    UserRoutingModule
+    UserRoutingModule,
+    MainPageModule
   ]
 })
 export class UserModule { }

@@ -4,6 +4,7 @@ import {User} from '../../models/User';
 import {MatDialogRef} from '@angular/material';
 import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-logination',
@@ -13,7 +14,6 @@ import {AuthService} from '../../services/auth.service';
 export class LoginationComponent implements OnInit {
   user: User = new User();
   returnedUser: User;
-  isLogined = false;
 
   constructor(public loginUserService: LoginUserService,
               public router: Router,
@@ -32,16 +32,17 @@ export class LoginationComponent implements OnInit {
         this.authService.getUser().subscribe(value => {
           this.returnedUser = value;
           console.log(this.returnedUser);
-          if (this.returnedUser.roles[0] === 'ROLE_USER' && this.isLogined === true) {
-            this.router.navigateByUrl(`/user/${this.returnedUser.id}`);
-          } else if (this.returnedUser.roles[0] === 'ROLE_ADMIN' && this.isLogined === true) {
+          // @ts-ignore
+          if (this.returnedUser.roles[0] === 'ROLE_USER' && this.authService.$isLogined.next(true)) {
+            this.router.navigateByUrl(`/`);
+          } else if (this.returnedUser.roles[0] === 'ROLE_ADMIN' && this.authService.isLogined === true) {
             this.router.navigateByUrl(`/admin/${this.returnedUser.id}`);
           }
         });
         this.router.navigateByUrl(`/`);
         if (token != null) {
-          this.isLogined = true;
-          console.log(this.isLogined);
+          this.authService.isLogined = true;
+          console.log(this.authService.isLogined);
         }
       }
     );

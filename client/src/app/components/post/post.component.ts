@@ -8,6 +8,7 @@ import {Router} from '@angular/router';
 import {LoginationComponent} from '../logination/logination.component';
 import {NgForm} from '@angular/forms';
 import * as uuid from 'uuid';
+import {UuidService} from '../../services/uuid.service';
 
 
 @Component({
@@ -25,7 +26,8 @@ export class PostComponent implements OnInit {
   constructor(public postService: PostService,
               public authService: AuthService,
               public router: Router,
-              public imageService: ImageUploadService) {
+              public imageService: ImageUploadService,
+              public uuidService: UuidService) {
   }
 
   ngOnInit() {
@@ -37,15 +39,10 @@ export class PostComponent implements OnInit {
 
   savePost(form: NgForm) {
     console.log(form.value);
-    this.namePhoto = uuid();
-    if (this.file != null) {
-      const strings = this.file.name.split('.');
-      const format = strings.pop();
-      this.post.photo =  this.namePhoto + '.' + format;
-      this.imageService.uploadImage(this.file, this.post.photo).subscribe(value => {
-        console.log(value);
-      });
-    }
+    this.post.photo = this.uuidService.randomName(this.namePhoto, this.file, this.post.photo);
+    this.imageService.uploadImage(this.file, this.post.photo).subscribe(value => {
+      console.log(value);
+    });
     this.postService.savePost(this.post, this.user).subscribe(value => {
         console.log(value);
         this.router.navigateByUrl('/');

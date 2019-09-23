@@ -44,12 +44,7 @@ public class PostController {
         fileService.storeFile(file);
     }
 
-//    @GetMapping("/getPhoto1/{id}")
-//    public String getPhoto(@PathVariable("id") int id)  {
-//        Post byId = postService.findById(id);
-//        String photo = byId.getPhoto();
-//        return photo;
-//    }
+
     @GetMapping("/post/{id}")
     public Post getPostById(@PathVariable int id){
         return postService.findById(id);

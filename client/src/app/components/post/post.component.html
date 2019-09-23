@@ -1,44 +1,52 @@
+<app-header></app-header>
+<h1>Add post</h1>
 <form #postForm="ngForm" class="view" (ngSubmit)="savePost(postForm)">
-  <mat-form-field>
-    <input matInput placeholder="Title"
-           [(ngModel)]="post.title"
-           name="title">
-  </mat-form-field>
-  <mat-form-field>
+  <div class="form">
+    <mat-form-field>
+      <input matInput placeholder="Title"
+             [(ngModel)]="post.title"
+             name="title">
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker" placeholder="Choose a date"
+             [(ngModel)]="post.date"
+             name="date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [matDatepicker]="exppicker" placeholder="Choose expiration date"
+             [(ngModel)]="post.expirationDate"
+             name="expirationDate">
+      <mat-datepicker-toggle matSuffix [for]="exppicker"></mat-datepicker-toggle>
+      <mat-datepicker #exppicker></mat-datepicker>
+    </mat-form-field>
+    <br>
+    <!--  <mat-form-field>-->
+    <!--    <mat-label>Kind of post</mat-label>-->
+    <!--    <mat-select>-->
+    <!--            <mat-option>-->
+    <!--              {{post.kind}}-->
+    <!--            </mat-option>-->
+    <!--            <mat-option>-->
+    <!--              {{post.kind[1]}}-->
+    <!--            </mat-option>-->
+    <!--    </mat-select>-->
+    <!--  </mat-form-field>-->
+    <mat-form-field>
     <textarea matInput placeholder="Additional info"
               [(ngModel)]="post.optionalField"
               name="optional_field"></textarea>
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput [matDatepicker]="picker" placeholder="Choose a date"
-           [(ngModel)]="post.date"
-           name="date">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-
-  <mat-form-field>
-    <input matInput [matDatepicker]="exppicker" placeholder="Choose expiration date"
-           [(ngModel)]="post.expirationDate"
-           name="expirationDate">
-    <mat-datepicker-toggle matSuffix [for]="exppicker"></mat-datepicker-toggle>
-    <mat-datepicker #exppicker></mat-datepicker>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Kind of post</mat-label>
-    <mat-select>
-      <!--      <mat-option>-->
-      <!--        {{post.kind[0]}}-->
-      <!--      </mat-option>-->
-      <!--      <mat-option>-->
-      <!--        {{post.kind[1]}}-->
-      <!--      </mat-option>-->
-    </mat-select>
-  </mat-form-field>
-  <input type="file" (change)="onFileUpload($event)">
-  <div>
-    <img [src]="imagePreview" alt=""*ngIf="imagePreview">
+    </mat-form-field>
   </div>
-  <button mat-button type="submit">Submit</button>
+  <div class="preview">
+    <input type="file" (change)="onFileUpload($event)">
+    <br>
+    <img [src]="imagePreview" alt="" *ngIf="imagePreview">
+  </div>
+  <br>
+  <button mat-button class="mat-button" type="submit">Submit</button>
 </form>
 

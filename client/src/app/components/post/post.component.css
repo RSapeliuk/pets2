@@ -7,6 +7,24 @@
   background-size: cover;
 }
 .view{
-  display: flex;
-  flex-direction: column;
+  display: inline-block;
+  flex-direction: row;
+}
+.form{
+  display: inline-block;
+  height: 300px;
+}
+.preview{
+margin: 5px;
+  display: inline-block;
+}
+img{
+  height: 200px;
+  width: 200px;
+}
+mat-form-field{
+  margin: 5px;
+}
+.mat-button {
+  background: cornflowerblue;
 }

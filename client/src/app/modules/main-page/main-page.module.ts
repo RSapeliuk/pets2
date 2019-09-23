@@ -9,20 +9,25 @@ import {
   MatButtonModule,
   MatCardModule,
   MatDatepickerModule, MatDialogModule,
-  MatFormFieldModule,
+  MatFormFieldModule, MatIconModule,
   MatInputModule,
   MatNativeDateModule, MatSelectModule,
   MatToolbarModule
 } from '@angular/material';
 import {MainPageRoutingModule} from './main-page-routing.module';
 import {MainPageComponent} from '../../components/main-page/main-page.component';
+import {PostService} from '../../services/post.service';
+import {PostDetailsComponent} from '../../components/post-details/post-details.component';
+import {HeaderComponent} from '../../components/header/header.component';
 
 
 @NgModule({
   declarations: [
     RegistrationComponent,
     LoginationComponent,
-    MainPageComponent],
+    MainPageComponent,
+    PostDetailsComponent,
+    HeaderComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -36,10 +41,14 @@ import {MainPageComponent} from '../../components/main-page/main-page.component'
     MatNativeDateModule,
     MatSelectModule,
     MainPageRoutingModule,
-    MatDialogModule
+    MatDialogModule,
+    MatIconModule
   ],
   providers: [],
-  entryComponents: [LoginationComponent]
+  exports: [
+    HeaderComponent
+  ],
+  entryComponents: [LoginationComponent, PostDetailsComponent]
 })
 export class MainPageModule {
 }

@@ -1,7 +1,7 @@
-.loginCross {
+.cross {
   position: fixed; /* Fixed/sticky position */
-  top:25%; /* Place the button at the bottom of the page */
-  right: 26%; /* Place the button 30px from the right */
+  top: 2%; /* Place the button at the bottom of the page */
+  right: 10%; /* Place the button 30px from the right */
   z-index: 99; /* Make sure it does not overlap */
   border: none; /* Remove borders */
   outline: none; /* Remove outline */
@@ -11,7 +11,4 @@
   padding: 5px; /* Some padding */
   border-radius: 5px; /* Rounded corners */
   font-size: 15px; /* Increase font size */
-}
-.loginButton{
-  background: aquamarine;
 }

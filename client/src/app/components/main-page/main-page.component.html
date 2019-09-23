@@ -1,24 +1,14 @@
-<div>
-  <div class="header">
-    <h2>Pets couchsurfing</h2>
-  </div>
-    <button class="login" mat-button (click)="onCreate()">Login</button>
-    <!--<button mat-button routerLink="/user/{{this.user.id}}/addPost">Add Post</button>-->
-</div>
-<hr>
-<div class="cards">
-  <mat-card class="mat-card" *ngFor="let post of this.posts">
+<app-header></app-header>
+<div class="cards" >
+  <mat-card class="mat-card" *ngFor="let post of this.posts" (click)="postDetails(post)">
     <mat-card-header>
-      <img mat-card-avatar >
+      <img mat-card-avatar [src] = "'http://localhost:8080/images/'+ post.user.avatar">
       <mat-card-subtitle>{{post.user.username}}</mat-card-subtitle>
       <mat-card-title>{{post.title}}</mat-card-title>
     </mat-card-header>
-    <img mat-card-image [src] = "'http://localhost:8080/images/'+ post.photo">
+    <img mat-card-image class="postImage" [src] = "'http://localhost:8080/images/'+ post.photo">
     <mat-card-content>{{post.optionalField}}</mat-card-content>
-    <mat-card-actions>
-      <button mat-button>DETAILS</button>
-    </mat-card-actions>
-    <mat-card-footer>Creation date {{post.date}}</mat-card-footer>
+    <mat-card-footer>{{post.date}} - {{post.expirationDate}}</mat-card-footer>
   </mat-card>
 </div>
 <router-outlet></router-outlet>

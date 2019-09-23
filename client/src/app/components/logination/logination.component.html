@@ -1,3 +1,4 @@
+<h1>Login</h1>
 <form (ngSubmit)="login()">
   <mat-form-field>
   <input matInput
@@ -7,13 +8,19 @@
       placeholder="Enter your username"
       [(ngModel)]="user.username">
   </mat-form-field>
+  <br>
   <mat-form-field>
   <input matInput type="text"
          name="password"
          placeholder="Enter your password"
          [(ngModel)]="user.password">
   </mat-form-field>
-  <button mat-button type="Submit" (click)="onSubmit()">Login</button>
+  <br>
+  <button mat-button class="loginButton" type="Submit" (click)="onSubmit()">Login</button>
 </form>
+<br>
+<button mat-button class="loginCross" (click)="onSubmit()">
+  <mat-icon>done</mat-icon>
+</button>
 
 If you don't have an account <a routerLink="/register" (click)="onSubmit()">register</a>

@@ -1,0 +1,9 @@
+<div class="header">
+  <div class="title">
+    <h2>Pets couchsurfing</h2>
+  </div>
+  <button class="login" mat-button (click)="onCreate()">Login</button>
+  <div *ngIf="authService.isLogined == true">
+  <button mat-button>Add Post</button>
+  </div>
+</div>
