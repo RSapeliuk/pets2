@@ -11,7 +11,7 @@ import {Post} from '../models/Post';
 export class ImageUploadService {
   apiURL = 'http://localhost:8080';
 
-  constructor(private http: HttpClient, public postService: PostService) {
+  constructor(private http: HttpClient) {
   }
 
   uploadImage(file: File, uuid): Observable<any> {
@@ -23,5 +23,10 @@ export class ImageUploadService {
     const formData = new FormData();
     formData.append('file', file, uuid);
     return this.http.post(this.apiURL + '/addAvatar', formData);
+  }
+  uploadPetPhoto(file: File, uuid): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file, uuid);
+    return this.http.post(this.apiURL + '/addPetPhoto', formData);
   }
 }

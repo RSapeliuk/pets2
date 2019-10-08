@@ -7,6 +7,7 @@ export class User {
               public avatar?: string,
               public phoneNumber?: string,
               public name?: string,
-              public surname?: string) {
+              public surname?: string,
+              public userLocation?: Location) {
   }
 }

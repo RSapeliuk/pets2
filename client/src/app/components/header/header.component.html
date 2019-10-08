@@ -1,12 +1,26 @@
-<div class="header">
-  <div class="title">
-    <h2>Pets couchsurfing</h2>
-  </div>
-  <div *ngIf="this.logined === null">
-    <button class="login" mat-button (click)="onCreate()">Login</button>
-  </div>
-  <div *ngIf="this.logined === 'true'">
-    <button mat-button routerLink="/user/{{this.user.id}}/addPost">Add Post</button>
-    <button mat-button>My profile</button>
-  </div>
-</div>
+<mat-toolbar class="header">
+  <mat-toolbar-row class="mat-toolbar-row">
+    <div class="flex-class">
+      <span>Pets couchsurfing</span>
+    </div>
+    <div class="flex-class">
+      <button mat-button routerLink="/" class="flex-class">Головна сторінка</button>
+      <div *ngIf="this.logined === null" class="flex-class">
+        <button mat-button (click)="onCreate()">Увійти</button>
+      </div>
+      <div *ngIf="this.logined === 'true'" class="login">
+        <div *ngIf="this.user">
+          <mat-menu #appMenu="matMenu">
+            <button mat-menu-item routerLink="/user/{{this.user.id}}/addPost">Додати пост</button>
+            <button mat-menu-item routerLink="/user/{{this.user.id}}">Мій профіль</button>
+            <button mat-menu-item (click)="logout()">Вийти</button>
+          </mat-menu>
+          <button mat-button [matMenuTriggerFor]="appMenu">
+            {{user.name}} {{user.surname}}
+            <mat-icon>face</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>

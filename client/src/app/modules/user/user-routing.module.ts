@@ -6,7 +6,8 @@ import {UserViewComponent} from '../../components/user-view/user-view.component'
 
 const routes: Routes = [
   {path: '', component: UserViewComponent},
-  {path: 'addPost', component: PostComponent}
+  {path: 'addPost', component: PostComponent},
+  {path: 'addPet'}
 ];
 
 @NgModule({

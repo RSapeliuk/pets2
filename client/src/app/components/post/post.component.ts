@@ -5,10 +5,9 @@ import {AuthService} from '../../services/auth.service';
 import {User} from '../../models/User';
 import {ImageUploadService} from '../../services/image-upload.service';
 import {Router} from '@angular/router';
-import {LoginationComponent} from '../logination/logination.component';
 import {NgForm} from '@angular/forms';
-import * as uuid from 'uuid';
 import {UuidService} from '../../services/uuid.service';
+import {Kind} from '../../models/enums/Kind';
 
 
 @Component({
@@ -20,6 +19,7 @@ export class PostComponent implements OnInit {
   post: Post = new Post();
   user: User;
   file: File;
+  kind: Kind[] = [Kind.LEAVE, Kind.GIVE];
   namePhoto: any;
   imagePreview: string | ArrayBuffer = '';
 
@@ -40,9 +40,11 @@ export class PostComponent implements OnInit {
   savePost(form: NgForm) {
     console.log(form.value);
     this.post.photo = this.uuidService.randomName(this.namePhoto, this.file, this.post.photo);
-    this.imageService.uploadImage(this.file, this.post.photo).subscribe(value => {
-      console.log(value);
-    });
+    if (this.file != null) {
+      this.imageService.uploadImage(this.file, this.post.photo).subscribe(value => {
+        console.log(value);
+      });
+    }
     this.postService.savePost(this.post, this.user).subscribe(value => {
         console.log(value);
         this.router.navigateByUrl('/');

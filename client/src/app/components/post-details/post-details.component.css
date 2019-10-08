@@ -12,3 +12,11 @@
   border-radius: 5px; /* Rounded corners */
   font-size: 15px; /* Increase font size */
 }
+.image{
+  height: 300px;
+  width: 300px;
+}
+.flex-class{
+  display: flex;
+  flex-direction: row;
+}

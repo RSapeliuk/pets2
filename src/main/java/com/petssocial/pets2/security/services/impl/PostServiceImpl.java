@@ -29,7 +29,7 @@ public class PostServiceImpl implements PostService {
     }
 
     public List<Post> findPostsByUserId(Integer id){
-        User user = userService.findOnebyID(id);
+        User user = userService.findOneByID(id);
         List<Post> posts = user.getPosts();
         return posts;
     }

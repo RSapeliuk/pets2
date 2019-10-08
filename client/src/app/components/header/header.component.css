@@ -1,18 +1,25 @@
 .header{
   background: blueviolet;
-  margin: auto;
-  alignment: right;
-  text-align: center;
-  display: inline-block;
+  margin: 0;
   width: 100%;
-  height: 100px;
+  height: 50px;
 }
-.login{
-  margin: 2.8%;
-  display: inline-block;
-  background: aqua;
-  left: 30%;
+.flex-class{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
 }
-.title{
-  display: inline-block;
+/*.example-spacer {*/
+/*  flex: 1 1 auto;*/
+/*}*/
+.mat-toolbar-row{
+  display: flex;
+  padding: 0 16px;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  white-space: nowrap;
+  justify-content: space-evenly;
 }
+

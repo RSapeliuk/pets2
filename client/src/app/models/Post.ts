@@ -1,4 +1,4 @@
-import {Kind} from './Kind';
+import {Kind} from './enums/Kind';
 
 export class Post {
   constructor(public title?: string,

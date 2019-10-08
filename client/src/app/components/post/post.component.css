@@ -28,3 +28,7 @@ mat-form-field{
 .mat-button {
   background: cornflowerblue;
 }
+
+.textAreaFullWidth{
+  width: 100%;
+}

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import * as uuid from 'uuid';
-import {Observable} from 'rxjs';
 
 
 @Injectable({

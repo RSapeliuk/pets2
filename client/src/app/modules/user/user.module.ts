@@ -4,20 +4,21 @@ import {UserRoutingModule} from './user-routing.module';
 import {PostComponent} from '../../components/post/post.component';
 import {FormsModule} from '@angular/forms';
 import {
-  MatButtonModule,
+  MatButtonModule, MatCardModule,
   MatDatepickerModule,
-  MatDialogModule,
-  MatFormFieldModule,
+  MatDialogModule, MatExpansionModule,
+  MatFormFieldModule, MatIconModule,
   MatInputModule,
-  MatSelectModule
+  MatSelectModule, MatSidenavModule, MatTabsModule
 } from '@angular/material';
 import {UserViewComponent} from '../../components/user-view/user-view.component';
 import {MainPageModule} from '../main-page/main-page.module';
+import {PetComponent} from '../../components/pet/pet.component';
 
 
 
 @NgModule({
-  declarations: [PostComponent, UserViewComponent],
+  declarations: [PostComponent, UserViewComponent, PetComponent],
   imports: [
     CommonModule,
     UserRoutingModule,
@@ -29,7 +30,13 @@ import {MainPageModule} from '../main-page/main-page.module';
     MatButtonModule,
     MatDialogModule,
     UserRoutingModule,
-    MainPageModule
-  ]
+    MainPageModule,
+    MatSidenavModule,
+    MatTabsModule,
+    MatCardModule,
+    MatExpansionModule,
+    MatIconModule
+    ],
+  entryComponents: [PetComponent]
 })
 export class UserModule { }

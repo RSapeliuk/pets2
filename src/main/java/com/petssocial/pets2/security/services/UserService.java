@@ -1,10 +1,7 @@
 package com.petssocial.pets2.security.services;
 
-
 import com.petssocial.pets2.models.User;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,7 +13,7 @@ import java.util.List;
 public interface UserService extends UserDetailsService {
     void save(User user);
     List<User> findAll();
-    User findOnebyID (Integer id);
+    User findOneByID (Integer id);
     @Override
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 }

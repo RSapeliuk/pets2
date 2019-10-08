@@ -8,6 +8,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { UserViewComponent } from './components/user-view/user-view.component';
 import { PostDetailsComponent } from './components/post-details/post-details.component';
 import { HeaderComponent } from './components/header/header.component';
+import { PetComponent } from './components/pet/pet.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { HeaderComponent } from './components/header/header.component';
     BrowserAnimationsModule
   ],
   providers: [],
+  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

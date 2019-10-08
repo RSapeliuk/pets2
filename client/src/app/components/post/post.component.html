@@ -1,15 +1,15 @@
 <app-header></app-header>
-<h1>Add post</h1>
+<h1>Додати пост</h1>
 <form #postForm="ngForm" class="view" (ngSubmit)="savePost(postForm)">
   <div class="form">
     <mat-form-field>
-      <input matInput placeholder="Title"
+      <input matInput placeholder="Назва"
              [(ngModel)]="post.title"
              name="title">
     </mat-form-field>
     <br>
     <mat-form-field>
-      <input matInput [matDatepicker]="picker" placeholder="Choose a date"
+      <input matInput [matDatepicker]="picker" placeholder="Дата подання"
              [(ngModel)]="post.date"
              name="date">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -17,28 +17,26 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput [matDatepicker]="exppicker" placeholder="Choose expiration date"
+      <input matInput [matDatepicker]="exppicker" placeholder="Кінцева дата"
              [(ngModel)]="post.expirationDate"
              name="expirationDate">
       <mat-datepicker-toggle matSuffix [for]="exppicker"></mat-datepicker-toggle>
       <mat-datepicker #exppicker></mat-datepicker>
     </mat-form-field>
     <br>
-    <!--  <mat-form-field>-->
-    <!--    <mat-label>Kind of post</mat-label>-->
-    <!--    <mat-select>-->
-    <!--            <mat-option>-->
-    <!--              {{post.kind}}-->
-    <!--            </mat-option>-->
-    <!--            <mat-option>-->
-    <!--              {{post.kind[1]}}-->
-    <!--            </mat-option>-->
-    <!--    </mat-select>-->
-    <!--  </mat-form-field>-->
     <mat-form-field>
-    <textarea matInput placeholder="Additional info"
-              [(ngModel)]="post.optionalField"
-              name="optional_field"></textarea>
+      <mat-label>Тип посту</mat-label>
+      <mat-select [(ngModel)]="post.kind" name="kind">
+        <mat-option *ngFor="let k of kind" [value]="k.valueOf()">
+          {{k.valueOf()}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="textAreaFullWidth">
+        <textarea matInput placeholder="Додаткова інформація"
+                  [(ngModel)]="post.optionalField"
+                  name="optional_field">
+        </textarea>
     </mat-form-field>
   </div>
   <div class="preview">
@@ -47,6 +45,6 @@
     <img [src]="imagePreview" alt="" *ngIf="imagePreview">
   </div>
   <br>
-  <button mat-button class="mat-button" type="submit">Submit</button>
+  <button mat-button class="mat-button" type="submit">Додати</button>
 </form>
 

@@ -8,15 +8,14 @@ import {HttpClientModule} from '@angular/common/http';
 import {
   MatButtonModule,
   MatCardModule,
-  MatDatepickerModule, MatDialogModule,
+  MatDatepickerModule, MatDialogModule, MatExpansionModule,
   MatFormFieldModule, MatIconModule,
-  MatInputModule,
+  MatInputModule, MatMenuModule,
   MatNativeDateModule, MatSelectModule,
   MatToolbarModule
 } from '@angular/material';
 import {MainPageRoutingModule} from './main-page-routing.module';
 import {MainPageComponent} from '../../components/main-page/main-page.component';
-import {PostService} from '../../services/post.service';
 import {PostDetailsComponent} from '../../components/post-details/post-details.component';
 import {HeaderComponent} from '../../components/header/header.component';
 
@@ -42,7 +41,8 @@ import {HeaderComponent} from '../../components/header/header.component';
     MatSelectModule,
     MainPageRoutingModule,
     MatDialogModule,
-    MatIconModule
+    MatIconModule,
+    MatMenuModule,
   ],
   providers: [],
   exports: [

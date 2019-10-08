@@ -1,14 +1,26 @@
-<p>post-details works!</p>
-<div>
+<div *ngIf="post">
+  <h2>{{post.title}}</h2>
   <div>
-    {{post.id}}
-    <div>
-      vlcxmklv
+    <div class="flex-class">
+      <img class="image" [src]="'http://localhost:8080/images/'+ post.photo">
     </div>
+    <div class="">
+      <div>
+        Тип поста: {{post.kind}}
+      </div>
+      <div>
+        <p>Додаткова інформація:</p>
+        {{post.optionalField}}
+      </div>
+      <div>
+        Від: {{post.date}}
+      </div>
+      <div>
+        До: {{post.expirationDate}}
+      </div>
+    </div>
+    <button mat-button class="cross" (click)="onClick()">
+      <mat-icon>done</mat-icon>
+    </button>
   </div>
-</div>
-<div>
-  <button mat-button class="cross" (click)="onClick()">
-    <mat-icon>done</mat-icon>
-  </button>
 </div>

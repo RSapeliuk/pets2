@@ -1,5 +1,5 @@
 <app-header></app-header>
-<h1>Registration</h1>
+<h1>Реєстрація</h1>
 
 <form (ngSubmit)="sendForm()">
   <mat-form-field>
@@ -8,7 +8,7 @@
            type="text"
            name="name"
            required
-           placeholder="Enter your name"
+           placeholder="Ім'я"
            [(ngModel)]="user.name">
   </mat-form-field>
   <mat-form-field>
@@ -16,7 +16,7 @@
            #nameI="ngModel"
            type="text"
            name="name"
-           placeholder="Enter your surname"
+           placeholder="Прізвище"
            required
            [(ngModel)]="user.surname">
   </mat-form-field>
@@ -26,7 +26,7 @@
     #nameI="ngModel"
     type="text"
          name="name"
-         placeholder="Enter your username"
+         placeholder="Логін"
          required
   [(ngModel)]="user.username">
    </mat-form-field>
@@ -35,7 +35,7 @@
          type="text"
          name="password"
          required
-         placeholder="Enter your password"
+         placeholder="Пароль"
          [(ngModel)]="user.password">
   </mat-form-field>
   <br>
@@ -43,7 +43,7 @@
   <input matInput
          type="text"
          name="email"
-         placeholder="Enter your email"
+         placeholder="Е-Пошта"
          required
          [(ngModel)]="user.email">
   </mat-form-field>
@@ -51,8 +51,26 @@
     <input matInput
            type="text"
            name="phone"
-           placeholder="Phone number"
+           placeholder="Телефон"
            [(ngModel)]="user.phoneNumber">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Місто</mat-label>
+    <mat-select [(ngModel)]="userLocation.city" name="city">
+      <mat-option *ngFor="let city of cities" value="{{city.valueOf()}}">{{city}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field *ngIf="userLocation.city === 'ЛЬВІВ'">
+    <mat-label>Район</mat-label>
+    <mat-select [(ngModel)]="userLocation.district" name="district">
+      <mat-option *ngFor="let dL of districtsLviv" value="{{dL.valueOf()}}">{{dL}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field *ngIf="userLocation.city === 'КИЇВ'">
+    <mat-label>Район</mat-label>
+    <mat-select [(ngModel)]="userLocation.district" name="district">
+      <mat-option *ngFor="let dK of districtsKyiv" value="{{dK.valueOf()}}">{{dK}}</mat-option>
+    </mat-select>
   </mat-form-field>
   <br>
   <input type="file" name="avatar" (change)="onPhotoUpload($event)">

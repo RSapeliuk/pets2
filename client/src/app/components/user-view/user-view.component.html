@@ -1,1 +1,43 @@
-<p>user-view works!</p>
+<app-header></app-header>
+<h1>Профіль</h1>
+<mat-tab-group>
+  <mat-tab label="Мій профіль">
+    <div *ngIf="this.user">
+      <div><img src="http://localhost:8080/images/{{this.user.avatar}}" class="avatar" alt="userPhoto"></div>
+      <div>{{this.user.name}} {{this.user.surname}}</div>
+      <div>Email: {{this.user.email}}</div>
+      <div *ngIf="this.user.phoneNumber">Телефон: {{this.user.phoneNumber}}</div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Мої тваринки">
+    <button mat-button (click)="onClick()">Додати тваринку</button>
+    <mat-expansion-panel *ngFor="let pet of this.userPets">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{pet.name}}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{pet.size}} {{pet.age}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <img  [src] = "'http://localhost:8080/images/'+ pet.photo">
+      <p>Ім'я: {{pet.name}}</p>
+      <p>Вік: {{pet.age}}</p>
+      <p>Розмір: {{pet.size}}</p>
+      <p>Довжина шерсті: {{pet.hairLength}}</p>
+
+    </mat-expansion-panel>
+  </mat-tab>
+  <mat-tab label="Мої пости">
+    <mat-card class="mat-card" *ngFor="let post of this.userPosts">
+      <mat-card-header>
+        <img mat-card-avatar [src]="'http://localhost:8080/images/'+ post.user.avatar">
+        <mat-card-subtitle>{{post.user.username}}</mat-card-subtitle>
+        <mat-card-title>{{post.title}}</mat-card-title>
+      </mat-card-header>
+      <img mat-card-image class="postImage" [src]="'http://localhost:8080/images/'+ post.photo">
+      <mat-card-content>{{post.optionalField}}</mat-card-content>
+      <mat-card-footer>{{post.date}} - {{post.expirationDate}}</mat-card-footer>
+    </mat-card>
+  </mat-tab>
+</mat-tab-group>

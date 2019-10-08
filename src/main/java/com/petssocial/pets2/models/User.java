@@ -2,6 +2,7 @@ package com.petssocial.pets2.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.petssocial.pets2.models.enums.Role;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,7 +21,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
-@ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements UserDetails {
     @Id
@@ -43,34 +43,14 @@ public class User implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Role> roles = Arrays.asList(Role.ROLE_USER);
     private boolean enabled = true;
-//    @Override
-//    public String toString() {
-//        return "User{" +
-//                "id=" + id +
-//                ", username='" + username + '\'' +
-//                ", password='" + password + '\'' +
-//                ", email='" + email + '\'' +
-//                ", accountNotExpired=" + accountNotExpired +
-//                ", accountNotLocked=" + accountNotLocked +
-//                ", credentialsNonExpired=" + credentialsNonExpired +
-//                ", roles=" + roles +
-//                ", enabled=" + enabled +
-//                '}';
-//    }
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Post> posts;
-
-//    public User(String username, String password, String email, boolean accountNotExpired, boolean accountNotLocked, boolean credentialsNonExpired, boolean enabled, List<Role> role) {
-//        this.username = username;
-//        this.password = password;
-//        this.email = email;
-//        this.accountNotExpired = accountNotExpired;
-//        this.accountNotLocked = accountNotLocked;
-//        this.credentialsNonExpired = credentialsNonExpired;
-//        this.enabled = enabled;
-//        this.roles = role;
-//    }
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Pet> pets;
+    @OneToOne(mappedBy = "user")
+    private Location userLocation;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

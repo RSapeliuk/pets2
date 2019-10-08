@@ -4,6 +4,7 @@ import com.petssocial.pets2.security.filters.FilterThatCheckTokenOnEveryRequest;
 import com.petssocial.pets2.security.filters.LoginCustomFilterThatCreateToken;
 
 import com.petssocial.pets2.security.services.FileService;
+import com.petssocial.pets2.security.services.PetService;
 import com.petssocial.pets2.security.services.PostService;
 import com.petssocial.pets2.security.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Qualifier("fileServiceImpl")
     private FileService fileService;
 
+    @Autowired
+    @Qualifier("petServiceImpl")
+    private PetService petService;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -58,8 +63,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/signup").permitAll()
                 .antMatchers(HttpMethod.POST, "/user/**").permitAll()//.hasRole("USER")
+                .antMatchers(HttpMethod.GET, "/user/**").permitAll()//.hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/addPhoto/**").permitAll()//hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/addAvatar/**").permitAll()//hasRole("USER")
+                .antMatchers(HttpMethod.POST, "/addLocation/**").permitAll()//hasRole("USER")
+                .antMatchers(HttpMethod.POST, "/addPetPhoto/**").permitAll()//hasRole("USER")
                 .antMatchers(HttpMethod.GET, "/post/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/images/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/users").hasRole("USER")

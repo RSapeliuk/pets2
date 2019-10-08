@@ -1,7 +1,9 @@
 package com.petssocial.pets2.controllers;
 
 
+import com.petssocial.pets2.dao.LocationDAO;
 import com.petssocial.pets2.dao.UserDAO;
+import com.petssocial.pets2.models.Location;
 import com.petssocial.pets2.models.User;
 import com.petssocial.pets2.security.services.FileService;
 import com.petssocial.pets2.security.services.UserService;
@@ -24,6 +26,8 @@ public class UserController {
    private PasswordEncoder encoder;
     @Autowired
     private FileService fileService;
+    @Autowired
+    private LocationDAO locationDAO;
 
     @GetMapping("/users")
     public List<User> getUser(){
@@ -33,7 +37,9 @@ public class UserController {
     @PostMapping("/signup")
     public User saveUser(@RequestBody User user){
         user.setPassword(encoder.encode(user.getPassword()));
+        Location userLocation = new Location();
         userService.save(user);
+        userLocation.setUser(user);
         System.out.println(user);
         return user;
     }
@@ -48,5 +54,13 @@ public class UserController {
     @PostMapping("/addAvatar")
     public void saveAvatar(@RequestParam("file") MultipartFile file) throws IOException {
         fileService.storeFile(file);
+    }
+
+    @PostMapping("/addLocation/{id}")
+    public Location saveLocation(@RequestBody Location location, @PathVariable int id){
+        User user = userService.findOneByID(id);
+        location.setUser(user);
+        locationDAO.save(location);
+        return location;
     }
 }
