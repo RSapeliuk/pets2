@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {RegistrationComponent} from '../../components/registration/registration.component';
 import {LoginationComponent} from '../../components/logination/logination.component';
 import {PostComponent} from '../../components/post/post.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {
   MatButtonModule,

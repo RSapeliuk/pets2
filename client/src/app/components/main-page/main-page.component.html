@@ -6,8 +6,11 @@
       <mat-card-subtitle>{{post.user.name}} {{post.user.surname}}</mat-card-subtitle>
       <mat-card-title>{{post.title}}</mat-card-title>
     </mat-card-header>
-    <div *ngIf="post.photo">
+    <div *ngIf="post.photo && post.kind === 'Залишити'">
       <img mat-card-image class="postImage" [src] = "'http://localhost:8080/images/'+ post.photo">
+    </div>
+    <div *ngIf="post.pet && post.kind === 'Віддати'">
+      <img mat-card-image class="postImage" [src] = "'http://localhost:8080/images/'+ post.pet.photo">
     </div>
     <mat-card-content class="text">{{post.optionalField}}</mat-card-content>
     <mat-card-footer>{{post.date}} - {{post.expirationDate}}</mat-card-footer>

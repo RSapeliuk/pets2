@@ -1,20 +1,21 @@
 package com.petssocial.pets2.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.petssocial.pets2.models.enums.KindOfPost;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Post {
     @Id
@@ -30,4 +31,9 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private User user;
     private boolean enabled = true;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Pet pet;
+
+    public Post() {
+    }
 }

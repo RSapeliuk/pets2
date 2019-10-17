@@ -55,7 +55,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and()
+        http
+                .cors()
+                .and()
                 .csrf()
                 .disable()
                 .authorizeRequests()
@@ -63,7 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/signup").permitAll()
                 .antMatchers(HttpMethod.POST, "/user/**").permitAll()//.hasRole("USER")
-                .antMatchers(HttpMethod.GET, "/user/**").permitAll()//.hasRole("USER")
+                .antMatchers(HttpMethod.GET, "/user/**").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/addPhoto/**").permitAll()//hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/addAvatar/**").permitAll()//hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/addLocation/**").permitAll()//hasRole("USER")

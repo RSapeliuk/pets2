@@ -9,22 +9,6 @@
     </mat-form-field>
     <br>
     <mat-form-field>
-      <input matInput [matDatepicker]="picker" placeholder="Дата подання"
-             [(ngModel)]="post.date"
-             name="date">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-
-    <mat-form-field>
-      <input matInput [matDatepicker]="exppicker" placeholder="Кінцева дата"
-             [(ngModel)]="post.expirationDate"
-             name="expirationDate">
-      <mat-datepicker-toggle matSuffix [for]="exppicker"></mat-datepicker-toggle>
-      <mat-datepicker #exppicker></mat-datepicker>
-    </mat-form-field>
-    <br>
-    <mat-form-field>
       <mat-label>Тип посту</mat-label>
       <mat-select [(ngModel)]="post.kind" name="kind">
         <mat-option *ngFor="let k of kind" [value]="k.valueOf()">
@@ -32,17 +16,44 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field class="textAreaFullWidth">
+    <div *ngIf="post.kind === 'Віддати'">
+      <mat-form-field>
+        <mat-label>Тваринка</mat-label>
+        <mat-select [(ngModel)]="post.pet" name="pet">
+          <mat-option *ngFor="let pet of this.pets" [value]="pet.valueOf()">
+            {{pet.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Дата подання"
+               [(ngModel)]="post.date"
+               name="date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [matDatepicker]="exppicker" placeholder="Кінцева дата"
+               [(ngModel)]="post.expirationDate"
+               name="expirationDate">
+        <mat-datepicker-toggle matSuffix [for]="exppicker"></mat-datepicker-toggle>
+        <mat-datepicker #exppicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+  <mat-form-field class="textAreaFullWidth">
         <textarea matInput placeholder="Додаткова інформація"
                   [(ngModel)]="post.optionalField"
                   name="optional_field">
         </textarea>
-    </mat-form-field>
-  </div>
-  <div class="preview">
-    <input type="file" (change)="onFileUpload($event)">
-    <br>
-    <img [src]="imagePreview" alt="" *ngIf="imagePreview">
+  </mat-form-field>
+  <div *ngIf="post.kind === 'Залишити'">
+    <div class="preview">
+      <input type="file" (change)="onFileUpload($event)">
+      <br>
+      <img [src]="imagePreview" alt="" *ngIf="imagePreview">
+    </div>
   </div>
   <br>
   <button mat-button class="mat-button" type="submit">Додати</button>

@@ -1,7 +1,7 @@
 <app-header></app-header>
 <h1>Реєстрація</h1>
 
-<form (ngSubmit)="sendForm()">
+<form #myForm="ngForm" (ngSubmit)="sendForm()" novalidate>
   <mat-form-field>
     <input matInput
            #nameI="ngModel"
@@ -15,7 +15,7 @@
     <input matInput
            #nameI="ngModel"
            type="text"
-           name="name"
+           name="surname"
            placeholder="Прізвище"
            required
            [(ngModel)]="user.surname">
@@ -25,7 +25,7 @@
   <input matInput
     #nameI="ngModel"
     type="text"
-         name="name"
+         name="username"
          placeholder="Логін"
          required
   [(ngModel)]="user.username">
@@ -41,7 +41,7 @@
   <br>
   <mat-form-field>
   <input matInput
-         type="text"
+         type="email"
          name="email"
          placeholder="Е-Пошта"
          required
@@ -74,5 +74,6 @@
   </mat-form-field>
   <br>
   <input type="file" name="avatar" (change)="onPhotoUpload($event)">
-  <button mat-button type="Submit">Sign Up</button>
+  <button mat-button [disabled] = "myForm.invalid" type="Submit">Sign Up</button>
 </form>
+

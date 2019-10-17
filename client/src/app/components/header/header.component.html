@@ -8,7 +8,7 @@
       <div *ngIf="this.logined === null" class="flex-class">
         <button mat-button (click)="onCreate()">Увійти</button>
       </div>
-      <div *ngIf="this.logined === 'true'" class="login">
+      <div *ngIf="this.logined != null" class="login">
         <div *ngIf="this.user">
           <mat-menu #appMenu="matMenu">
             <button mat-menu-item routerLink="/user/{{this.user.id}}/addPost">Додати пост</button>

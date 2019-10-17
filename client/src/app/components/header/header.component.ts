@@ -10,7 +10,6 @@ import {User} from '../../models/User';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  isLogined: any;
   logined: any;
   user: User;
 
@@ -20,7 +19,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.authService.getUser().subscribe(value => this.user = value);
-    this.logined = localStorage.getItem('isLogined');
+    this.logined = localStorage.getItem('token');
   }
 
   onCreate() {

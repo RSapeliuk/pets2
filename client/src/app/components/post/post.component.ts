@@ -8,6 +8,8 @@ import {Router} from '@angular/router';
 import {NgForm} from '@angular/forms';
 import {UuidService} from '../../services/uuid.service';
 import {Kind} from '../../models/enums/Kind';
+import {PetService} from '../../services/pet.service';
+import {Pet} from '../../models/Pet';
 
 
 @Component({
@@ -22,12 +24,14 @@ export class PostComponent implements OnInit {
   kind: Kind[] = [Kind.LEAVE, Kind.GIVE];
   namePhoto: any;
   imagePreview: string | ArrayBuffer = '';
+  pets: Pet[] = [];
 
   constructor(public postService: PostService,
               public authService: AuthService,
               public router: Router,
               public imageService: ImageUploadService,
-              public uuidService: UuidService) {
+              public uuidService: UuidService,
+              public petService: PetService) {
   }
 
   ngOnInit() {
@@ -35,6 +39,12 @@ export class PostComponent implements OnInit {
       this.user = value;
       console.log(this.user);
     });
+    setTimeout(() => {
+      this.petService.getPets(this.user).subscribe(value => {
+        console.log(value);
+        this.pets = value;
+      });
+    }, 500);
   }
 
   savePost(form: NgForm) {
@@ -45,7 +55,7 @@ export class PostComponent implements OnInit {
         console.log(value);
       });
     }
-    this.postService.savePost(this.post, this.user).subscribe(value => {
+    this.postService.savePost(this.post, this.user, this.post.pet).subscribe(value => {
         console.log(value);
         this.router.navigateByUrl('/');
       }

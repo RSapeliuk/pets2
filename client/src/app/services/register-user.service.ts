@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from '../models/User';
 import {Observable} from 'rxjs';
 import {Location} from '../models/Location';
@@ -18,6 +18,9 @@ export class RegisterUserService {
   }
 
   saveLocation(userLocation: Location, user: User): Observable<Location> {
-    return this.http.post<Location>(this.URL + 'addLocation/' + user.id, userLocation);
+    const headers: HttpHeaders = new HttpHeaders();
+    headers.append('Authorization', localStorage.getItem('token'));
+    headers.append('Content-Type', 'application/json');
+    return this.http.post<Location>(this.URL + 'addLocation/' + user.id, userLocation, {headers});
   }
 }

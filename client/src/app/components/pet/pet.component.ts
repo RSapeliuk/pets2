@@ -15,7 +15,7 @@ import {UuidService} from '../../services/uuid.service';
 export class PetComponent implements OnInit {
   pet: Pet = new Pet();
   user: User;
-  size: string[] = ['МАЛЕНЬКА', 'СЕРЕДНЯ', 'ВЕЛИКА'];
+  size: string[] = ['МАЛЕНЬКИЙ', 'СЕРЕДНІЙ', 'ВЕЛИКИЙ'];
   hairLength: string[] = ['КОРОТКА', 'СЕРЕДНЯ', 'ДОВГА'];
   file: File;
   type: string[] = ['КІТ', 'ПЕС', 'ПТАХ'];

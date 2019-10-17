@@ -1,8 +1,10 @@
 package com.petssocial.pets2.controllers;
 
+import com.petssocial.pets2.models.Pet;
 import com.petssocial.pets2.models.Post;
 import com.petssocial.pets2.models.User;
 import com.petssocial.pets2.security.services.FileService;
+import com.petssocial.pets2.security.services.PetService;
 import com.petssocial.pets2.security.services.PostService;
 import com.petssocial.pets2.security.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ public class PostController {
     private UserService userService;
     @Autowired
     private FileService fileService;
+    @Autowired
+    private PetService petService;
 
     @GetMapping("/posts")
     public List<Post> getPosts() {
@@ -31,12 +35,15 @@ public class PostController {
         return postService.findPostsByUserId(id);
     }
 
-    @PostMapping("user/{id}/addPost")
-    public Post savePost(@RequestBody Post post, @PathVariable int id) throws IOException {
+    @PostMapping("user/{id}/addPost/{petId}")
+    public Post savePost(@RequestBody Post post, @PathVariable int id, @PathVariable int petId) throws IOException {
         User user = userService.findOneByID(id);
+        Pet pet = petService.findById(petId);
         System.out.println(2);
+        post.setPet(pet);
         post.setUser(user);
         System.out.println(user);
+        System.out.println(pet);
         postService.savePost(post);
         return post;
     }

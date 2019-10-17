@@ -35,10 +35,10 @@ export class LoginationComponent implements OnInit {
           this.authService.getUser().subscribe(value => {
             this.returnedUser = value;
             console.log(this.returnedUser);
-            if (this.returnedUser.roles[0] === 'ROLE_USER') {
+            if (this.returnedUser.role === 'ROLE_USER') {
               this.router.navigateByUrl(`/`);
             } else {
-              if (this.returnedUser.roles[0] === 'ROLE_ADMIN') {
+              if (this.returnedUser.role === 'ROLE_ADMIN') {
                 this.router.navigateByUrl(`/admin/${this.returnedUser.id}`);
               }
             }

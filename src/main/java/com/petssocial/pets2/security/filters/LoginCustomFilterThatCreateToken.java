@@ -12,6 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -22,12 +23,11 @@ import java.util.Date;
 
 public class LoginCustomFilterThatCreateToken extends AbstractAuthenticationProcessingFilter {
 
-    private AuthenticationManager authenticationManager;
 
     private UserService userDetailsService;
     public LoginCustomFilterThatCreateToken(String defaultFilterProcessesUrl, AuthenticationManager manager,UserService userDetailsService) {
-        super(defaultFilterProcessesUrl);
-        this.authenticationManager = manager;
+        super(new AntPathRequestMatcher(defaultFilterProcessesUrl));
+        setAuthenticationManager(manager);
         this.userDetailsService = userDetailsService;
 
 
@@ -37,11 +37,12 @@ public class LoginCustomFilterThatCreateToken extends AbstractAuthenticationProc
     public Authentication attemptAuthentication(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws AuthenticationException, IOException, ServletException {
         System.out.println("Its working");
         User user = new ObjectMapper().readValue(httpServletRequest.getInputStream(), User.class);
-        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),
-                user.getPassword(),
-                Collections.emptyList()));
-        System.out.println(authenticate.isAuthenticated());
-        return authenticate;
+        System.out.println(user);
+        return getAuthenticationManager().authenticate(
+                new UsernamePasswordAuthenticationToken(user.getUsername(),
+                        user.getPassword(),
+                        Collections.emptyList())
+        );
     }
 
     @Override
@@ -52,10 +53,11 @@ public class LoginCustomFilterThatCreateToken extends AbstractAuthenticationProc
         for (GrantedAuthority authority : userDetails.getAuthorities()) {
              jwt_token += authority.getAuthority();
         }
+        System.out.println(jwt_token);
         String token = Jwts.builder()
                 .setSubject(jwt_token)
                 .signWith(SignatureAlgorithm.HS512, "test".getBytes())
-                .setExpiration(new Date(System.currentTimeMillis() + 999999999))
+                //.setExpiration(new Date(System.currentTimeMillis() + 999999999))
                 .compact();
         System.out.println(token);
         //send token to user

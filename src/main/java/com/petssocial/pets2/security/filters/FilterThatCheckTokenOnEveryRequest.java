@@ -22,19 +22,21 @@ public class FilterThatCheckTokenOnEveryRequest extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         Authentication authenticate = null;
-        HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpServletRequest request = (HttpServletRequest) servletRequest;
 
 
         String token = request.getHeader("Authorization");
         if (token != null) {
-            String decodedTicket = Jwts.parser().setSigningKey("test".getBytes())
+            String decodedTicket = Jwts.parser()
+                    .setSigningKey("test".getBytes())
                     .parseClaimsJws(token)
-                    .getBody().getSubject();
+                    .getBody()
+                    .getSubject();
             String[] array = decodedTicket.split(" ");
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority(array[1]));
-            authenticate = new UsernamePasswordAuthenticationToken(decodedTicket, null, authorities);
+            System.out.println(authorities);
+            authenticate = new UsernamePasswordAuthenticationToken(array[0], null, authorities);
             System.out.println(decodedTicket);
 
         }

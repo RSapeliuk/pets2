@@ -1,5 +1,6 @@
 package com.petssocial.pets2.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.petssocial.pets2.models.enums.HairLength;
 import com.petssocial.pets2.models.enums.Size;
@@ -7,14 +8,13 @@ import com.petssocial.pets2.models.enums.Type;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Pet {
     @Id
@@ -31,4 +31,10 @@ public class Pet {
     private String photo;
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+    @OneToOne(mappedBy = "pet")
+    @JsonIgnore
+    private Post post;
+
+    public Pet() {
+    }
 }

@@ -5,6 +5,7 @@ import {ImageUploadService} from '../../services/image-upload.service';
 import {UuidService} from '../../services/uuid.service';
 import {Location} from '../../models/Location';
 import {Router} from '@angular/router';
+import {LoginUserService} from '../../services/login-user.service';
 
 @Component({
   selector: 'app-registration',
@@ -35,33 +36,43 @@ export class RegistrationComponent implements OnInit {
     'ОБОЛОНСЬКИЙ',
     'ШЕВЧЕНКІСЬКИЙ',
     'ПОДІЛЬСЬКИЙ'];
+  returnedUser: User;
 
   constructor(public registerUserService: RegisterUserService,
               public imageService: ImageUploadService,
               public uuidService: UuidService,
-              public router: Router) {
+              public router: Router,
+              public loginService: LoginUserService) {
   }
 
   ngOnInit() {
   }
 
   sendForm() {
-    if (this.isValid === true) {
-      this.user.avatar = this.uuidService.randomName(this.avatar, this.file, this.user.avatar);
 
-      if (this.file != null) {
-        this.imageService.uploadUserAvatar(this.file, this.user.avatar).subscribe(value => {
-          console.log(value);
-        });
-      }
-      this.registerUserService.saveUser(this.user).subscribe(value => {
+    this.user.avatar = this.uuidService.randomName(this.avatar, this.file, this.user.avatar);
+
+    if (this.file != null) {
+      this.imageService.uploadUserAvatar(this.file, this.user.avatar).subscribe(value => {
         console.log(value);
-        this.router.navigateByUrl('/');
       });
-      setTimeout(() => {
-        this.registerUserService.saveLocation(this.userLocation, this.user).subscribe(value => console.log(value));
-      }, 1000);
     }
+    this.registerUserService.saveUser(this.user).subscribe(value => {
+      console.log(value);
+      this.router.navigateByUrl('/');
+      this.returnedUser = value;
+    });
+
+    setTimeout(() => {
+      this.loginService.loginUser(this.user).subscribe(response => {
+        const token = response.headers.get('Authorization');
+        console.log(token);
+        localStorage.setItem('token', token);
+        location.reload();
+      });
+      this.registerUserService.saveLocation(this.userLocation, this.returnedUser).subscribe(value => console.log(value));
+    }, 1000);
+
   }
 
   onPhotoUpload(event: any) {

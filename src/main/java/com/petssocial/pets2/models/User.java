@@ -40,8 +40,7 @@ public class User implements UserDetails {
     private boolean accountNotLocked = true;
     private boolean credentialsNonExpired = true;
     @Enumerated(EnumType.STRING)
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<Role> roles = Arrays.asList(Role.ROLE_USER);
+    private Role role = Role.ROLE_USER;
     private boolean enabled = true;
     @OneToMany(mappedBy = "user")
     @JsonIgnore
@@ -50,22 +49,19 @@ public class User implements UserDetails {
     @JsonIgnore
     private List<Pet> pets;
     @OneToOne(mappedBy = "user")
+    @JsonIgnore
     private Location userLocation;
-
+   // @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        if (authorities.stream().count() >= 0) {
-            authorities.add(new SimpleGrantedAuthority(this.roles.get(0).toString()));
+            authorities.add(new SimpleGrantedAuthority(this.role.name()));
             return authorities;
-        } else if (authorities.stream().count() >= 2) {
-            List<SimpleGrantedAuthority> simpleGrantedAuthorities = authorities.stream().map(simpleGrantedAuthority ->
-                    new SimpleGrantedAuthority(simpleGrantedAuthority.toString())
-            ).collect(Collectors.toList());
-            return simpleGrantedAuthorities;
-        } else {
-            return null;
-        }
+//        } else if (authorities.stream().count() >= 2) {
+//            List<SimpleGrantedAuthority> simpleGrantedAuthorities = authorities.stream().map(simpleGrantedAuthority ->
+//                    new SimpleGrantedAuthority(simpleGrantedAuthority.toString())
+//            ).collect(Collectors.toList());
+//            return simpleGrantedAuthorities;
     }
 
     @Override
