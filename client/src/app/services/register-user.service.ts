@@ -14,6 +14,9 @@ export class RegisterUserService {
   }
 
   saveUser(someUser: User): Observable<User> {
+    const headers: HttpHeaders = new HttpHeaders();
+    headers.append('Authorization', localStorage.getItem('token'));
+    headers.append('Content-Type', 'application/json');
     return this.http.post<User>(this.URL + 'signup', someUser);
   }
 

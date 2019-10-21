@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 import java.util.List;
 
-@Component
+//@Component
 public class FilterThatCheckTokenOnEveryRequest extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -37,11 +37,10 @@ public class FilterThatCheckTokenOnEveryRequest extends GenericFilterBean {
             authorities.add(new SimpleGrantedAuthority(array[1]));
             System.out.println(authorities);
             authenticate = new UsernamePasswordAuthenticationToken(array[0], null, authorities);
-            System.out.println(decodedTicket);
+            System.out.println(authenticate.isAuthenticated());
 
         }
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         filterChain.doFilter(servletRequest, servletResponse);
-
     }
 }

@@ -9,10 +9,12 @@ import { UserViewComponent } from './components/user-view/user-view.component';
 import { PostDetailsComponent } from './components/post-details/post-details.component';
 import { HeaderComponent } from './components/header/header.component';
 import { PetComponent } from './components/pet/pet.component';
+import { ChatMessagesComponent } from './components/chat-messages/chat-messages.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    ChatMessagesComponent,
   ],
   imports: [
     BrowserModule,
