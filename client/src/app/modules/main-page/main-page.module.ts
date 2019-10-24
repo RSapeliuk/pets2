@@ -18,6 +18,7 @@ import {MainPageRoutingModule} from './main-page-routing.module';
 import {MainPageComponent} from '../../components/main-page/main-page.component';
 import {PostDetailsComponent} from '../../components/post-details/post-details.component';
 import {HeaderComponent} from '../../components/header/header.component';
+import {StarRatingModule} from 'angular-star-rating';
 
 
 @NgModule({
@@ -43,10 +44,13 @@ import {HeaderComponent} from '../../components/header/header.component';
     MatDialogModule,
     MatIconModule,
     MatMenuModule,
+    StarRatingModule.forRoot()
+
   ],
   providers: [],
   exports: [
-    HeaderComponent
+    HeaderComponent,
+    StarRatingModule
   ],
   entryComponents: [LoginationComponent, PostDetailsComponent]
 })

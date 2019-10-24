@@ -7,7 +7,9 @@ import com.petssocial.pets2.models.Location;
 import com.petssocial.pets2.models.User;
 import com.petssocial.pets2.security.services.FileService;
 import com.petssocial.pets2.security.services.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -23,19 +25,19 @@ public class UserController {
     @Autowired
     private UserDAO userDAO;
     @Autowired
-   private PasswordEncoder encoder;
+    private PasswordEncoder encoder;
     @Autowired
     private FileService fileService;
     @Autowired
     private LocationDAO locationDAO;
 
     @GetMapping("/users")
-    public List<User> getUser(){
+    public List<User> getUser() {
         return userService.findAll();
     }
 
     @PostMapping("/signup")
-    public User saveUser(@RequestBody User user){
+    public User saveUser(@RequestBody User user) {
         user.setPassword(encoder.encode(user.getPassword()));
         Location userLocation = new Location();
         userService.save(user);
@@ -43,24 +45,49 @@ public class UserController {
         System.out.println(user);
         return user;
     }
+
     @GetMapping("/authUser")
-    public User authUser(){
+    public User authUser() {
         String s = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         String[] s1 = s.split(" ");
         User byUsername = userDAO.findByUsername(s1[0]);
         System.out.println(byUsername);
         return byUsername;
     }
+
     @PostMapping("/addAvatar")
     public void saveAvatar(@RequestParam("file") MultipartFile file) throws IOException {
         fileService.storeFile(file);
     }
 
     @PostMapping("/addLocation/{id}")
-    public Location saveLocation(@RequestBody Location location, @PathVariable int id){
+    public Location saveLocation(@RequestBody Location location, @PathVariable int id) {
         User user = userService.findOneByID(id);
         location.setUser(user);
         locationDAO.save(location);
         return location;
+    }
+
+    @PutMapping("/edit/{userId}")
+    public User editUser(@PathVariable int userId, @RequestBody User user) {
+        User userbyId = userService.findOneByID(userId);
+        userbyId.setName(user.getName());
+        userbyId.setSurname(user.getSurname());
+        userbyId.setEmail(user.getEmail());
+        userService.save(userbyId);
+        return userbyId;
+    }
+
+    @PutMapping("/rating/{userId}")
+    public Double editUserRating(@PathVariable int userId, @RequestBody User user) {
+        User userById = userService.findOneByID(userId);
+        if (userById.getRating() == 0) {
+            userById.setRating(user.getRating());
+        } else if (userById.getRating() > 0) {
+            userById.setRating((userById.getRating() + user.getRating()) / 2);
+        }
+        System.out.println(userById);
+        userService.save(userById);
+        return userById.getRating();
     }
 }

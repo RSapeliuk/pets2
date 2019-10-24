@@ -4,6 +4,16 @@
     <div class="flex-class">
       <img class="image" [src]="'http://localhost:8080/images/'+ post.photo">
     </div>
+    <div>
+      <star-rating [starType]="'svg'"
+                   labelText="{{this.post.user.rating.toString() | slice: 0 : 3}} "
+                   [rating]="this.post.user.rating"
+                   [step]=".5"
+                   [showHalfStars]="true"
+                   [hoverEnabled]="true"
+                   (starClickChange)="updateUserRating($event)">
+      </star-rating>
+    </div>
     <div class="">
       <div>
         Тип поста: {{post.kind}}

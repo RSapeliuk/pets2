@@ -9,10 +9,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -21,6 +19,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
+@ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements UserDetails {
     @Id
@@ -32,6 +31,8 @@ public class User implements UserDetails {
     private String surname;
     private String password;
     private String avatar;
+    private double rating;
+    private String phoneNumber;
     @Column(unique = true)
     private String email;
 
@@ -42,9 +43,11 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role = Role.ROLE_USER;
     private boolean enabled = true;
+    @ToString.Exclude
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Post> posts;
+    @ToString.Exclude
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Pet> pets;
@@ -57,11 +60,6 @@ public class User implements UserDetails {
         List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority(this.role.name()));
             return authorities;
-//        } else if (authorities.stream().count() >= 2) {
-//            List<SimpleGrantedAuthority> simpleGrantedAuthorities = authorities.stream().map(simpleGrantedAuthority ->
-//                    new SimpleGrantedAuthority(simpleGrantedAuthority.toString())
-//            ).collect(Collectors.toList());
-//            return simpleGrantedAuthorities;
     }
 
     @Override

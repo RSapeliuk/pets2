@@ -14,6 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 
 public class Location {
@@ -24,6 +25,7 @@ public class Location {
     private City city;
     @Enumerated(EnumType.STRING)
     private District district;
+    @ToString.Exclude
     @OneToOne(fetch = FetchType.LAZY)
     private User user;
 }

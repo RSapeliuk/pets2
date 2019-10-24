@@ -15,6 +15,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @Builder
+@ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Pet {
     @Id

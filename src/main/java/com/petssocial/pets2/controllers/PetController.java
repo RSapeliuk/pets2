@@ -39,4 +39,12 @@ public class PetController {
     public void savePetPhoto(@RequestParam("file") MultipartFile file) throws IOException {
         fileService.storeFile(file);
     }
+    @PutMapping("/updatePet/{petID}")
+    public Pet updatePet(@PathVariable int petID, @RequestBody Pet pet){
+        Pet byId = petService.findById(petID);
+        byId.setName(pet.getName());
+        byId.setAge(pet.getAge());
+        petService.savePet(byId);
+        return byId;
+    }
 }

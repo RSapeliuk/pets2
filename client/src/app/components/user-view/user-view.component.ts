@@ -7,6 +7,7 @@ import {MatDialog, MatDialogConfig} from '@angular/material';
 import {Pet} from '../../models/Pet';
 import {PetComponent} from '../pet/pet.component';
 import {PetService} from '../../services/pet.service';
+import {NgForm} from '@angular/forms';
 
 @Component({
   selector: 'app-user-view',
@@ -17,8 +18,12 @@ export class UserViewComponent implements OnInit {
   user: User;
   userPosts: Post[];
   userPets: Pet[];
+  editable = false;
 
-  constructor(public authUser: AuthService, public postService: PostService, public dialog: MatDialog, public petService: PetService) {
+  constructor(public authUser: AuthService,
+              public postService: PostService,
+              public dialog: MatDialog,
+              public petService: PetService) {
   }
 
   ngOnInit() {
@@ -40,5 +45,21 @@ export class UserViewComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.width = '50%';
     this.dialog.open(PetComponent, dialogConfig);
+  }
+
+  updateUser() {
+    this.authUser.updateUser(this.user).subscribe(value => console.log(value));
+    this.editable = false;
+  }
+
+  cancelEdit() {
+    this.editable = false;
+  }
+
+  editUser() {
+    this.editable = true;
+  }
+  updatePet() {
+    this.petService.updatePet(this.userPets[0]).subscribe(value => console.log(value));
   }
 }

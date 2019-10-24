@@ -1,5 +1,6 @@
 import {Kind} from './enums/Kind';
 import {Pet} from './Pet';
+import {User} from './User';
 
 export class Post {
   constructor(public title?: string,
@@ -9,7 +10,9 @@ export class Post {
               public expirationDate?: Date,
               public optionalField?: string,
               public id?: number,
-              public pet?: Pet
+              public pet?: Pet,
+              public user?: User,
+              public price?: number
               ) {
 
   }

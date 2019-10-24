@@ -16,8 +16,18 @@ export class AuthService {
   getUser(): Observable<User> {
     return this.http.get<User>(this.url + '/authUser', {headers: new HttpHeaders({'Authorization': localStorage.getItem('token')})});
   }
+
   logout() {
     localStorage.clear();
+  }
+
+  updateUser(user: User): Observable<User> {
+    return this.http.put<User>(this.url + '/edit/' + user.id, user,
+      {headers: new HttpHeaders({'Authorization': localStorage.getItem('token')})});
+  }
+
+  updateUserRating(user: any, rating): Observable<any> {
+    return this.http.put<any>(this.url + '/rating/' + user.id, rating);
   }
 
 }

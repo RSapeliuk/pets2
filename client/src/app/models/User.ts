@@ -11,6 +11,7 @@ export class User {
               public name?: string,
               public surname?: string,
               public userLocation?: Location,
-              public pets?: Pet[]) {
+              public pets?: Pet[],
+              public rating?: number) {
   }
 }

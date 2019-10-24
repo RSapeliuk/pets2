@@ -14,7 +14,6 @@ import { ChatMessagesComponent } from './components/chat-messages/chat-messages.
 @NgModule({
   declarations: [
     AppComponent,
-    ChatMessagesComponent,
   ],
   imports: [
     BrowserModule,

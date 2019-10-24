@@ -1,42 +1,32 @@
 import {Component, OnInit} from '@angular/core';
-import * as Stomp from 'stompjs';
-import * as SockJS from 'sockjs-client';
-import $ from 'jquery';
+import {WebSocketAPIService} from 'src/app/services/web-socket-api.service';
 
 @Component({
   selector: 'app-chat-messages',
   templateUrl: './chat-messages.component.html',
   styleUrls: ['./chat-messages.component.css']
 })
-export class ChatMessagesComponent implements OnInit {
+export class ChatMessagesComponent {
+  // webSocketAPI: WebSocketAPIService;
+  // greeting: any;
+  // name: string;
+  // ngOnInit() {
+  //   this.webSocketAPI = new WebSocketAPIService(new ChatMessagesComponent());
+  // }
 
-  constructor() {
-    this.initializeWebSocketConnection();
-  }
+  // connect(){
+  //   this.webSocketAPI._connect();
+  // }
 
-  serverUrl = 'http://localhost:8080/socket';
-  stompClient;
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
+  // disconnect(){
+  //   this.webSocketAPI._disconnect();
+  // }
 
-  initializeWebSocketConnection() {
-    const ws = new SockJS(this.serverUrl);
-    this.stompClient = Stomp.over(ws);
-    const that = this;
-    this.stompClient.connect({}, (frame) => {
-      that.stompClient.subscribe('/chat', (message) => {
-        if (message.body) {
-          $('.chat').append('<div class=\'message\'>' + message.body + '</div>');
-          console.log(message.body);
-        }
-      });
-    });
-  }
+  // sendMessage(){
+  //   this.webSocketAPI._send(this.name);
+  // }
 
-  sendMessage(message) {
-    this.stompClient.send('/app/send/message', {}, message);
-    $('#input').val('');
-  }
-
+  // handleMessage(message){
+  //   this.greeting = message;
+  // }
 }

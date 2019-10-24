@@ -14,11 +14,16 @@ import {
 import {UserViewComponent} from '../../components/user-view/user-view.component';
 import {MainPageModule} from '../main-page/main-page.module';
 import {PetComponent} from '../../components/pet/pet.component';
+import {ChatMessagesComponent} from '../../components/chat-messages/chat-messages.component';
+import {StarRatingModule} from 'angular-star-rating';
 
 
 
 @NgModule({
-  declarations: [PostComponent, UserViewComponent, PetComponent],
+  declarations: [PostComponent,
+    UserViewComponent,
+    PetComponent,
+    ChatMessagesComponent],
   imports: [
     CommonModule,
     UserRoutingModule,
@@ -35,8 +40,9 @@ import {PetComponent} from '../../components/pet/pet.component';
     MatTabsModule,
     MatCardModule,
     MatExpansionModule,
-    MatIconModule
-    ],
+    MatIconModule,
+  ],
+  providers: [],
   entryComponents: [PetComponent]
 })
 export class UserModule { }

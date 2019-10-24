@@ -25,6 +25,7 @@ export class PostComponent implements OnInit {
   namePhoto: any;
   imagePreview: string | ArrayBuffer = '';
   pets: Pet[] = [];
+  posts: Post[] = [];
 
   constructor(public postService: PostService,
               public authService: AuthService,
@@ -44,6 +45,9 @@ export class PostComponent implements OnInit {
         console.log(value);
         this.pets = value;
       });
+      this.postService.getAllPosts().subscribe(value => {
+        console.log(value);
+        this.posts = value; } );
     }, 500);
   }
 

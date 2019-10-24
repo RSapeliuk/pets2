@@ -7,7 +7,7 @@ import com.petssocial.pets2.models.enums.KindOfPost;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -15,6 +15,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @Builder
+@ToString
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Post {
@@ -24,8 +25,8 @@ public class Post {
     private String title;
     @Enumerated(EnumType.STRING)
     private KindOfPost kind;
-    private LocalDate date;
-    private LocalDate expirationDate;
+    private Date date;
+    private Date expirationDate;
     private String photo;
     private String optionalField;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -33,6 +34,7 @@ public class Post {
     private boolean enabled = true;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Pet pet;
+    private int price;
 
     public Post() {
     }
