@@ -19,7 +19,6 @@ export class RegistrationComponent implements OnInit {
   avatar: any;
   userLocation: Location = new Location();
   cities: string[] = ['ЛЬВІВ', 'КИЇВ'];
-  isValid = false;
   districtsLviv: string[] = ['ШЕВЧЕНКІВСЬКИЙ',
     'ЛИЧАКІВСЬКИЙ',
     'СИХІВСЬКИЙ',

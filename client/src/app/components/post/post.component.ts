@@ -47,7 +47,8 @@ export class PostComponent implements OnInit {
       });
       this.postService.getAllPosts().subscribe(value => {
         console.log(value);
-        this.posts = value; } );
+        this.posts = value;
+      });
     }, 500);
   }
 
@@ -59,7 +60,16 @@ export class PostComponent implements OnInit {
         console.log(value);
       });
     }
-    this.postService.savePost(this.post, this.user, this.post.pet).subscribe(value => {
+    this.postService.savePost(this.post, this.user).subscribe(value => {
+        console.log(value);
+        this.router.navigateByUrl('/');
+      }
+    );
+  }
+
+  savePostWithPet(form: NgForm) {
+    console.log(form.value);
+    this.postService.savePostWithPet(this.post, this.user, this.post.pet).subscribe(value => {
         console.log(value);
         this.router.navigateByUrl('/');
       }

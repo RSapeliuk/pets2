@@ -8,6 +8,7 @@ import {Pet} from '../../models/Pet';
 import {PetComponent} from '../pet/pet.component';
 import {PetService} from '../../services/pet.service';
 import {NgForm} from '@angular/forms';
+import {PostDetailsComponent} from '../post-details/post-details.component';
 
 @Component({
   selector: 'app-user-view',
@@ -19,6 +20,7 @@ export class UserViewComponent implements OnInit {
   userPosts: Post[];
   userPets: Pet[];
   editable = false;
+  pet: Pet;
 
   constructor(public authUser: AuthService,
               public postService: PostService,
@@ -59,7 +61,27 @@ export class UserViewComponent implements OnInit {
   editUser() {
     this.editable = true;
   }
+
   updatePet() {
-    this.petService.updatePet(this.userPets[0]).subscribe(value => console.log(value));
+    this.petService.updatePet(this.pet).subscribe(value => console.log(value));
+  }
+
+  getOnePet(id) {
+    this.petService.getOnePet(id).subscribe(value => {
+      this.pet = value;
+      console.log(value);
+    });
+  }
+  postDetails(post) {
+    console.log(post);
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '99%';
+    dialogConfig.height = '99%';
+    dialogConfig.data = {
+      id: post.id
+    };
+    this.dialog.open(PostDetailsComponent, dialogConfig);
   }
 }

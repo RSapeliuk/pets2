@@ -15,7 +15,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -47,6 +46,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Qualifier("petServiceImpl")
     private PetService petService;
 
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -63,20 +67,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/signup").permitAll()
-                .antMatchers(HttpMethod.POST, "/user/**").permitAll()//.hasRole("USER")
-                .antMatchers(HttpMethod.GET, "/user/**").permitAll()//.hasRole("USER")
-                .antMatchers(HttpMethod.POST, "/addPhoto/**").permitAll()//hasRole("USER")
-                .antMatchers(HttpMethod.POST, "/addAvatar/**").permitAll()//hasRole("USER")
-                .antMatchers(HttpMethod.POST, "/addLocation/**").permitAll()//hasRole("USER")
-                .antMatchers(HttpMethod.POST, "/addPetPhoto/**").permitAll()//hasRole("USER")
+                .antMatchers(HttpMethod.POST, "/user/**").hasRole("USER")
+                .antMatchers(HttpMethod.GET, "/user/**").hasRole("USER")
+                .antMatchers(HttpMethod.POST, "/addPhoto/**").hasRole("USER")
+                .antMatchers(HttpMethod.POST, "/addAvatar/**").hasRole("USER")
+                .antMatchers(HttpMethod.POST, "/addLocation/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/addPetPhoto/**").hasRole("USER")
                 .antMatchers(HttpMethod.GET, "/post/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/images/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/users").hasRole("USER")
                 .antMatchers(HttpMethod.GET, "/posts").permitAll()
                 .antMatchers(HttpMethod.GET, "/authUser").permitAll()
-                .antMatchers(HttpMethod.PUT, "/edit/**").permitAll()
+                .antMatchers(HttpMethod.PUT, "/edit/**").hasRole("USER")
                 .antMatchers(HttpMethod.PUT, "/rating/**").permitAll()
-                .antMatchers(HttpMethod.PUT, "/updatePet/**").permitAll()
+                .antMatchers(HttpMethod.PUT, "/updatePet/**").hasRole("USER")
                 .antMatchers( "/socket").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -111,12 +115,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/login", configuration);
         return source;
     }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-    }
-
 }
 
 

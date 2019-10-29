@@ -28,24 +28,29 @@ public class LoginCustomFilterThatCreateToken extends AbstractAuthenticationProc
         super(new AntPathRequestMatcher(defaultFilterProcessesUrl));
         setAuthenticationManager(manager);
         this.userDetailsService = userDetailsService;
-
-
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws AuthenticationException, IOException, ServletException {
+    public Authentication attemptAuthentication(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws AuthenticationException, IOException {
         System.out.println("Its working");
-        User user = new ObjectMapper().readValue(httpServletRequest.getInputStream(), User.class);
+        User user = new ObjectMapper()
+                .readValue(httpServletRequest.getInputStream(),
+                        User.class);
         System.out.println(user);
         return getAuthenticationManager().authenticate(
-                new UsernamePasswordAuthenticationToken(user.getUsername(),
+                new UsernamePasswordAuthenticationToken(
+                        user.getUsername(),
                         user.getPassword(),
                         Collections.emptyList())
         );
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+    protected void successfulAuthentication(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain chain,
+            Authentication authResult) {
         System.out.println("yes");
         UserDetails userDetails = userDetailsService.loadUserByUsername(authResult.getName());
         String jwt_token = userDetails.getUsername() + " ";
@@ -60,6 +65,6 @@ public class LoginCustomFilterThatCreateToken extends AbstractAuthenticationProc
                 .compact();
         System.out.println(token);
         //send token to user
-        response.addHeader("Authorization", token);
+        response.addHeader("Authorization", "Bearer " + token);
     }
 }

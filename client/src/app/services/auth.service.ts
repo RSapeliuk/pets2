@@ -14,7 +14,10 @@ export class AuthService {
   }
 
   getUser(): Observable<User> {
-    return this.http.get<User>(this.url + '/authUser', {headers: new HttpHeaders({'Authorization': localStorage.getItem('token')})});
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    headers = headers.append('Authorization', token);
+    return this.http.get<User>(this.url + '/authUser', {headers});
   }
 
   logout() {
@@ -22,8 +25,11 @@ export class AuthService {
   }
 
   updateUser(user: User): Observable<User> {
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    headers = headers.append('Authorization', token);
     return this.http.put<User>(this.url + '/edit/' + user.id, user,
-      {headers: new HttpHeaders({'Authorization': localStorage.getItem('token')})});
+      {headers});
   }
 
   updateUserRating(user: any, rating): Observable<any> {

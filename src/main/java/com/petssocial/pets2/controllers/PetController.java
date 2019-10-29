@@ -47,4 +47,9 @@ public class PetController {
         petService.savePet(byId);
         return byId;
     }
+    @GetMapping("/user/getPet/{petId}")
+    public Pet getPet(@PathVariable int petId){
+        Pet byId = petService.findById(petId);
+        return byId;
+    }
 }

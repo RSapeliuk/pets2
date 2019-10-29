@@ -14,16 +14,16 @@ export class RegisterUserService {
   }
 
   saveUser(someUser: User): Observable<User> {
-    const headers: HttpHeaders = new HttpHeaders();
-    headers.append('Authorization', localStorage.getItem('token'));
-    headers.append('Content-Type', 'application/json');
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    headers = headers.append('Authorization', token);
     return this.http.post<User>(this.URL + 'signup', someUser);
   }
 
   saveLocation(userLocation: Location, user: User): Observable<Location> {
-    const headers: HttpHeaders = new HttpHeaders();
-    headers.append('Authorization', localStorage.getItem('token'));
-    headers.append('Content-Type', 'application/json');
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    headers = headers.append('Authorization', token);
     return this.http.post<Location>(this.URL + 'addLocation/' + user.id, userLocation, {headers});
   }
 }

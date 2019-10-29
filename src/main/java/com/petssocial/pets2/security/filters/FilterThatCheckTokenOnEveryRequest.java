@@ -6,22 +6,22 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import java.util.List;
 
-//@Component
+
 public class FilterThatCheckTokenOnEveryRequest extends GenericFilterBean {
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        Authentication authenticate = null;
+    public void doFilter(ServletRequest servletRequest,
+                         ServletResponse servletResponse,
+                         FilterChain filterChain) throws IOException, ServletException {
+        Authentication authentication = null;
         HttpServletRequest request = (HttpServletRequest) servletRequest;
 
 
@@ -29,18 +29,17 @@ public class FilterThatCheckTokenOnEveryRequest extends GenericFilterBean {
         if (token != null) {
             String decodedTicket = Jwts.parser()
                     .setSigningKey("test".getBytes())
-                    .parseClaimsJws(token)
+                    .parseClaimsJws(token.replace("Bearer", ""))
                     .getBody()
                     .getSubject();
             String[] array = decodedTicket.split(" ");
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority(array[1]));
             System.out.println(authorities);
-            authenticate = new UsernamePasswordAuthenticationToken(array[0], null, authorities);
-            System.out.println(authenticate.isAuthenticated());
+            authentication = new UsernamePasswordAuthenticationToken(array[0], null, authorities);
 
         }
-        SecurityContextHolder.getContext().setAuthentication(authenticate);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(servletRequest, servletResponse);
     }
 }

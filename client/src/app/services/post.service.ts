@@ -15,28 +15,39 @@ export class PostService {
   url = 'http://localhost:8080';
 
 
-  savePost(userPost: Post, user: User, pet: Pet): Observable<Post> {
-    const headers: HttpHeaders = new HttpHeaders();
-    headers.append('Authorization', localStorage.getItem('token'));
-    headers.append('Content-Type', 'application/json');
+  savePost(userPost: Post, user: User): Observable<Post> {
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    headers = headers.append('Authorization', token);
+    return this.http.post<Post>(this.url + '/user/' + user.id + '/addPost/', userPost, {headers});
+  }
+
+  savePostWithPet(userPost: Post, user: User, pet: Pet): Observable<Post> {
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    headers = headers.append('Authorization', token);
     return this.http.post<Post>(this.url + '/user/' + user.id + '/addPost/' + pet.id, userPost, {headers});
   }
+
+
   getAllPosts(): Observable<Post[]> {
-    const headers: HttpHeaders = new HttpHeaders();
-    headers.append('Authorization', localStorage.getItem('token'));
-    headers.append('Content-Type', 'application/json');
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    headers = headers.append('Authorization', token);
     return this.http.get<Post[]>(this.url + '/posts', {headers});
   }
+
   getPostById(id): Observable<Post> {
-    const headers: HttpHeaders = new HttpHeaders();
-    headers.append('Authorization', localStorage.getItem('token'));
-    headers.append('Content-Type', 'application/json');
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    headers = headers.append('Authorization', token);
     return this.http.get<Post>(this.url + '/post' + '/' + id, {headers});
   }
+
   getAllUserPostsById(user: User): Observable<Post[]> {
-    const headers: HttpHeaders = new HttpHeaders();
-    headers.append('Authorization', localStorage.getItem('token'));
-    headers.append('Content-Type', 'application/json');
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    headers = headers.append('Authorization', token);
     return this.http.get<Post[]>(this.url + '/user' + '/' + user.id + '/posts', {headers});
   }
 }

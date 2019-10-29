@@ -14,23 +14,29 @@ export class PetService {
   }
 
   getPets(user: User): Observable<Pet[]> {
-    const headers: HttpHeaders = new HttpHeaders();
-    headers.append('Authorization', localStorage.getItem('token'));
-    headers.append('Content-Type', 'application/json');
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    headers = headers.append('Authorization', token);
     return this.http.get<Pet[]>(this.apiUrl + '/user' + '/' + user.id + '/getPets', {headers});
+  }
+  getOnePet(id: number): Observable<Pet> {
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    headers = headers.append('Authorization', token);
+    return this.http.get<Pet>(this.apiUrl + '/user' + '/getPet/' + id, {headers});
   }
 
   savePet(userPet: Pet, user: User): Observable<Pet> {
-    const headers: HttpHeaders = new HttpHeaders();
-    headers.append('Authorization', localStorage.getItem('token'));
-    headers.append('Content-Type', 'application/json');
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    headers = headers.append('Authorization', token);
     return this.http.post<Pet>(this.apiUrl + '/user' + '/' + user.id + '/addPet', userPet, {headers});
   }
 
   updatePet(pet: Pet): Observable<Pet> {
-    const headers: HttpHeaders = new HttpHeaders();
-    headers.append('Authorization', localStorage.getItem('token'));
-    headers.append('Content-Type', 'application/json');
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    headers = headers.append('Authorization', token);
     return this.http.put<Pet>(this.apiUrl + '/updatePet/' + pet.id, pet, {headers});
   }
 }

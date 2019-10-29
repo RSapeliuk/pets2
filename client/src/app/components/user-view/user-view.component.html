@@ -27,11 +27,11 @@
         <div>
 
           <!-- Default Buttons -->
-          <button mat-button *ngIf="editable === false" (click)="editUser()">Edit</button>
+          <button mat-button *ngIf="editable === false" (click)="editUser()">Редагувати</button>
 
           <!--Buttons for editing -->
           <div *ngIf="editable === true">
-            <button mat-button (click)="updateUser()">Save</button>
+            <button mat-button (click)="updateUser()">Зберегти</button>
             <button mat-button (click)="cancelEdit()">X</button>
           </div>
         </div>
@@ -40,36 +40,36 @@
 
   </mat-tab>
   <mat-tab label="Мої тваринки">
-    <button mat-button *ngIf="editable === false" (click)="editUser()">Edit</button>
+    <button mat-button *ngIf="editable === false" (click)="editUser()">Редагувати</button>
     <button mat-button (click)="onClick()">Додати тваринку</button>
-    <mat-expansion-panel *ngFor="let pet of this.userPets">
+    <mat-expansion-panel *ngFor="let pe of this.userPets" (expandedChange)="getOnePet(pe.id)">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          {{pet.name}}
+          {{pe.name}}
         </mat-panel-title>
         <mat-panel-description>
-          {{pet.size}} {{pet.age}}
+          {{pe.size}} {{pe.age}}
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <img [src]="'http://localhost:8080/images/'+ pet.photo">
+      <img [src]="'http://localhost:8080/images/'+ pe.photo">
       <h5 *ngIf="editable === true">
         <input [(ngModel)]="this.pet.name" placeholder="Ім'я" type="text"/>
         <input [(ngModel)]="this.pet.age" placeholder="Вік" type="text"/>
       </h5>
       <div *ngIf="editable === true">
-        <button mat-button (click)="updatePet()">Save</button>
+        <button mat-button (click)="updatePet()">Зберегти</button>
         <button mat-button (click)="cancelEdit()">X</button>
       </div>
       <div *ngIf="editable === false">
-      <p>Ім'я: {{pet.name}}</p>
-      <p>Вік: {{pet.age}}</p>
-      <p>Розмір: {{pet.size}}</p>
-      <p>Довжина шерсті: {{pet.hairLength}}</p>
+      <p>Ім'я: {{pe.name}}</p>
+      <p>Вік: {{pe.age}}</p>
+      <p>Розмір: {{pe.size}}</p>
+      <p>Довжина шерсті: {{pe.hairLength}}</p>
       </div>
     </mat-expansion-panel>
   </mat-tab>
   <mat-tab label="Мої пости">
-    <mat-card class="mat-card" *ngFor="let post of this.userPosts">
+    <mat-card class="mat-card" *ngFor="let post of this.userPosts" (click)="postDetails(post)">
       <mat-card-header>
         <img mat-card-avatar [src]="'http://localhost:8080/images/'+ post.user.avatar">
         <mat-card-subtitle>{{post.user.username}}</mat-card-subtitle>

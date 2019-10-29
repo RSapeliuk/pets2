@@ -7,16 +7,14 @@
   background-size: cover;
 }
 .view{
-  display: inline-block;
+
   flex-direction: row;
 }
 .form{
-  display: inline-block;
   height: 300px;
 }
 .preview{
 margin: 5px;
-  display: inline-block;
 }
 img{
   height: 200px;

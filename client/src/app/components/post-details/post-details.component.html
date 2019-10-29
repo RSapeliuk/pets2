@@ -29,6 +29,7 @@
         До: {{post.expirationDate}}
       </div>
     </div>
+    <button mat-button *ngIf="this.post.user.id === this.user.id">Edit</button>
     <button mat-button class="cross" (click)="onClick()">
       <mat-icon>done</mat-icon>
     </button>

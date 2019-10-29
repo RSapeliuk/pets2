@@ -36,7 +36,7 @@ public class PostController {
     }
 
     @PostMapping("user/{id}/addPost/{petId}")
-    public Post savePost(@RequestBody Post post, @PathVariable int id, @PathVariable int petId) throws IOException {
+    public Post savePostWithPet(@RequestBody Post post, @PathVariable int id, @PathVariable int petId) {
         User user = userService.findOneByID(id);
         Pet pet = petService.findById(petId);
         System.out.println(2);
@@ -44,6 +44,16 @@ public class PostController {
         post.setUser(user);
         System.out.println(user);
         System.out.println(pet);
+        postService.savePost(post);
+        return post;
+    }
+
+    @PostMapping("user/{id}/addPost/")
+    public Post savePost(@RequestBody Post post, @PathVariable int id) {
+        User user = userService.findOneByID(id);
+        System.out.println(2);
+        post.setUser(user);
+        System.out.println(user);
         postService.savePost(post);
         return post;
     }

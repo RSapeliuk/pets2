@@ -3,6 +3,7 @@ import {PostService} from '../../services/post.service';
 import {Post} from '../../models/Post';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {AuthService} from '../../services/auth.service';
+import {User} from '../../models/User';
 
 @Component({
   selector: 'app-post-details',
@@ -12,6 +13,7 @@ import {AuthService} from '../../services/auth.service';
 export class PostDetailsComponent implements OnInit {
   post: Post;
   rating: number;
+  user: User;
 
 
   constructor(public postService: PostService,
@@ -25,6 +27,7 @@ export class PostDetailsComponent implements OnInit {
       this.post = value;
       console.log(this.post);
     });
+    this.authUser.getUser().subscribe(value => this.user = value);
   }
 
   onClick() {
