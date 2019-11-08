@@ -24,6 +24,7 @@
     "@types/socket.io": "^2.1.4",
     "angular-star-rating": "^4.0.0-beta.3",
     "css-star-rating": "^1.2.4",
+    "hammerjs": "^2.0.8",
     "jquery": "^3.4.1",
     "jwt-decode": "^2.2.0",
     "net": "^1.0.2",

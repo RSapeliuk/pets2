@@ -2,7 +2,10 @@
 <div *ngIf="this.posts" class="cards">
   <mat-card class="mat-card" *ngFor="let post of this.posts" (click)="postDetails(post)">
     <mat-card-header>
-      <img mat-card-avatar [src] = "'http://localhost:8080/images/'+ post.user.avatar">
+      <div *ngIf="post.user.avatar === null; else photo">
+        <img src="http://storage.proboards.com/6747819/images/kIDnzzBGZLVoizBNhvQs.png" alt="">
+      </div>
+      <img mat-card-avatar #photo [src] = "'http://localhost:8080/images/'+ post.user.avatar">
       <mat-card-subtitle>{{post.user.name}} {{post.user.surname}}</mat-card-subtitle>
       <mat-card-title>{{post.title}}</mat-card-title>
     </mat-card-header>
