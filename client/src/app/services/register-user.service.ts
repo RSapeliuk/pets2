@@ -20,10 +20,6 @@ export class RegisterUserService {
     return this.http.post<User>(this.URL + 'signup', someUser);
   }
 
-  saveLocation(userLocation: Location, user: User): Observable<Location> {
-    const token = localStorage.getItem('token');
-    let headers = new HttpHeaders();
-    headers = headers.append('Authorization', token);
-    return this.http.post<Location>(this.URL + 'addLocation/' + user.id, userLocation, {headers});
-  }
+  
+  
 }

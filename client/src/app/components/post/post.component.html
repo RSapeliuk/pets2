@@ -8,41 +8,57 @@
     </mat-option>
   </mat-select>
 </mat-form-field>
+<mat-form-field>
+  <mat-label>Місто</mat-label>
+  <mat-select [(ngModel)]="postLocation.city" name="city">
+    <mat-option *ngFor="let city of cities" value="{{city.valueOf()}}">{{city}}</mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field *ngIf="postLocation.city === 'ЛЬВІВ'">
+  <mat-label>Район</mat-label>
+  <mat-select [(ngModel)]="postLocation.district" name="district">
+    <mat-option *ngFor="let dL of districtsLviv" value="{{dL.valueOf()}}">{{dL}}</mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field *ngIf="postLocation.city === 'КИЇВ'">
+  <mat-label>Район</mat-label>
+  <mat-select [(ngModel)]="postLocation.district" name="district">
+    <mat-option *ngFor="let dK of districtsKyiv" value="{{dK.valueOf()}}">{{dK}}</mat-option>
+  </mat-select>
+</mat-form-field>
 <form #postForm="ngForm" class="view" *ngIf="post.kind === 'Віддати'" (ngSubmit)="savePostWithPet(postForm)">
-  <div *ngIf="post.kind === 'Залишити'" (ngSubmit)="savePost(postForm)"></div>
+  <div *ngIf="post.kind === 'Залишити'"></div>
 
-    <mat-form-field>
-      <input matInput placeholder="Назва" [(ngModel)]="post.title" name="title">
-    </mat-form-field>
-    <br>
+  <mat-form-field>
+    <input matInput placeholder="Назва" [(ngModel)]="post.title" name="title">
+  </mat-form-field>
+  <br>
 
 
-    <mat-form-field>
-      <mat-label>Тваринка</mat-label>
-      <mat-select [(ngModel)]="post.pet" name="pet">
-        <div *ngFor="let p of this.posts">
-          <div *ngFor="let pet of this.pets">
-            <div *ngIf="p.pet.id != pet.id">
-              <mat-option [value]="pet">
-                {{pet.name}}
-              </mat-option>
-            </div>
-          </div>
+  <mat-form-field>
+    <mat-label>Тваринка</mat-label>
+    <mat-select [(ngModel)]="post.pet" name="pet">
+      <div *ngFor="let p of this.posts">
+        <div *ngFor="let pet of this.pets">
+            <mat-option [value]="pet">
+              {{pet.name}}
+            </mat-option>
         </div>
-      </mat-select>
-    </mat-form-field>
+      </div>
+    </mat-select>
+  </mat-form-field>
 
-    <mat-form-field>
-      <input matInput [matDatepicker]="picker" placeholder="Дата подання" [(ngModel)]="post.date" name="date">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput [matDatepicker]="exppicker" placeholder="Кінцева дата" [(ngModel)]="post.expirationDate"
-             name="expirationDate">
-      <mat-datepicker-toggle matSuffix [for]="exppicker"></mat-datepicker-toggle>
-      <mat-datepicker #exppicker></mat-datepicker>
-    </mat-form-field>
+  <mat-form-field>
+    <input matInput [matDatepicker]="picker" placeholder="Дата подання" [(ngModel)]="post.date" name="date">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [min]="post.date" [matDatepicker]="exppicker" placeholder="Кінцева дата" [(ngModel)]="post.expirationDate"
+           name="expirationDate">
+    <mat-datepicker-toggle matSuffix [for]="exppicker"></mat-datepicker-toggle>
+    <mat-datepicker #exppicker></mat-datepicker>
+  </mat-form-field>
   <mat-form-field class="textAreaFullWidth">
         <textarea matInput placeholder="Додаткова інформація" [(ngModel)]="post.optionalField" name="optional_field">
         </textarea>
@@ -51,10 +67,10 @@
   <button mat-button class="mat-button " type="submit ">Додати</button>
 </form>
 <form #postForm="ngForm" class="view" *ngIf="post.kind === 'Залишити'" (ngSubmit)="savePost(postForm)">
-    <mat-form-field>
-      <input matInput placeholder="Назва" [(ngModel)]="post.title" name="title">
-    </mat-form-field>
-    <br>
+  <mat-form-field>
+    <input matInput placeholder="Назва" [(ngModel)]="post.title" name="title">
+  </mat-form-field>
+  <br>
   <mat-form-field class="textAreaFullWidth">
         <textarea matInput placeholder="Додаткова інформація" [(ngModel)]="post.optionalField" name="optional_field">
         </textarea>
@@ -70,5 +86,5 @@
     </div>
   </div>
   <br>
-  <button mat-button class="mat-button " type="submit ">Додати</button>
+  <button mat-button class="mat-button " type="submit" (click)="saveLocation()">Додати</button>
 </form>

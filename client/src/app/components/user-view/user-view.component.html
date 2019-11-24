@@ -45,7 +45,6 @@
 
   </mat-tab>
   <mat-tab label="Мої тваринки">
-    <button mat-button *ngIf="editable === false" (click)="editUser()">Редагувати</button>
     <button mat-button (click)="onClick()">Додати тваринку</button>
     <mat-expansion-panel *ngFor="let pe of this.userPets" (expandedChange)="getOnePet(pe.id)">
       <mat-expansion-panel-header>
@@ -53,10 +52,10 @@
           {{pe.name}}
         </mat-panel-title>
         <mat-panel-description>
-          {{pe.size}} {{pe.age}}
+          {{pe.type}} {{pe.age}}
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <img [src]="'http://localhost:8080/images/'+ pe.photo">
+      <img class="petImage flex" [src]="'http://localhost:8080/images/'+ pe.photo">
       <h5 *ngIf="editable === true">
         <input [(ngModel)]="this.pet.name" placeholder="Ім'я" type="text"/>
         <input [(ngModel)]="this.pet.age" placeholder="Вік" type="text"/>
@@ -71,12 +70,16 @@
         <p>Розмір: {{pe.size}}</p>
         <p>Довжина шерсті: {{pe.hairLength}}</p>
       </div>
+      <button mat-button *ngIf="editable === false" (click)="editUser()">Редагувати</button>
     </mat-expansion-panel>
   </mat-tab>
   <mat-tab label="Мої пости">
     <mat-card class="mat-card" *ngFor="let post of this.userPosts" (click)="postDetails(post)">
       <mat-card-header>
-        <img mat-card-avatar [src]="'http://localhost:8080/images/'+ post.user.avatar">
+        <div mat-card-avatar *ngIf="post.user.avatar === null; else photo">
+          <img mat-card-avatar src="http://storage.proboards.com/6747819/images/kIDnzzBGZLVoizBNhvQs.png" alt="">
+        </div>
+        <ng-template mat-card-avatar #photo><img mat-card-avatar [src]="'http://localhost:8080/images/'+ post.user.avatar"></ng-template>
         <mat-card-subtitle>{{post.user.username}}</mat-card-subtitle>
         <mat-card-title>{{post.title}}</mat-card-title>
       </mat-card-header>

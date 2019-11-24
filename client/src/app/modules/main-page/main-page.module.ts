@@ -7,12 +7,12 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {
   MatButtonModule,
-  MatCardModule,
+  MatCardModule, MatCheckboxModule,
   MatDatepickerModule, MatDialogModule, MatExpansionModule,
   MatFormFieldModule, MatIconModule,
   MatInputModule, MatMenuModule,
-  MatNativeDateModule, MatSelectModule,
-  MatToolbarModule
+  MatNativeDateModule, MatSelectModule, MatSidenavModule,
+  MatToolbarModule, MatTreeModule
 } from '@angular/material';
 import {MainPageRoutingModule} from './main-page-routing.module';
 import {MainPageComponent} from '../../components/main-page/main-page.component';
@@ -44,7 +44,10 @@ import {StarRatingModule} from 'angular-star-rating';
     MatDialogModule,
     MatIconModule,
     MatMenuModule,
-    StarRatingModule.forRoot()
+    StarRatingModule.forRoot(),
+    MatSidenavModule,
+    MatCheckboxModule,
+    MatTreeModule
 
   ],
   providers: [],

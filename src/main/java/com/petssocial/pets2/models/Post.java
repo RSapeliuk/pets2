@@ -16,7 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @ToString
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Post {
     @Id
@@ -35,6 +34,9 @@ public class Post {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Pet pet;
     private int price;
+    @OneToOne(mappedBy = "post")
+    @JsonIgnore
+    private Location postLocation;
 
     public Post() {
     }

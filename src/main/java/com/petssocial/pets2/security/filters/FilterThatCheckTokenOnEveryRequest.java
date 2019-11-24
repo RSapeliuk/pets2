@@ -35,7 +35,7 @@ public class FilterThatCheckTokenOnEveryRequest extends GenericFilterBean {
             String[] array = decodedTicket.split(" ");
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority(array[1]));
-            System.out.println(authorities);
+            //System.out.println(authorities);
             authentication = new UsernamePasswordAuthenticationToken(array[0], null, authorities);
 
         }

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 @RestController
 public class UserController {
@@ -28,20 +27,11 @@ public class UserController {
     private PasswordEncoder encoder;
     @Autowired
     private FileService fileService;
-    @Autowired
-    private LocationDAO locationDAO;
-
-    @GetMapping("/users")
-    public List<User> getUser() {
-        return userService.findAll();
-    }
 
     @PostMapping("/signup")
     public User saveUser(@RequestBody User user) {
         user.setPassword(encoder.encode(user.getPassword()));
-        Location userLocation = new Location();
         userService.save(user);
-        userLocation.setUser(user);
         System.out.println(user);
         return user;
     }
@@ -58,14 +48,6 @@ public class UserController {
     @PostMapping("/addAvatar")
     public void saveAvatar(@RequestParam("file") MultipartFile file) throws IOException {
         fileService.storeFile(file);
-    }
-
-    @PostMapping("/addLocation/{id}")
-    public Location saveLocation(@RequestBody Location location, @PathVariable int id) {
-        User user = userService.findOneByID(id);
-        location.setUser(user);
-        locationDAO.save(location);
-        return location;
     }
 
     @PutMapping("/edit/{userId}")

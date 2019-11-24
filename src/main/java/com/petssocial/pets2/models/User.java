@@ -51,9 +51,7 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Pet> pets;
-    @OneToOne(mappedBy = "user")
-    @JsonIgnore
-    private Location userLocation;
+
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

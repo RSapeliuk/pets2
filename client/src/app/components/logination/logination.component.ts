@@ -13,7 +13,6 @@ import {AuthService} from '../../services/auth.service';
 export class LoginationComponent implements OnInit {
   user: User = new User();
   returnedUser: User;
-  isLogined: any;
 
   constructor(public loginUserService: LoginUserService,
               public router: Router,
@@ -30,8 +29,6 @@ export class LoginationComponent implements OnInit {
         console.log(token);
         localStorage.setItem('token', token);
         if (token != null) {
-          this.isLogined = true;
-          localStorage.setItem('isLogined', this.isLogined);
           this.authService.getUser().subscribe(value => {
             this.returnedUser = value;
             console.log(this.returnedUser);
@@ -39,7 +36,7 @@ export class LoginationComponent implements OnInit {
               this.router.navigateByUrl(`/`);
             } else {
               if (this.returnedUser.role === 'ROLE_ADMIN') {
-                this.router.navigateByUrl(`/admin/${this.returnedUser.id}`);
+                this.router.navigateByUrl(`admin`);
               }
             }
           });

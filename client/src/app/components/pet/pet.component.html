@@ -30,16 +30,16 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-    <mat-form-field *ngIf="pet.type === 'КІТ' || pet.type === 'ПЕС'">
-      <mat-label>Довжина шерсті</mat-label>
-      <mat-select [(ngModel)]="pet.hairLength" name="hairLength">
-        <mat-option *ngFor="let h of hairLength" value="{{h}}">
-          {{h}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+  <mat-form-field *ngIf="pet.type === 'КІТ' || pet.type === 'ПЕС'">
+    <mat-label>Довжина шерсті</mat-label>
+    <mat-select [(ngModel)]="pet.hairLength" name="hairLength">
+      <mat-option *ngFor="let h of hairLength" value="{{h}}">
+        {{h}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
   <input type="file" name="petPhoto" (change)="onPetPhotoUpload($event)">
-  <img [src]="petPreview" alt="" *ngIf="petPreview">
+  <img class="imagePreview" [src]="petPreview" alt="" *ngIf="petPreview">
   <button mat-button type="submit" (click)="onSubmit()">Додати</button>
 </form>
 <button mat-button [disabled]="petForm.checkValidity()" class="loginCross" (click)="onSubmit()">

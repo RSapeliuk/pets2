@@ -1,27 +1,32 @@
 <mat-toolbar class="header">
-    <mat-toolbar-row class="mat-toolbar-row">
-        <div class="flex-class">
-            <span>Pets couchsurfing</span>
-        </div>
-        <div class="flex-class">
-            <button mat-button routerLink="/" class="flex-class">Головна сторінка</button>
-            <button *ngIf="this.user" mat-button routerLink="/user/{{this.user.id}}/chat" class="flex-class">Чат</button>
-            <div *ngIf="this.logined === null" class="flex-class">
-                <button mat-button (click)="onCreate()">Увійти</button>
+  <mat-toolbar-row class="mat-toolbar-row">
+    <div class="flex-class">
+      <span>Pets couchsurfing</span>
+    </div>
+    <div class="flex-class">
+      <button mat-button routerLink="/" class="flex-class">Головна сторінка</button>
+      <button *ngIf="this.user" mat-button routerLink="/user/{{this.user.id}}/chat" class="flex-class">Чат</button>
+      <div *ngIf="this.logined === null" class="flex-class">
+        <button mat-button (click)="onCreate()">Увійти</button>
+      </div>
+      <div *ngIf="this.logined != null" class="login">
+        <div *ngIf="this.user">
+          <mat-menu #appMenu="matMenu">
+            <button mat-menu-item routerLink="/user/{{this.user.id}}/addPost">Додати пост</button>
+            <div *ngIf="user.role === 'ROLE_USER'; else admin">
+              <button mat-menu-item routerLink="/user/{{this.user.id}}">Мій профіль</button>
             </div>
-            <div *ngIf="this.logined != null" class="login">
-                <div *ngIf="this.user">
-                    <mat-menu #appMenu="matMenu">
-                        <button mat-menu-item routerLink="/user/{{this.user.id}}/addPost">Додати пост</button>
-                        <button mat-menu-item routerLink="/user/{{this.user.id}}">Мій профіль</button>
-                        <button mat-menu-item (click)="logout()">Вийти</button>
-                    </mat-menu>
-                    <button mat-button [matMenuTriggerFor]="appMenu">
+            <ng-template #admin>
+              <button mat-menu-item routerLink="/admin">Мій профіль</button>
+            </ng-template>
+            <button mat-menu-item (click)="logout()">Вийти</button>
+          </mat-menu>
+          <button mat-button [matMenuTriggerFor]="appMenu">
             {{user.name}} {{user.surname}}
             <mat-icon>face</mat-icon>
           </button>
-                </div>
-            </div>
         </div>
-    </mat-toolbar-row>
+      </div>
+    </div>
+  </mat-toolbar-row>
 </mat-toolbar>

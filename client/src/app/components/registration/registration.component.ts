@@ -17,24 +17,6 @@ export class RegistrationComponent implements OnInit {
   file: File;
   imagePreview: string | ArrayBuffer;
   avatar: any;
-  userLocation: Location = new Location();
-  cities: string[] = ['ЛЬВІВ', 'КИЇВ'];
-  districtsLviv: string[] = ['ШЕВЧЕНКІВСЬКИЙ',
-    'ЛИЧАКІВСЬКИЙ',
-    'СИХІВСЬКИЙ',
-    'ФРАНКІВСЬКИЙ',
-    'ЗАЛІЗНИЧНИЙ',
-    'ГАЛИЦЬКИЙ'];
-  districtsKyiv: string[] = ['ДЕСНЯНСЬКИЙ',
-    'СВЯТОШИНСЬКИЙ',
-    'ДНІПРОВСЬКИЙ',
-    'ПЕЧЕРСЬКИЙ',
-    'ГОЛОСІЇВСЬКИЙ',
-    'ДАРНИЦЬКИЙ',
-    'СОЛОМЯНСЬКИЙ',
-    'ОБОЛОНСЬКИЙ',
-    'ШЕВЧЕНКІСЬКИЙ',
-    'ПОДІЛЬСЬКИЙ'];
   returnedUser: User;
 
   constructor(public registerUserService: RegisterUserService,
@@ -69,7 +51,6 @@ export class RegistrationComponent implements OnInit {
         localStorage.setItem('token', token);
         location.reload();
       });
-      this.registerUserService.saveLocation(this.userLocation, this.returnedUser).subscribe(value => console.log(value));
     }, 1000);
 
   }

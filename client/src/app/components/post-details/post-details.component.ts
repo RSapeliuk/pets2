@@ -28,13 +28,22 @@ export class PostDetailsComponent implements OnInit {
       console.log(this.post);
     });
     this.authUser.getUser().subscribe(value => this.user = value);
+    setTimeout(() => {
+      this.postService.getLocation(this.post).subscribe(value => {
+        console.log(value);
+        this.post.postLocation = value;
+      });
+    }, 100);
   }
 
   onClick() {
     this.dialogRef.close();
   }
+
   updateUserRating(event) {
     this.rating = event.valueOf();
-    this.authUser.updateUserRating(this.post.user, this.rating).subscribe(value => this.post.user.rating = value);
+    if (this.user) {
+      this.authUser.updateUserRating(this.post.user, this.rating).subscribe(value => this.post.user.rating = value);
+    }
   }
 }

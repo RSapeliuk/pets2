@@ -27,5 +27,5 @@ public class Location {
     private District district;
     @ToString.Exclude
     @OneToOne(fetch = FetchType.LAZY)
-    private User user;
+    private Post post;
 }

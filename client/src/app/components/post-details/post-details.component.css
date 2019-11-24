@@ -20,3 +20,6 @@
   display: flex;
   flex-direction: row;
 }
+.w-20{
+  width: 20%;
+}

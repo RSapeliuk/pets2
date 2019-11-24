@@ -1,10 +1,14 @@
-<div *ngIf="post">
+<div *ngIf="post" class="">
   <h2>{{post.title}}</h2>
-  <div>
+  <div class="flex-class">
     <div class="flex-class">
-      <img class="image" [src]="'http://localhost:8080/images/'+ post.photo">
+      <img class="image" [src]="'http://localhost:8080/images/' + post.photo">
     </div>
-    <div>
+    <div class="w-20 flex-class">
+      <div>
+        {{this.post.user.name}} {{this.post.user.surname}}
+        {{this.post.user.userLocation}}
+      </div>
       <star-rating [starType]="'svg'"
                    labelText="{{this.post.user.rating.toString() | slice: 0 : 3}} "
                    [rating]="this.post.user.rating"
@@ -22,14 +26,21 @@
         <p>Додаткова інформація:</p>
         {{post.optionalField}}
       </div>
-      <div>
-        Від: {{post.date}}
+      <div *ngIf="post.postLocation">
+        Розташування: {{post.postLocation.city}}, {{post.postLocation.district}}
       </div>
-      <div>
-        До: {{post.expirationDate}}
+      <div *ngIf="this.post.kind === 'Віддати'">
+        <div>
+          Від: {{post.date}}
+        </div>
+        <div>
+          До: {{post.expirationDate}}
+        </div>
       </div>
     </div>
-    <button mat-button *ngIf="this.post.user.id === this.user.id">Edit</button>
+    <div *ngIf="this.user">
+      <button mat-button *ngIf="this.post.user.id === this.user.id">Edit</button>
+    </div>
     <button mat-button class="cross" (click)="onClick()">
       <mat-icon>done</mat-icon>
     </button>

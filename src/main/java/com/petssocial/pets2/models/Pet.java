@@ -8,7 +8,6 @@ import com.petssocial.pets2.models.enums.Type;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter
@@ -32,6 +31,7 @@ public class Pet {
     private String photo;
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+    @ToString.Exclude
     @OneToOne(mappedBy = "pet")
     @JsonIgnore
     private Post post;

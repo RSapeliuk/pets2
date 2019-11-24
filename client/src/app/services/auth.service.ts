@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, Subject} from 'rxjs';
 import {User} from '../models/User';
+import {Location} from '../models/Location';
 
 
 @Injectable({
@@ -35,5 +36,4 @@ export class AuthService {
   updateUserRating(user: any, rating): Observable<any> {
     return this.http.put<any>(this.url + '/rating/' + user.id, rating);
   }
-
 }

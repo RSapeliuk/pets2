@@ -15,6 +15,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,7 +28,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 
 @Configuration
-//@EnableWebSecurity
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -69,14 +70,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/signup").permitAll()
                 .antMatchers(HttpMethod.POST, "/user/**").hasRole("USER")
                 .antMatchers(HttpMethod.GET, "/user/**").hasRole("USER")
+                .antMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/admin/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, "/addPhoto/**").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/addAvatar/**").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/addLocation/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/addPetPhoto/**").hasRole("USER")
                 .antMatchers(HttpMethod.GET, "/post/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/images/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/users").hasRole("USER")
+                .antMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/posts").permitAll()
+                .antMatchers(HttpMethod.GET, "/getPostLocation/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/authUser").permitAll()
                 .antMatchers(HttpMethod.PUT, "/edit/**").hasRole("USER")
                 .antMatchers(HttpMethod.PUT, "/rating/**").permitAll()

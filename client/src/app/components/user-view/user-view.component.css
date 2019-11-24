@@ -20,4 +20,12 @@
   width: 200px;
   height: 200px;
 }
+.petImage{
+  height: 100px;
+  width: 100px;
+}
+.flex{
+  display: flex;
+  flex-direction: row;
+}
 

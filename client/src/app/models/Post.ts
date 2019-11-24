@@ -1,6 +1,7 @@
 import {Kind} from './enums/Kind';
 import {Pet} from './Pet';
 import {User} from './User';
+import {Location} from './Location';
 
 export class Post {
   constructor(public title?: string,
@@ -12,7 +13,9 @@ export class Post {
               public id?: number,
               public pet?: Pet,
               public user?: User,
-              public price?: number
+              public price?: number,
+              public postLocation?: Location,
+              public enabled?: boolean
               ) {
 
   }

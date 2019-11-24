@@ -54,24 +54,6 @@
            placeholder="Телефон"
            [(ngModel)]="user.phoneNumber">
   </mat-form-field>
-  <mat-form-field>
-    <mat-label>Місто</mat-label>
-    <mat-select [(ngModel)]="userLocation.city" name="city">
-      <mat-option *ngFor="let city of cities" value="{{city.valueOf()}}">{{city}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field *ngIf="userLocation.city === 'ЛЬВІВ'">
-    <mat-label>Район</mat-label>
-    <mat-select [(ngModel)]="userLocation.district" name="district">
-      <mat-option *ngFor="let dL of districtsLviv" value="{{dL.valueOf()}}">{{dL}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field *ngIf="userLocation.city === 'КИЇВ'">
-    <mat-label>Район</mat-label>
-    <mat-select [(ngModel)]="userLocation.district" name="district">
-      <mat-option *ngFor="let dK of districtsKyiv" value="{{dK.valueOf()}}">{{dK}}</mat-option>
-    </mat-select>
-  </mat-form-field>
   <br>
   <input type="file" name="avatar" (change)="onPhotoUpload($event)">
   <button mat-button [disabled] = "myForm.invalid" type="Submit">Sign Up</button>

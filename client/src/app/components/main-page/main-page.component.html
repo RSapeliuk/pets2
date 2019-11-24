@@ -1,22 +1,60 @@
 <app-header></app-header>
-<div *ngIf="this.posts" class="cards">
-  <mat-card class="mat-card" *ngFor="let post of this.posts" (click)="postDetails(post)">
-    <mat-card-header>
-      <div *ngIf="post.user.avatar === null; else photo">
-        <img src="http://storage.proboards.com/6747819/images/kIDnzzBGZLVoizBNhvQs.png" alt="">
+<mat-drawer-container class="example-container">
+  <mat-drawer mode="side" opened class="side">
+    <mat-form-field>
+      <mat-label>Місто</mat-label>
+      <mat-select [(ngModel)]="selectedCity" (selectionChange)="addParamsToQuery({city: selectedCity})" name="city">
+        <mat-option *ngFor="let city of cities" value="{{city.valueOf()}}">{{city}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div *ngIf="selectedCity === 'ЛЬВІВ'">
+      <mat-checkbox *ngFor="let districtLviv of districtsLvivEnumName"
+                    (change)="addParamsToQuery({districtLviv: districtLviv})"
+      >{{districtsLviv[districtLviv]}}</mat-checkbox>
+    </div>
+    <div *ngIf="selectedCity === 'КИЇВ'">
+      <mat-checkbox *ngFor="let districtKyiv of districtsKyivEnumName"
+                    (change)="addParamsToQuery({districtKyiv: districtKyiv})"
+      >{{districtsKyiv[districtKyiv]}}</mat-checkbox>
+    </div>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div *ngIf="this.posts" class="cards">
+      <div *ngFor="let post of this.posts">
+        <mat-card class="mat-card" *ngIf="post.enabled" (click)="postDetails(post)">
+          <mat-card-header>
+            <div mat-card-avatar *ngIf="post.user.avatar === null; else photo">
+              <img mat-card-avatar src="http://storage.proboards.com/6747819/images/kIDnzzBGZLVoizBNhvQs.png" alt="">
+            </div>
+            <ng-template mat-card-avatar #photo><img mat-card-avatar
+                                                     [src]="'http://localhost:8080/images/'+ post.user.avatar">
+            </ng-template>
+            <mat-card-subtitle>{{post.user.name}} {{post.user.surname}}</mat-card-subtitle>
+            <mat-card-title>{{post.title}}</mat-card-title>
+          </mat-card-header>
+          <div *ngIf="post.kind === 'Залишити'">
+            <div *ngIf="post.photo; else blankPhoto">
+              <img mat-card-image class="postImage" [src]="'http://localhost:8080/images/'+ post.photo">
+            </div>
+            <ng-template #blankPhoto>
+              <img mat-card-image class="postImage"
+                   src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/2-interior-wall-with-blank-picture-frame-jon-boyes.jpg"
+                   alt=""></ng-template>
+          </div>
+          <div *ngIf="post.pet && post.kind === 'Віддати'">
+            <img mat-card-image class="postImage" [src]="'http://localhost:8080/images/'+ post.pet.photo">
+          </div>
+          <mat-card-content class="text">{{post.optionalField}}</mat-card-content>
+          <mat-card-footer>
+            <div *ngIf="post.date && post.expirationDate">
+              {{post.date}} - {{post.expirationDate}}
+            </div>
+          </mat-card-footer>
+        </mat-card>
       </div>
-      <img mat-card-avatar #photo [src] = "'http://localhost:8080/images/'+ post.user.avatar">
-      <mat-card-subtitle>{{post.user.name}} {{post.user.surname}}</mat-card-subtitle>
-      <mat-card-title>{{post.title}}</mat-card-title>
-    </mat-card-header>
-    <div *ngIf="post.photo && post.kind === 'Залишити'">
-      <img mat-card-image class="postImage" [src] = "'http://localhost:8080/images/'+ post.photo">
     </div>
-    <div *ngIf="post.pet && post.kind === 'Віддати'">
-      <img mat-card-image class="postImage" [src] = "'http://localhost:8080/images/'+ post.pet.photo">
-    </div>
-    <mat-card-content class="text">{{post.optionalField}}</mat-card-content>
-    <mat-card-footer>{{post.date}} - {{post.expirationDate}}</mat-card-footer>
-  </mat-card>
-</div>
+  </mat-drawer-content>
+</mat-drawer-container>
+
+
 <router-outlet></router-outlet>

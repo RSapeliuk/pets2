@@ -10,6 +10,7 @@ import {UuidService} from '../../services/uuid.service';
 import {Kind} from '../../models/enums/Kind';
 import {PetService} from '../../services/pet.service';
 import {Pet} from '../../models/Pet';
+import {Location} from '../../models/Location';
 
 
 @Component({
@@ -19,6 +20,7 @@ import {Pet} from '../../models/Pet';
 })
 export class PostComponent implements OnInit {
   post: Post = new Post();
+  returnedPost: Post;
   user: User;
   file: File;
   kind: Kind[] = [Kind.LEAVE, Kind.GIVE];
@@ -26,6 +28,24 @@ export class PostComponent implements OnInit {
   imagePreview: string | ArrayBuffer = '';
   pets: Pet[] = [];
   posts: Post[] = [];
+  postLocation: Location = new Location();
+  cities: string[] = ['ЛЬВІВ', 'КИЇВ'];
+  districtsLviv: string[] = ['ШЕВЧЕНКІВСЬКИЙ',
+    'ЛИЧАКІВСЬКИЙ',
+    'СИХІВСЬКИЙ',
+    'ФРАНКІВСЬКИЙ',
+    'ЗАЛІЗНИЧНИЙ',
+    'ГАЛИЦЬКИЙ'];
+  districtsKyiv: string[] = ['ДЕСНЯНСЬКИЙ',
+    'СВЯТОШИНСЬКИЙ',
+    'ДНІПРОВСЬКИЙ',
+    'ПЕЧЕРСЬКИЙ',
+    'ГОЛОСІЇВСЬКИЙ',
+    'ДАРНИЦЬКИЙ',
+    'СОЛОМЯНСЬКИЙ',
+    'ОБОЛОНСЬКИЙ',
+    'ШЕВЧЕНКІСЬКИЙ',
+    'ПОДІЛЬСЬКИЙ'];
 
   constructor(public postService: PostService,
               public authService: AuthService,
@@ -62,9 +82,16 @@ export class PostComponent implements OnInit {
     }
     this.postService.savePost(this.post, this.user).subscribe(value => {
         console.log(value);
+        this.returnedPost = value;
         this.router.navigateByUrl('/');
       }
     );
+  }
+
+  saveLocation() {
+    setTimeout(() => {
+      this.postService.saveLocation(this.postLocation, this.returnedPost).subscribe(value => console.log(value));
+    }, 500);
   }
 
   savePostWithPet(form: NgForm) {
