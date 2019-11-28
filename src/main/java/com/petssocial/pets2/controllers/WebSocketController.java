@@ -1,20 +1,13 @@
 package com.petssocial.pets2.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.petssocial.pets2.models.Greetings;
-import com.petssocial.pets2.models.HelloMessage;
-import com.petssocial.pets2.models.User;
-import com.petssocial.pets2.security.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.HtmlUtils;
 
 import java.io.IOException;
 import java.util.Map;

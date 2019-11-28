@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Query} from '@angular/core';
 
 import {PostService} from '../../services/post.service';
 import {MatDialog, MatDialogConfig} from '@angular/material';
@@ -10,6 +10,7 @@ import {DistrictsKyiv} from '../../models/enums/DistrictsKyiv';
 import {DistrictsLviv} from '../../models/enums/DistrictsLviv';
 import {Cities} from '../../models/enums/Cities';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Kind} from '../../models/enums/Kind';
 
 @Component({
   selector: 'app-main-page',
@@ -17,31 +18,37 @@ import {ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./main-page.component.css']
 })
 export class MainPageComponent implements OnInit {
+  ev;
   posts = [];
   user: User;
   selectedCity: string;
+  typeEnum = ['LEAVE', 'GIVE'];
+  type = Kind;
+  typeOf: any;
   cities = Object.values(Cities).map(key => Cities[key]).filter(value => typeof value === 'string');
   districtsLviv = DistrictsLviv;
   districtsKyiv = DistrictsKyiv;
-  districtsLvivEnumName = ['SHEVCHENKIVSKY',
-    'LYCHAKIVSKY',
-    'SYHIV',
-    'FRANKIVSKY',
-    'ZALIZNYCHNY',
-    'GALICKYI'];
-  districtsKyivEnumName = ['DESNIANSKIY',
-    'SVIATOSHYNSKIY',
-    'DNIPROVSKIY',
-    'PECHERSKIY',
-    'GOLOSIIVSKIY',
-    'DARNYCKIY',
-    'SOLOMIANSKIY',
-    'OBOLONSKIY',
-    'SHEVCHENKIVSKIY',
-    'PODILSKIY'];
+  arr = [];
+  districtsLvivEnumName = [
+    {value: 'SHEVCHENKIVSKY', checked: false},
+    {value: 'LYCHAKIVSKY', checked: false},
+    {value: 'SYHIV', checked: false},
+    {value: 'FRANKIVSKY', checked: false},
+    {value: 'ZALIZNYCHNY', checked: false},
+    {value: 'GALICKYI', checked: false}];
+  districtsKyivEnumName = [{value: 'DESNIANSKIY', checked: false},
+    {value: 'SVIATOSHYNSKIY', checked: false},
+    {value: 'DNIPROVSKIY', checked: false},
+    {value: 'PECHERSKIY', checked: false},
+    {value: 'GOLOSIIVSKIY', checked: false},
+    {value: 'DARNYCKIY', checked: false},
+    {value: 'SOLOMIANSKIY', checked: false},
+    {value: 'OBOLONSKIY', checked: false},
+    {value: 'SHEVCHENKIVSKIY', checked: false},
+    {value: 'PODILSKIY', checked: false}];
 
   isChecked = true;
-  queryParamsDistrictLviv: string;
+  queryParamsDistrictLviv: any;
   queryParamsDistrictKyiv: string;
 
   constructor(public postService: PostService,
@@ -53,25 +60,36 @@ export class MainPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    setTimeout(() => {
-      this.postService.getAllPosts().subscribe(value => {
-        this.posts = value;
-        console.log(this.posts);
-      });
-    }, 0);
+    this.postService.getAllPosts().subscribe(value => {
+      this.posts = value;
+      console.log(this.posts);
+    });
     this.authService.getUser().subscribe(value => this.user = value);
     this.activatedRoute.queryParamMap.subscribe((res: any) => {
       if (res.params.districtLviv) {
         this.queryParamsDistrictLviv = res.params.districtLviv;
-        console.log(this.queryParamsDistrictLviv);
+        const arr = this.queryParamsDistrictLviv.split(',');
+        for (const str of arr) {
+          this.districtsLvivEnumName.forEach(el => {
+            if (el.value === str) {
+              el.checked = true;
+            }
+          });
+        }
       }
       if (res.params.districtKyiv) {
         this.queryParamsDistrictKyiv = res.params.districtKyiv;
-        console.log(this.queryParamsDistrictKyiv);
+        const arr = this.queryParamsDistrictKyiv.split(',');
+        for (const str of arr) {
+          this.districtsKyivEnumName.forEach(el => {
+            if (el.value === str) {
+              el.checked = true;
+            }
+          });
+        }
       }
-      console.log(res.params);
+      this.getPost(res.params);
     });
-    // console.log(this.districtsLvivEnumName);
   }
 
   postDetails(post) {
@@ -87,31 +105,85 @@ export class MainPageComponent implements OnInit {
     this.dialog.open(PostDetailsComponent, dialogConfig);
   }
 
-  checkedCity(city) {
-    console.log(city);
-    if (this.isChecked === true) {
-      this.selectedCity = city;
-    }
-  }
-
   addParamsToQuery(query) {
     if (query.districtLviv) {
+      let arr = [];
+      console.log(query.districtLviv);
       if (this.queryParamsDistrictLviv) {
-        this.queryParamsDistrictLviv += ',' + query.districtLviv;
-        query.districtLviv = [this.queryParamsDistrictLviv];
+        arr = this.queryParamsDistrictLviv.split(',');
+        this.queryParamsDistrictLviv = '';
+        const index = arr.indexOf(query.districtLviv.value);
+        if (index > -1) {
+          arr.splice(index, 1);
+          this.districtsLvivEnumName[query.districtLviv.index].checked = false;
+        } else {
+          arr.push(query.districtLviv.value);
+        }
+      } else {
+        arr.push(query.districtLviv.value);
+      }
+      query.districtLviv = arr.join(',');
+      if (arr.length === 0) {
+        query.districtLviv = null;
       }
     }
     if (query.districtKyiv) {
+      let arr = [];
+      console.log(query.districtKyiv);
       if (this.queryParamsDistrictKyiv) {
-        this.queryParamsDistrictKyiv += ',' + query.districtKyiv;
-        query.districtKyiv = [this.queryParamsDistrictKyiv];
+        arr = this.queryParamsDistrictKyiv.split(',');
+        this.queryParamsDistrictKyiv = '';
+        const index = arr.indexOf(query.districtKyiv.value);
+        if (index > -1) {
+          arr.splice(index, 1);
+          this.districtsKyivEnumName[query.districtKyiv.index].checked = false;
+        } else {
+          arr.push(query.districtKyiv.value);
+        }
+      } else {
+        arr.push(query.districtKyiv.value);
+      }
+      query.districtKyiv = arr.join(',');
+      if (arr.length === 0) {
+        query.districtKyiv = null;
       }
     }
+    // this.queryComa(query.districtKyiv, this.queryParamsDistrictKyiv, this.districtsKyivEnumName);
     if (this.isChecked === true) {
       this.router.navigate([], {
         queryParams: query,
         queryParamsHandling: 'merge'
       });
+    }
+  }
+
+  getPost(query: {}) {
+    this.postService.getFilteredPosts(query).subscribe((res) => {
+      console.log(res);
+      this.posts = res;
+    });
+  }
+  queryComa(queryValue, value: string, enums) {
+    if (queryValue) {
+      let arr = [];
+      console.log(queryValue);
+      if (value) {
+        arr = value.split(',');
+        value = '';
+        const index = arr.indexOf(queryValue.value);
+        if (index > -1) {
+          arr.splice(index, 1);
+          enums[queryValue.index].checked = false;
+        } else {
+          arr.push(queryValue.value);
+        }
+      } else {
+        arr.push(queryValue.value);
+      }
+      queryValue = arr.join(',');
+      if (arr.length === 0) {
+        queryValue = null;
+      }
     }
   }
 }

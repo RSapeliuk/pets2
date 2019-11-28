@@ -5,6 +5,7 @@ import com.petssocial.pets2.models.Location;
 import com.petssocial.pets2.models.Pet;
 import com.petssocial.pets2.models.Post;
 import com.petssocial.pets2.models.User;
+import com.petssocial.pets2.models.enums.City;
 import com.petssocial.pets2.security.services.FileService;
 import com.petssocial.pets2.security.services.PetService;
 import com.petssocial.pets2.security.services.PostService;
@@ -94,5 +95,19 @@ public class PostController {
     public Location getPostLocation(@PathVariable int postId) {
         Post byId = postService.findById(postId);
         return byId.getPostLocation();
+    }
+
+    @GetMapping("/")
+    public List<Post> getFilteredPosts(@RequestParam String city, @RequestParam String districtKyiv) {
+
+        if ((city.equals("КИЇВ"))) {
+            List<Location> locationByCity = locationDAO.findLocationByCity(City.КИЇВ);
+            System.out.println(locationByCity);
+//            List<Post> byId = postService.findById();
+//            return byId;
+        }
+        System.out.println(city);
+        // System.out.println(districtLviv);
+        return null;
     }
 }

@@ -71,8 +71,9 @@ export class PostService {
     headers = headers.append('Authorization', token);
     return this.http.put<any>(this.url + '/admin/isEnabled/' + id, enabled, {headers});
   }
-  getFilteredPosts(query: {}): Observable<Post[]>{
+  getFilteredPosts(query: {}): Observable<Post[]> {
     const url = addParams(this.url, query);
+    console.log(url);
     return this.http.get<Post[]>(url);
   }
 }

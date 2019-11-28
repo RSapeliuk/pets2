@@ -11,7 +11,7 @@ import {
   MatDatepickerModule, MatDialogModule, MatExpansionModule,
   MatFormFieldModule, MatIconModule,
   MatInputModule, MatMenuModule,
-  MatNativeDateModule, MatSelectModule, MatSidenavModule,
+  MatNativeDateModule, MatRadioModule, MatSelectModule, MatSidenavModule,
   MatToolbarModule, MatTreeModule
 } from '@angular/material';
 import {MainPageRoutingModule} from './main-page-routing.module';
@@ -47,7 +47,8 @@ import {StarRatingModule} from 'angular-star-rating';
     StarRatingModule.forRoot(),
     MatSidenavModule,
     MatCheckboxModule,
-    MatTreeModule
+    MatTreeModule,
+    MatRadioModule
 
   ],
   providers: [],
