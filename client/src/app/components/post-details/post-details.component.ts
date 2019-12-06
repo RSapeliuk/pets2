@@ -29,10 +29,10 @@ export class PostDetailsComponent implements OnInit {
     });
     this.authUser.getUser().subscribe(value => this.user = value);
     setTimeout(() => {
-      this.postService.getLocation(this.post).subscribe(value => {
-        console.log(value);
-        this.post.postLocation = value;
-      });
+      // this.postService.getLocation(this.post).subscribe(value => {
+      //   console.log(value);
+      //   this.post.postLocation = value;
+      // });
     }, 100);
   }
 

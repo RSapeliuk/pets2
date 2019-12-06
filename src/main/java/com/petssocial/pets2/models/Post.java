@@ -14,6 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -34,10 +35,6 @@ public class Post {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Pet pet;
     private int price;
-    @OneToOne(mappedBy = "post")
-    @JsonIgnore
-    private Location postLocation;
-
-    public Post() {
-    }
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private District postDistrict;
 }

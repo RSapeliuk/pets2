@@ -2,12 +2,17 @@
   <h2>{{post.title}}</h2>
   <div class="flex-class">
     <div class="flex-class">
-      <img class="image" [src]="'http://localhost:8080/images/' + post.photo">
+      <div *ngIf="post.photo; else blankPhoto">
+        <img mat-card-image class="image" [src]="'http://localhost:8080/images/'+ post.photo">
+      </div>
+      <ng-template #blankPhoto>
+        <img mat-card-image class="image"
+             src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/2-interior-wall-with-blank-picture-frame-jon-boyes.jpg"
+             alt=""></ng-template>
     </div>
     <div class="w-20 flex-class">
       <div>
         {{this.post.user.name}} {{this.post.user.surname}}
-        {{this.post.user.userLocation}}
       </div>
       <star-rating [starType]="'svg'"
                    labelText="{{this.post.user.rating.toString() | slice: 0 : 3}} "
@@ -26,8 +31,8 @@
         <p>Додаткова інформація:</p>
         {{post.optionalField}}
       </div>
-      <div *ngIf="post.postLocation">
-        Розташування: {{post.postLocation.city}}, {{post.postLocation.district}}
+      <div *ngIf="post.postDistrict">
+        Розташування: {{post.postDistrict.city.name}}, {{post.postDistrict.name}}
       </div>
       <div *ngIf="this.post.kind === 'Віддати'">
         <div>

@@ -10,7 +10,8 @@ import {UuidService} from '../../services/uuid.service';
 import {Kind} from '../../models/enums/Kind';
 import {PetService} from '../../services/pet.service';
 import {Pet} from '../../models/Pet';
-import {Location} from '../../models/Location';
+import {District} from '../../models/District';
+import {City} from '../../models/City';
 
 
 @Component({
@@ -28,24 +29,12 @@ export class PostComponent implements OnInit {
   imagePreview: string | ArrayBuffer = '';
   pets: Pet[] = [];
   posts: Post[] = [];
-  postLocation: Location = new Location();
-  cities: string[] = ['ЛЬВІВ', 'КИЇВ'];
-  districtsLviv: string[] = ['ШЕВЧЕНКІВСЬКИЙ',
-    'ЛИЧАКІВСЬКИЙ',
-    'СИХІВСЬКИЙ',
-    'ФРАНКІВСЬКИЙ',
-    'ЗАЛІЗНИЧНИЙ',
-    'ГАЛИЦЬКИЙ'];
-  districtsKyiv: string[] = ['ДЕСНЯНСЬКИЙ',
-    'СВЯТОШИНСЬКИЙ',
-    'ДНІПРОВСЬКИЙ',
-    'ПЕЧЕРСЬКИЙ',
-    'ГОЛОСІЇВСЬКИЙ',
-    'ДАРНИЦЬКИЙ',
-    'СОЛОМЯНСЬКИЙ',
-    'ОБОЛОНСЬКИЙ',
-    'ШЕВЧЕНКІСЬКИЙ',
-    'ПОДІЛЬСЬКИЙ'];
+  postCity;
+  cities: City[] = [];
+  districts: District[] = [];
+  districtLviv = [];
+  districtKyiv = [];
+  postDistrict: District;
 
   constructor(public postService: PostService,
               public authService: AuthService,
@@ -59,6 +48,24 @@ export class PostComponent implements OnInit {
     this.authService.getUser().subscribe(value => {
       this.user = value;
       console.log(this.user);
+    });
+    this.postService.getCity().subscribe(value => {
+      this.cities = value;
+      console.log(this.cities);
+    });
+    this.postService.getDistricts().subscribe(value => {
+      this.districts = value;
+      console.log(this.districts);
+      for (const district of this.districts) {
+        if (district.city.name === 'ЛЬВІВ') {
+          this.districtLviv.push(district);
+        }
+      }
+      for (const district of this.districts) {
+        if (district.city.name === 'КИЇВ') {
+          this.districtKyiv.push(district);
+        }
+      }
     });
     setTimeout(() => {
       this.petService.getPets(this.user).subscribe(value => {
@@ -80,7 +87,7 @@ export class PostComponent implements OnInit {
         console.log(value);
       });
     }
-    this.postService.savePost(this.post, this.user).subscribe(value => {
+    this.postService.savePost(this.post, this.user, this.post.postDistrict).subscribe(value => {
         console.log(value);
         this.returnedPost = value;
         this.router.navigateByUrl('/');
@@ -89,14 +96,15 @@ export class PostComponent implements OnInit {
   }
 
   saveLocation() {
-    setTimeout(() => {
-      this.postService.saveLocation(this.postLocation, this.returnedPost).subscribe(value => console.log(value));
-    }, 500);
+    // setTimeout(() => {
+    //   this.postService.saveLocation(this.postDistrict, this.returnedPost).subscribe(value => console.log(value));
+    // }, 500);
+
   }
 
   savePostWithPet(form: NgForm) {
     console.log(form.value);
-    this.postService.savePostWithPet(this.post, this.user, this.post.pet).subscribe(value => {
+    this.postService.savePostWithPet(this.post, this.user, this.post.pet, this.post.postDistrict).subscribe(value => {
         console.log(value);
         this.router.navigateByUrl('/');
       }

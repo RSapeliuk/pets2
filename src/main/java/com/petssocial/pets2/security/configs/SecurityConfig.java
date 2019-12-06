@@ -2,7 +2,6 @@ package com.petssocial.pets2.security.configs;
 
 import com.petssocial.pets2.security.filters.FilterThatCheckTokenOnEveryRequest;
 import com.petssocial.pets2.security.filters.LoginCustomFilterThatCreateToken;
-
 import com.petssocial.pets2.security.services.FileService;
 import com.petssocial.pets2.security.services.PetService;
 import com.petssocial.pets2.security.services.PostService;
@@ -23,7 +22,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 
 import java.util.Arrays;
 
@@ -73,14 +71,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, "/admin/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, "/addPhoto/**").hasRole("USER")
-                .antMatchers(HttpMethod.POST, "/addAvatar/**").hasRole("USER")
+                .antMatchers(HttpMethod.POST, "/addAvatar/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/addLocation/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/addPetPhoto/**").hasRole("USER")
                 .antMatchers(HttpMethod.GET, "/post/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/images/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/posts").permitAll()
-                .antMatchers(HttpMethod.GET, "/getPostLocation/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/getCity/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/getDistricts/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/authUser").permitAll()
                 .antMatchers(HttpMethod.PUT, "/edit/**").hasRole("USER")
                 .antMatchers(HttpMethod.PUT, "/rating/**").permitAll()

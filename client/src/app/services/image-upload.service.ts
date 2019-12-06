@@ -25,10 +25,10 @@ export class ImageUploadService {
   uploadUserAvatar(file: File, uuid): Observable<any> {
     const formData = new FormData();
     formData.append('file', file, uuid);
-    const token = localStorage.getItem('token');
-    let headers = new HttpHeaders();
-    headers = headers.append('Authorization', token);
-    return this.http.post(this.apiURL + '/addAvatar', formData, {headers});
+    // const token = localStorage.getItem('token');
+    // let headers = new HttpHeaders();
+    // headers = headers.append('Authorization', token);
+    return this.http.post(this.apiURL + '/addAvatar', formData);
   }
   uploadPetPhoto(file: File, uuid): Observable<any> {
     const formData = new FormData();

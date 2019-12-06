@@ -11,6 +11,7 @@ import {DistrictsLviv} from '../../models/enums/DistrictsLviv';
 import {Cities} from '../../models/enums/Cities';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Kind} from '../../models/enums/Kind';
+import {City} from '../../models/City';
 
 @Component({
   selector: 'app-main-page',
@@ -18,14 +19,13 @@ import {Kind} from '../../models/enums/Kind';
   styleUrls: ['./main-page.component.css']
 })
 export class MainPageComponent implements OnInit {
-  ev;
   posts = [];
   user: User;
-  selectedCity: string;
+  selectedCity: City;
   typeEnum = ['LEAVE', 'GIVE'];
   type = Kind;
   typeOf: any;
-  cities = Object.values(Cities).map(key => Cities[key]).filter(value => typeof value === 'string');
+  cities: City[];
   districtsLviv = DistrictsLviv;
   districtsKyiv = DistrictsKyiv;
   arr = [];
@@ -60,12 +60,20 @@ export class MainPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.postService.getAllPosts().subscribe(value => {
-      this.posts = value;
-      console.log(this.posts);
+    setTimeout(() => {
+      this.postService.getAllPosts().subscribe(value => {
+        this.posts = value;
+        console.log(this.posts);
+      });
+    }, 500);
+    this.postService.getCity().subscribe(value => {
+      this.cities = value;
     });
     this.authService.getUser().subscribe(value => this.user = value);
     this.activatedRoute.queryParamMap.subscribe((res: any) => {
+      if (res.params.city) {
+
+      }
       if (res.params.districtLviv) {
         this.queryParamsDistrictLviv = res.params.districtLviv;
         const arr = this.queryParamsDistrictLviv.split(',');
@@ -148,7 +156,6 @@ export class MainPageComponent implements OnInit {
         query.districtKyiv = null;
       }
     }
-    // this.queryComa(query.districtKyiv, this.queryParamsDistrictKyiv, this.districtsKyivEnumName);
     if (this.isChecked === true) {
       this.router.navigate([], {
         queryParams: query,
@@ -163,27 +170,28 @@ export class MainPageComponent implements OnInit {
       this.posts = res;
     });
   }
-  queryComa(queryValue, value: string, enums) {
-    if (queryValue) {
-      let arr = [];
-      console.log(queryValue);
-      if (value) {
-        arr = value.split(',');
-        value = '';
-        const index = arr.indexOf(queryValue.value);
-        if (index > -1) {
-          arr.splice(index, 1);
-          enums[queryValue.index].checked = false;
-        } else {
-          arr.push(queryValue.value);
-        }
-      } else {
-        arr.push(queryValue.value);
-      }
-      queryValue = arr.join(',');
-      if (arr.length === 0) {
-        queryValue = null;
-      }
-    }
-  }
+
+  // queryComa(queryValue, value: string, enums) {
+  //   if (queryValue) {
+  //     let arr = [];
+  //     console.log(queryValue);
+  //     if (value) {
+  //       arr = value.split(',');
+  //       value = '';
+  //       const index = arr.indexOf(queryValue.value);
+  //       if (index > -1) {
+  //         arr.splice(index, 1);
+  //         enums[queryValue.index].checked = false;
+  //       } else {
+  //         arr.push(queryValue.value);
+  //       }
+  //     } else {
+  //       arr.push(queryValue.value);
+  //     }
+  //     queryValue = arr.join(',');
+  //     if (arr.length === 0) {
+  //       queryValue = null;
+  //     }
+  //   }
+  // }
 }

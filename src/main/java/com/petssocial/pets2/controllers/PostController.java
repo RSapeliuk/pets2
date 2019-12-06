@@ -1,11 +1,10 @@
 package com.petssocial.pets2.controllers;
 
-import com.petssocial.pets2.dao.LocationDAO;
-import com.petssocial.pets2.models.Location;
-import com.petssocial.pets2.models.Pet;
-import com.petssocial.pets2.models.Post;
-import com.petssocial.pets2.models.User;
-import com.petssocial.pets2.models.enums.City;
+import com.petssocial.pets2.dao.CityDAO;
+import com.petssocial.pets2.dao.DistrictDAO;
+import com.petssocial.pets2.dao.PostDAO;
+import com.petssocial.pets2.models.*;
+import com.petssocial.pets2.models.enums.KindOfPost;
 import com.petssocial.pets2.security.services.FileService;
 import com.petssocial.pets2.security.services.PetService;
 import com.petssocial.pets2.security.services.PostService;
@@ -16,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -29,17 +29,23 @@ public class PostController {
     @Autowired
     private PetService petService;
     @Autowired
-    private LocationDAO locationDAO;
+    private DistrictDAO districtDAO;
+    @Autowired
+    private PostDAO postDAO;
+    @Autowired
+    private CityDAO cityDAO;
 
-    public LocalDate todayDate = LocalDate.now();
+    private LocalDate todayDate = LocalDate.now();
 
     @GetMapping("/posts")
     public List<Post> getPosts() {
         List<Post> posts = postService.findAll();
         for (Post post : posts) {
             if (post.getExpirationDate() != null)
-                if (post.getExpirationDate().toLocalDate().isBefore(todayDate))
+                if (post.getExpirationDate().toLocalDate().isBefore(todayDate)) {
                     post.setEnabled(false);
+                    postService.savePost(post);
+                }
         }
         return posts;
     }
@@ -49,32 +55,28 @@ public class PostController {
         return postService.findPostsByUserId(id);
     }
 
-    @PostMapping("user/{id}/addPost/{petId}")
-    public Post savePostWithPet(@RequestBody Post post, @PathVariable int id, @PathVariable int petId) {
+    @PostMapping("user/{id}/addPost/{petId}/{districtId}")
+    public Post savePostWithPet(@RequestBody Post post, @PathVariable int id, @PathVariable int petId, @PathVariable int districtId) {
         User user = userService.findOneByID(id);
         Pet pet = petService.findById(petId);
+        District one = districtDAO.getOne(districtId);
         System.out.println(2);
         post.setPet(pet);
         post.setUser(user);
+        post.setPostDistrict(one);
         System.out.println(user);
         System.out.println(pet);
         postService.savePost(post);
         return post;
     }
 
-    @PostMapping("/addLocation/{postId}")
-    public Location saveLocation(@RequestBody Location location, @PathVariable int postId) {
-        Post post = postService.findById(postId);
-        location.setPost(post);
-        locationDAO.save(location);
-        return location;
-    }
-
-    @PostMapping("user/{id}/addPost/")
-    public Post savePost(@RequestBody Post post, @PathVariable int id) {
+    @PostMapping("user/{id}/addPost/{districtID}")
+    public Post savePost(@RequestBody Post post, @PathVariable int id,@PathVariable int districtID) {
         User user = userService.findOneByID(id);
+        District one = districtDAO.getOne(districtID);
         System.out.println(2);
         post.setUser(user);
+        post.setPostDistrict(one);
         System.out.println(user);
         postService.savePost(post);
         return post;
@@ -91,23 +93,32 @@ public class PostController {
         return postService.findById(id);
     }
 
-    @GetMapping("/getPostLocation/{postId}")
-    public Location getPostLocation(@PathVariable int postId) {
-        Post byId = postService.findById(postId);
-        return byId.getPostLocation();
+    @GetMapping("/getCity")
+    public List<City> getCities() {
+        return cityDAO.findAll();
+    }
+    @GetMapping("/getDistricts")
+    public List<District> getDistricts() {
+        return districtDAO.findAll();
     }
 
     @GetMapping("/")
-    public List<Post> getFilteredPosts(@RequestParam String city, @RequestParam String districtKyiv) {
-
-        if ((city.equals("КИЇВ"))) {
-            List<Location> locationByCity = locationDAO.findLocationByCity(City.КИЇВ);
-            System.out.println(locationByCity);
-//            List<Post> byId = postService.findById();
-//            return byId;
+    public List<Post> getFilteredPosts(@RequestParam(required = false) String city,
+                                       @RequestParam(required = false) String districtKyiv,
+                                       @RequestParam(required = false) String districtLviv,
+                                       @RequestParam(required = false) String type) {
+        List<Post> filteredPosts = new ArrayList<>();
+        List<Post> postsByCity = postService.filterPostsByCity(city);
+        List<Post> postsByType = postService.filterPostsByType(type);
+        if ((postsByType != null)) {
+            filteredPosts.addAll(postsByType);
+            System.out.println(111111111);
         }
-        System.out.println(city);
-        // System.out.println(districtLviv);
-        return null;
+        if(postsByCity != null){
+            filteredPosts.addAll(postsByCity);
+            System.out.println(222222222);
+        }
+        return filteredPosts;
     }
+
 }

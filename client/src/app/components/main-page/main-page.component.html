@@ -3,28 +3,24 @@
   <mat-drawer mode="side" opened class="side">
     <mat-form-field>
       <mat-label>Місто</mat-label>
-      <mat-select [(ngModel)]="selectedCity" (selectionChange)="addParamsToQuery({city: selectedCity})" name="city">
-        <mat-option *ngFor="let city of cities" value="{{city.valueOf()}}">{{city}}</mat-option>
+      <mat-select [(ngModel)]="selectedCity" (selectionChange)="addParamsToQuery({city: selectedCity.name})" name="selectedCity">
+        <mat-option *ngFor="let city of cities" [value]="city">{{city.name}}</mat-option>
       </mat-select>
     </mat-form-field>
-    <div *ngIf="selectedCity === 'ЛЬВІВ'">
+    <div *ngIf="selectedCity && selectedCity.name === 'ЛЬВІВ'">
       <mat-checkbox *ngFor="let districtLviv of districtsLvivEnumName; let i = index"
                     [checked]="districtLviv.checked"
                     (change)="addParamsToQuery({districtLviv: {value: districtLviv.value, index: i}})"
-
       >{{districtsLviv[districtLviv.value]}}</mat-checkbox>
     </div>
-    <div *ngIf="ev">
-
-    </div>
-    <div *ngIf="selectedCity === 'КИЇВ'">
+    <div *ngIf="selectedCity && selectedCity.name === 'КИЇВ'">
       <mat-checkbox *ngFor="let districtKyiv of districtsKyivEnumName; let i = index"
                     (change)="addParamsToQuery({districtKyiv: {value: districtKyiv.value, index: i}})"
       >{{districtsKyiv[districtKyiv.value]}}</mat-checkbox>
     </div>
     <label>Тип посту</label><br>
     <mat-radio-group *ngFor="let typeOF of typeEnum" name="type" [(ngModel)]="typeOf">
-      <mat-radio-button [value]="typeOF" (change)="addParamsToQuery({type: typeOf})">{{type[typeOF]}}</mat-radio-button>
+      <mat-radio-button [value]="typeOF" (click)="addParamsToQuery({type: typeOf})">{{type[typeOF]}}</mat-radio-button>
       <br>
     </mat-radio-group>
   </mat-drawer>

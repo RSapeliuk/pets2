@@ -7,6 +7,8 @@ import {Pet} from '../models/Pet';
 import {Location} from '../models/Location';
 import {consoleTestResultHandler} from 'tslint/lib/test';
 import {addParams} from '../helpers/addQueryParams';
+import {District} from '../models/District';
+import {City} from '../models/City';
 
 @Injectable({
   providedIn: 'root'
@@ -18,18 +20,19 @@ export class PostService {
   url = 'http://localhost:8080';
 
 
-  savePost(userPost: Post, user: User): Observable<Post> {
+  savePost(userPost: Post, user: User, district: District) {
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', token);
-    return this.http.post<Post>(this.url + '/user/' + user.id + '/addPost/', userPost, {headers});
+    console.log(district.id);
+    return this.http.post<Post>(this.url + '/user/' + user.id + '/addPost/' + district.id, userPost, {headers});
   }
 
-  savePostWithPet(userPost: Post, user: User, pet: Pet): Observable<Post> {
+  savePostWithPet(userPost: Post, user: User, pet: Pet, district: District): Observable<Post> {
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', token);
-    return this.http.post<Post>(this.url + '/user/' + user.id + '/addPost/' + pet.id, userPost, {headers});
+    return this.http.post<Post>(this.url + '/user/' + user.id + '/addPost/' + pet.id + '/' + district.id, userPost, {headers});
   }
 
 
@@ -54,15 +57,19 @@ export class PostService {
     return this.http.get<Post[]>(this.url + '/user' + '/' + user.id + '/posts', {headers});
   }
 
-  saveLocation(postLocation: Location, post: Post): Observable<Location> {
-    const token = localStorage.getItem('token');
-    let headers = new HttpHeaders();
-    headers = headers.append('Authorization', token);
-    return this.http.post<Location>(this.url + '/addLocation/' + post.id, postLocation, {headers});
+  // saveLocation(postDistrict: District, city: City): Observable<Post> {
+  //   const token = localStorage.getItem('token');
+  //   let headers = new HttpHeaders();
+  //   headers = headers.append('Authorization', token);
+  //   return this.http.post<Post>(this.url + '/addLocation/' + city.id, postDistrict, {headers});
+  // }
+
+  getCity(): Observable<City[]> {
+    return this.http.get<City[]>(this.url + '/getCity');
   }
 
-  getLocation(post: Post): Observable<Location> {
-    return this.http.get<Location>(this.url + '/getPostLocation/' + post.id);
+  getDistricts(): Observable<District[]> {
+    return this.http.get<District[]>(this.url + '/getDistricts');
   }
 
   isEnabled(id, enabled: boolean): Observable<any> {
@@ -71,6 +78,7 @@ export class PostService {
     headers = headers.append('Authorization', token);
     return this.http.put<any>(this.url + '/admin/isEnabled/' + id, enabled, {headers});
   }
+
   getFilteredPosts(query: {}): Observable<Post[]> {
     const url = addParams(this.url, query);
     console.log(url);

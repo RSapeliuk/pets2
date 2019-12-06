@@ -3,7 +3,6 @@ import {User} from '../../models/User';
 import {RegisterUserService} from '../../services/register-user.service';
 import {ImageUploadService} from '../../services/image-upload.service';
 import {UuidService} from '../../services/uuid.service';
-import {Location} from '../../models/Location';
 import {Router} from '@angular/router';
 import {LoginUserService} from '../../services/login-user.service';
 
@@ -40,7 +39,7 @@ export class RegistrationComponent implements OnInit {
     }
     this.registerUserService.saveUser(this.user).subscribe(value => {
       console.log(value);
-      this.router.navigateByUrl('/');
+     // this.router.navigateByUrl('/');
       this.returnedUser = value;
     });
 

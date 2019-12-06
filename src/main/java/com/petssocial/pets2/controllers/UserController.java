@@ -1,15 +1,11 @@
 package com.petssocial.pets2.controllers;
 
 
-import com.petssocial.pets2.dao.LocationDAO;
 import com.petssocial.pets2.dao.UserDAO;
-import com.petssocial.pets2.models.Location;
 import com.petssocial.pets2.models.User;
 import com.petssocial.pets2.security.services.FileService;
 import com.petssocial.pets2.security.services.UserService;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -18,14 +14,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
+@AllArgsConstructor
 public class UserController {
-    @Autowired
     private UserService userService;
-    @Autowired
     private UserDAO userDAO;
-    @Autowired
     private PasswordEncoder encoder;
-    @Autowired
     private FileService fileService;
 
     @PostMapping("/signup")
