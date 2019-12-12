@@ -7,8 +7,8 @@ import {MatDialog, MatDialogConfig} from '@angular/material';
 import {Pet} from '../../models/Pet';
 import {PetComponent} from '../pet/pet.component';
 import {PetService} from '../../services/pet.service';
-import {NgForm} from '@angular/forms';
 import {PostDetailsComponent} from '../post-details/post-details.component';
+import {ImageUploadService} from '../../services/image-upload.service';
 
 @Component({
   selector: 'app-user-view',
@@ -20,12 +20,16 @@ export class UserViewComponent implements OnInit {
   userPosts: Post[];
   userPets: Pet[];
   editable = false;
+  size: string[] = ['МАЛЕНЬКИЙ', 'СЕРЕДНІЙ', 'ВЕЛИКИЙ'];
+  hairLength: string[] = ['КОРОТКА', 'СЕРЕДНЯ', 'ДОВГА'];
   pet: Pet;
+  file: File;
 
   constructor(public authUser: AuthService,
               public postService: PostService,
               public dialog: MatDialog,
-              public petService: PetService) {
+              public petService: PetService,
+              public imageService: ImageUploadService) {
   }
 
   ngOnInit() {
@@ -50,6 +54,11 @@ export class UserViewComponent implements OnInit {
   }
 
   updateUser() {
+    if (this.file != null) {
+      this.imageService.updateUserAvatar(this.file, this.user.avatar, this.user).subscribe(value => {
+        console.log(value);
+      });
+    }
     this.authUser.updateUser(this.user).subscribe(value => console.log(value));
     this.editable = false;
   }

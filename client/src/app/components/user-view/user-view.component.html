@@ -59,6 +59,22 @@
       <h5 *ngIf="editable === true">
         <input [(ngModel)]="this.pet.name" placeholder="Ім'я" type="text"/>
         <input [(ngModel)]="this.pet.age" placeholder="Вік" type="text"/>
+        <mat-form-field>
+          <mat-label>Розмір</mat-label>
+          <mat-select [(ngModel)]="pet.size" name="size">
+            <mat-option *ngFor="let s of size" [value]="s.valueOf()">
+              {{s}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field *ngIf="pet.type === 'КІТ' || pet.type === 'ПЕС'">
+          <mat-label>Довжина шерсті</mat-label>
+          <mat-select [(ngModel)]="pet.hairLength" name="hairLength">
+            <mat-option *ngFor="let h of hairLength" value="{{h}}">
+              {{h}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </h5>
       <div *ngIf="editable === true">
         <button mat-button (click)="updatePet()">Зберегти</button>
@@ -74,18 +90,40 @@
     </mat-expansion-panel>
   </mat-tab>
   <mat-tab label="Мої пости">
-    <mat-card class="mat-card" *ngFor="let post of this.userPosts" (click)="postDetails(post)">
-      <mat-card-header>
-        <div mat-card-avatar *ngIf="post.user.avatar === null; else photo">
-          <img mat-card-avatar src="http://storage.proboards.com/6747819/images/kIDnzzBGZLVoizBNhvQs.png" alt="">
-        </div>
-        <ng-template mat-card-avatar #photo><img mat-card-avatar [src]="'http://localhost:8080/images/'+ post.user.avatar"></ng-template>
-        <mat-card-subtitle>{{post.user.username}}</mat-card-subtitle>
-        <mat-card-title>{{post.title}}</mat-card-title>
-      </mat-card-header>
-      <img mat-card-image class="postImage" [src]="'http://localhost:8080/images/'+ post.photo">
-      <mat-card-content>{{post.optionalField}}</mat-card-content>
-      <mat-card-footer>{{post.date}} - {{post.expirationDate}}</mat-card-footer>
-    </mat-card>
+    <div *ngIf="this.userPosts" class="cards">
+      <div *ngFor="let post of this.userPosts">
+        <mat-card class="mat-card" *ngIf="post.enabled" (click)="postDetails(post)">
+          <mat-card-header>
+            <div mat-card-avatar *ngIf="post.user.avatar === null; else photo">
+              <img mat-card-avatar src="http://storage.proboards.com/6747819/images/kIDnzzBGZLVoizBNhvQs.png" alt="">
+            </div>
+            <ng-template mat-card-avatar #photo>
+              <img mat-card-avatar
+                   [src]="'http://localhost:8080/images/'+ post.user.avatar">
+            </ng-template>
+            <mat-card-subtitle>{{post.user.name}} {{post.user.surname}}</mat-card-subtitle>
+            <mat-card-title>{{post.title}}</mat-card-title>
+          </mat-card-header>
+          <div *ngIf="post.kind === 'Залишити'">
+            <div *ngIf="post.photo; else blankPhoto">
+              <img mat-card-image class="postImage" [src]="'http://localhost:8080/images/'+ post.photo">
+            </div>
+            <ng-template #blankPhoto>
+              <img mat-card-image class="postImage"
+                   src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/2-interior-wall-with-blank-picture-frame-jon-boyes.jpg"
+                   alt=""></ng-template>
+          </div>
+          <div *ngIf="post.pet && post.kind === 'Віддати'">
+            <img mat-card-image class="postImage" [src]="'http://localhost:8080/images/'+ post.pet.photo">
+          </div>
+          <mat-card-content class="text">{{post.optionalField}}</mat-card-content>
+          <mat-card-footer>
+            <div *ngIf="post.date && post.expirationDate">
+              {{post.date}} - {{post.expirationDate}}
+            </div>
+          </mat-card-footer>
+        </mat-card>
+      </div>
+    </div>
   </mat-tab>
 </mat-tab-group>

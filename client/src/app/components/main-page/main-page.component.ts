@@ -22,7 +22,7 @@ export class MainPageComponent implements OnInit {
   posts = [];
   user: User;
   selectedCity: City;
-  typeEnum = ['LEAVE', 'GIVE'];
+  typeEnum = ['Залишити', 'Віддати'];
   type = Kind;
   typeOf: any;
   cities: City[];
@@ -36,7 +36,8 @@ export class MainPageComponent implements OnInit {
     {value: 'FRANKIVSKY', checked: false},
     {value: 'ZALIZNYCHNY', checked: false},
     {value: 'GALICKYI', checked: false}];
-  districtsKyivEnumName = [{value: 'DESNIANSKIY', checked: false},
+  districtsKyivEnumName = [
+    {value: 'DESNIANSKIY', checked: false},
     {value: 'SVIATOSHYNSKIY', checked: false},
     {value: 'DNIPROVSKIY', checked: false},
     {value: 'PECHERSKIY', checked: false},
@@ -48,7 +49,7 @@ export class MainPageComponent implements OnInit {
     {value: 'PODILSKIY', checked: false}];
 
   isChecked = true;
-  queryParamsDistrictLviv: any;
+  queryParamsDistrictLviv: string;
   queryParamsDistrictKyiv: string;
 
   constructor(public postService: PostService,
@@ -74,8 +75,8 @@ export class MainPageComponent implements OnInit {
       if (res.params.city) {
 
       }
-      if (res.params.districtLviv) {
-        this.queryParamsDistrictLviv = res.params.districtLviv;
+      if (res.params.district) {
+        this.queryParamsDistrictLviv = res.params.district;
         const arr = this.queryParamsDistrictLviv.split(',');
         for (const str of arr) {
           this.districtsLvivEnumName.forEach(el => {
@@ -106,7 +107,7 @@ export class MainPageComponent implements OnInit {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = '99%';
-    dialogConfig.height = '99%';
+    dialogConfig.height = '80%';
     dialogConfig.data = {
       id: post.id
     };
@@ -114,25 +115,25 @@ export class MainPageComponent implements OnInit {
   }
 
   addParamsToQuery(query) {
-    if (query.districtLviv) {
+    if (query.district) {
       let arr = [];
-      console.log(query.districtLviv);
+      console.log(query.district);
       if (this.queryParamsDistrictLviv) {
         arr = this.queryParamsDistrictLviv.split(',');
         this.queryParamsDistrictLviv = '';
-        const index = arr.indexOf(query.districtLviv.value);
+        const index = arr.indexOf(query.district.value);
         if (index > -1) {
           arr.splice(index, 1);
-          this.districtsLvivEnumName[query.districtLviv.index].checked = false;
+          this.districtsLvivEnumName[query.district.index].checked = false;
         } else {
-          arr.push(query.districtLviv.value);
+          arr.push(query.district.value);
         }
       } else {
-        arr.push(query.districtLviv.value);
+        arr.push(query.district.value);
       }
-      query.districtLviv = arr.join(',');
+      query.district = arr.join(',');
       if (arr.length === 0) {
-        query.districtLviv = null;
+        query.district = null;
       }
     }
     if (query.districtKyiv) {
@@ -170,28 +171,4 @@ export class MainPageComponent implements OnInit {
       this.posts = res;
     });
   }
-
-  // queryComa(queryValue, value: string, enums) {
-  //   if (queryValue) {
-  //     let arr = [];
-  //     console.log(queryValue);
-  //     if (value) {
-  //       arr = value.split(',');
-  //       value = '';
-  //       const index = arr.indexOf(queryValue.value);
-  //       if (index > -1) {
-  //         arr.splice(index, 1);
-  //         enums[queryValue.index].checked = false;
-  //       } else {
-  //         arr.push(queryValue.value);
-  //       }
-  //     } else {
-  //       arr.push(queryValue.value);
-  //     }
-  //     queryValue = arr.join(',');
-  //     if (arr.length === 0) {
-  //       queryValue = null;
-  //     }
-  //   }
-  // }
 }

@@ -52,6 +52,12 @@ public class UserController {
         userService.save(userbyId);
         return userbyId;
     }
+    @PutMapping("/updateUserAvatar/{userId}")
+    public void updateAvatar(@RequestParam("file") MultipartFile file, @PathVariable int userId) throws IOException {
+        User one = userDAO.getOne(userId);
+        one.setAvatar(file.getOriginalFilename());
+        fileService.storeFile(file);
+    }
 
     @PutMapping("/rating/{userId}")
     public Double editUserRating(@PathVariable int userId, @RequestBody User user) {

@@ -1,18 +1,24 @@
 <div *ngIf="post" class="">
   <h2>{{post.title}}</h2>
   <div class="flex-class">
-    <div class="flex-class">
-      <div *ngIf="post.photo; else blankPhoto">
-        <img mat-card-image class="image" [src]="'http://localhost:8080/images/'+ post.photo">
+    <div>
+      <div *ngIf="post.kind === 'Залишити'">
+        <div *ngIf="post.photo; else blankPhoto">
+          <img mat-card-image class="image" [src]="'http://localhost:8080/images/'+ post.photo">
+        </div>
+        <ng-template #blankPhoto>
+          <img mat-card-image class="image"
+               src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/2-interior-wall-with-blank-picture-frame-jon-boyes.jpg"
+               alt="">
+        </ng-template>
       </div>
-      <ng-template #blankPhoto>
-        <img mat-card-image class="image"
-             src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/2-interior-wall-with-blank-picture-frame-jon-boyes.jpg"
-             alt=""></ng-template>
+      <div *ngIf="post.pet && post.kind === 'Віддати'">
+        <img mat-card-image class="image" [src]="'http://localhost:8080/images/'+ post.pet.photo">
+      </div>
     </div>
-    <div class="w-20 flex-class">
+    <div class="w-20">
       <div>
-        {{this.post.user.name}} {{this.post.user.surname}}
+        <p class="text">Власник: {{this.post.user.name}} {{this.post.user.surname}}</p>
       </div>
       <star-rating [starType]="'svg'"
                    labelText="{{this.post.user.rating.toString() | slice: 0 : 3}} "
@@ -23,16 +29,16 @@
                    (starClickChange)="updateUserRating($event)">
       </star-rating>
     </div>
-    <div class="">
+    <div class="text">
       <div>
         Тип поста: {{post.kind}}
+      </div>
+      <div *ngIf="post.postDistrict">
+        Розташування: {{post.postDistrict.city.name}}, {{post.postDistrict.name}}
       </div>
       <div>
         <p>Додаткова інформація:</p>
         {{post.optionalField}}
-      </div>
-      <div *ngIf="post.postDistrict">
-        Розташування: {{post.postDistrict.city.name}}, {{post.postDistrict.name}}
       </div>
       <div *ngIf="this.post.kind === 'Віддати'">
         <div>
@@ -43,9 +49,9 @@
         </div>
       </div>
     </div>
-    <div *ngIf="this.user">
-      <button mat-button *ngIf="this.post.user.id === this.user.id">Edit</button>
-    </div>
+<!--    <div *ngIf="this.user">-->
+<!--      <button mat-button *ngIf="this.post.user.id === this.user.id">Редагувати</button>-->
+<!--    </div>-->
     <button mat-button class="cross" (click)="onClick()">
       <mat-icon>done</mat-icon>
     </button>

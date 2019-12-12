@@ -9,10 +9,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface PostDAO extends JpaRepository<Post, Integer> {
-    List<Post> findByKind(KindOfPost kind);
-    List<Post> findAllByPostDistrict_City(City city);
-    List<Post> findAllByPostDistrict(District district);
-    List<Post> findAllByPostDistrict_CityAndPostDistrictAndKind(City city,
-                                                                District district,
-                                                                KindOfPost kind);
+    List<Post> findByKind(String kind);
+    List<Post> findByKindAndPostDistrict_City_Name(String kind, String city);
+    List<Post> findAllByPostDistrict_City_Name(String city);
+    List<Post> findAllByPostDistrict_Name(String district);
+    List<Post> findAllByPostDistrict_City_NameAndPostDistrict_Name(String city, String district);
+    List<Post> findAllByPostDistrict_City_NameAndPostDistrict_NameAndKind(String city,
+                                                                String district,
+                                                                String kind);
 }

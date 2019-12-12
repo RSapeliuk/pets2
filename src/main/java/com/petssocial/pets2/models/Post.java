@@ -23,8 +23,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String title;
-    @Enumerated(EnumType.STRING)
-    private KindOfPost kind;
+    private String kind;
     private Date date;
     private Date expirationDate;
     private String photo;

@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -71,7 +72,7 @@ public class PostController {
     }
 
     @PostMapping("user/{id}/addPost/{districtID}")
-    public Post savePost(@RequestBody Post post, @PathVariable int id,@PathVariable int districtID) {
+    public Post savePost(@RequestBody Post post, @PathVariable int id, @PathVariable int districtID) {
         User user = userService.findOneByID(id);
         District one = districtDAO.getOne(districtID);
         System.out.println(2);
@@ -97,28 +98,104 @@ public class PostController {
     public List<City> getCities() {
         return cityDAO.findAll();
     }
+
     @GetMapping("/getDistricts")
     public List<District> getDistricts() {
         return districtDAO.findAll();
     }
 
+    //    @GetMapping("/")
+//    public List<Post> getFilteredPosts(@RequestParam(required = false) String city,
+//                                       @RequestParam(required = false) String district,
+//                                       @RequestParam(required = false) String type) {
+//        List<Post> posts = postService.findAll();
+//        posts.forEach(post -> {
+//            post.setEnabled(false);
+//        });
+//        if (city != null) {
+//            List<Post> cityName = postDAO.findAllByPostDistrict_City_Name(city);
+//            cityName.forEach(post -> {
+//                post.setEnabled(true);
+//            });
+//            if (type != null) {
+//                cityName.forEach(post -> {
+//                    if ((!post.getKind().equals(type))) {
+//                        post.setEnabled(false);
+//                    } else {
+//                        post.setEnabled(true);
+//                        if (district != null) {
+//                            String[] split = district.split(",");
+//                            for (String s : split) {
+//                                System.out.println(s);
+//                                if (post.getPostDistrict().getName().equals(s)) {
+//                                    post.setEnabled(true);
+//                                }
+//                            }
+//                        }
+//                    }
+//                });
+//            }
+//        }
+//        if(type != null){
+//            List<Post> byKind = postDAO.findByKind(type);
+//            byKind.forEach(post -> {
+//                post.setEnabled(true);
+//            });
+//            if(city != null){
+//                byKind.forEach(post -> {
+//                    if(!post.getPostDistrict().getCity().getName().equals(city)){
+//                        post.setEnabled(false);
+//                    } else {
+//                        post.setEnabled(true);
+//                    }
+//                });
+//            }
+//        }
+//        if (city == null && district == null && type == null) {
+//            posts.forEach(post -> {
+//                post.setEnabled(true);
+//            });
+//        }
+//        return posts;
+//    }
     @GetMapping("/")
     public List<Post> getFilteredPosts(@RequestParam(required = false) String city,
-                                       @RequestParam(required = false) String districtKyiv,
-                                       @RequestParam(required = false) String districtLviv,
+                                       @RequestParam(required = false) String district,
                                        @RequestParam(required = false) String type) {
-        List<Post> filteredPosts = new ArrayList<>();
-        List<Post> postsByCity = postService.filterPostsByCity(city);
-        List<Post> postsByType = postService.filterPostsByType(type);
-        if ((postsByType != null)) {
-            filteredPosts.addAll(postsByType);
-            System.out.println(111111111);
+        List<Post> posts = new ArrayList<>();
+        if (city != null && district == null && type == null) {
+            List<Post> allByPostDistrict_city_name = postDAO.findAllByPostDistrict_City_Name(city);
+            posts.addAll(allByPostDistrict_city_name);
         }
-        if(postsByCity != null){
-            filteredPosts.addAll(postsByCity);
-            System.out.println(222222222);
+        if (city != null && district != null && type == null) {
+            String[] split = district.split(",");
+            for (String s : split) {
+                List<Post> postss = postDAO.findAllByPostDistrict_City_NameAndPostDistrict_Name(city, s);
+                posts.addAll(postss);
+            }
         }
-        return filteredPosts;
-    }
+        if (type != null && district != null && city != null) {
+            String[] split = district.split(",");
+            for (String s : split) {
+                List<Post> kind = postDAO.findAllByPostDistrict_City_NameAndPostDistrict_NameAndKind(city, s, type);
+                posts.addAll(kind);
+            }
+        }
+        if (type != null && district == null && city == null) {
+            String[] split = district.split(",");
+            for (String s : split) {
+                List<Post> kind = postDAO.findByKind(type);
+                posts.addAll(kind);
+            }
 
+        }
+        if (type != null && district == null && city != null) {
+            List<Post> postList = postDAO.findByKindAndPostDistrict_City_Name(type, city);
+            posts.addAll(postList);
+        }
+        if(posts.isEmpty()){
+            return postDAO.findAll();
+        }
+        return posts;
+    }
 }

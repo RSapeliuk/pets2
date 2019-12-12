@@ -18,8 +18,7 @@ public class District {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-    @Enumerated(EnumType.STRING)
-    private com.petssocial.pets2.models.enums.District name;
+    private String name;
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private City city;

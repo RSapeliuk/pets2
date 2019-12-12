@@ -18,8 +18,7 @@ public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-    @Enumerated(EnumType.STRING)
-    private com.petssocial.pets2.models.enums.City name;
+    private String name;
     @JsonIgnore
     @OneToMany(mappedBy = "city")
     private List<District> district;

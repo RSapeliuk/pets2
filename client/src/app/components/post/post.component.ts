@@ -24,7 +24,7 @@ export class PostComponent implements OnInit {
   returnedPost: Post;
   user: User;
   file: File;
-  kind: Kind[] = [Kind.LEAVE, Kind.GIVE];
+  kind: Kind[] = [Kind.Залишити, Kind.Віддати];
   namePhoto: any;
   imagePreview: string | ArrayBuffer = '';
   pets: Pet[] = [];

@@ -28,4 +28,32 @@
   display: flex;
   flex-direction: row;
 }
+.cards{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  min-width: 200px;
+  margin-left: 2%;
+}
+.mat-card{
+  width: 240px;
+  margin: 10px;
+  background: aquamarine;
+  transition: width 1s, height 1s, background-color 0.5s, transform 1s;
+}
+.mat-card:hover{
+  width: 250px;
+}
+
+mat-card-footer{
+  margin: 1%;
+}
+
+.postImage{
+  height: 300px;
+}
+.text{
+  overflow: hidden;
+  height: 50px;
+}
 

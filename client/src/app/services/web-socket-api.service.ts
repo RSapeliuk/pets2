@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import {ErrorObserver } from 'rxjs';
 
@@ -12,6 +12,9 @@ export class WebSocketApiService {
   constructor(private http: HttpClient) { }
 
   post(data: Message) {
-    return this.http.post(this.url, data);
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    headers = headers.append('Authorization', token);
+    return this.http.post(this.url, data, {headers});
   }
 }

@@ -44,6 +44,8 @@ public class PetController {
         Pet byId = petService.findById(petID);
         byId.setName(pet.getName());
         byId.setAge(pet.getAge());
+        byId.setHairLength(pet.getHairLength());
+        byId.setSize(pet.getSize());
         petService.savePet(byId);
         return byId;
     }

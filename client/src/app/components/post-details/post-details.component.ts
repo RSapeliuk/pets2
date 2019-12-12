@@ -28,14 +28,7 @@ export class PostDetailsComponent implements OnInit {
       console.log(this.post);
     });
     this.authUser.getUser().subscribe(value => this.user = value);
-    setTimeout(() => {
-      // this.postService.getLocation(this.post).subscribe(value => {
-      //   console.log(value);
-      //   this.post.postLocation = value;
-      // });
-    }, 100);
   }
-
   onClick() {
     this.dialogRef.close();
   }
