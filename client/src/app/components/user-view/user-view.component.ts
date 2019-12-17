@@ -42,7 +42,7 @@ export class UserViewComponent implements OnInit {
         this.userPosts = value;
       });
       this.petService.getPets(this.user).subscribe(value => this.userPets = value);
-    }, 1000);
+    }, 500);
   }
 
   onClick() {
