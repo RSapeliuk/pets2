@@ -39,4 +39,5 @@ export class PostDetailsComponent implements OnInit {
       this.authUser.updateUserRating(this.post.user, this.rating).subscribe(value => this.post.user.rating = value);
     }
   }
+
 }

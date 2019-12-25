@@ -21,20 +21,20 @@ public class WebSocketController {
 
     private SimpMessagingTemplate simpMessagingTemplate;
 
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> useSimpleRest(@RequestBody Map<String, String> message) {
-        if (message.containsKey("message")) {
-            //if the toId is present the message will be sent privately else broadcast it to all users
-            if (message.containsKey("toId") && message.get("toId") != null && !message.get("toId").equals("")) {
-                this.simpMessagingTemplate.convertAndSend("/socket-publisher/" + message.get("toId"), message);
-                this.simpMessagingTemplate.convertAndSend("/socket-publisher/" + message.get("fromId"), message);
-            } else {
-                this.simpMessagingTemplate.convertAndSend("/socket-publisher", message);
-            }
-            return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(new HttpHeaders(), HttpStatus.BAD_REQUEST);
-    }
+//    @RequestMapping(method = RequestMethod.POST)
+//    public ResponseEntity<?> useSimpleRest(@RequestBody Map<String, String> message) {
+//        if (message.containsKey("message")) {
+//            //if the toId is present the message will be sent privately else broadcast it to all users
+//            if (message.containsKey("toId") && message.get("toId") != null && !message.get("toId").equals("")) {
+//                this.simpMessagingTemplate.convertAndSend("/socket-publisher/" + message.get("toId"), message);
+//                this.simpMessagingTemplate.convertAndSend("/socket-publisher/" + message.get("fromId"), message);
+//            } else {
+//                this.simpMessagingTemplate.convertAndSend("/socket-publisher", message);
+//            }
+//            return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.OK);
+//        }
+//        return new ResponseEntity<>(new HttpHeaders(), HttpStatus.BAD_REQUEST);
+//    }
 
     @MessageMapping("/send/message")
     public Map<String, String> useSocketCommunication(String message) {

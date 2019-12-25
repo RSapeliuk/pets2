@@ -4,7 +4,7 @@
     <div>
       <div *ngIf="post.kind === 'Залишити'">
         <div *ngIf="post.photo; else blankPhoto">
-          <img mat-card-image class="image" [src]="'http://localhost:8080/images/'+ post.photo">
+          <img mat-card-image class="image" [src]="this.postService.apiService.apiUrl+ '/images/'+ post.photo">
         </div>
         <ng-template #blankPhoto>
           <img mat-card-image class="image"
@@ -13,12 +13,14 @@
         </ng-template>
       </div>
       <div *ngIf="post.pet && post.kind === 'Віддати'">
-        <img mat-card-image class="image" [src]="'http://localhost:8080/images/'+ post.pet.photo">
+        <img mat-card-image class="image" [src]="this.postService.apiService.apiUrl+ '/images/'+ post.pet.photo">
       </div>
     </div>
     <div class="w-20">
       <div>
         <p class="text">Власник: {{this.post.user.name}} {{this.post.user.surname}}</p>
+        <p class="text">Власник: {{this.post.user.email}}</p>
+        <p class="text">Власник: {{this.post.user.phoneNumber}}</p>
       </div>
       <star-rating [starType]="'svg'"
                    labelText="{{this.post.user.rating.toString() | slice: 0 : 3}} "

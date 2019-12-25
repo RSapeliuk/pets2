@@ -11,31 +11,32 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
 @Slf4j
 @Service
 public class FileServiceImpl implements FileService {
-        @Value("${upload.path:#{null}}")
-        private String uploadPath;
+    @Value("${upload.path:#{null}}")
+    private String uploadPath;
 
-        public String storeFile(MultipartFile file) throws IOException {
-            BufferedImage image = null;
+    public String storeFile(MultipartFile file) throws IOException {
+        BufferedImage image = null;
 
-            try {
-                image = ImageIO.read(file.getInputStream());
-            } catch (IOException e) {
-                log.error(e.getMessage());
-            }
-            if (image != null) {
-                File uploadFolder = new ClassPathResource("static" + File.separator + uploadPath).getFile();
-                if (!uploadFolder.exists()) {
-                    uploadFolder.mkdir();
-                }
-                final File targetFile = new File(uploadFolder.getAbsolutePath() + File.separator + file.getOriginalFilename());
-                targetFile.createNewFile();
-                file.transferTo(targetFile);
-                return file.getOriginalFilename();
-            } else {
-                return null;
-            }
+        try {
+            image = ImageIO.read(file.getInputStream());
+        } catch (IOException e) {
+            log.error(e.getMessage());
         }
+        if (image != null) {
+            File uploadFolder = new ClassPathResource("static" + File.separator + uploadPath).getFile();
+            if (!uploadFolder.exists()) {
+                uploadFolder.mkdir();
+            }
+            final File targetFile = new File(uploadFolder.getAbsolutePath() + File.separator + file.getOriginalFilename());
+            targetFile.createNewFile();
+            file.transferTo(targetFile);
+            return file.getOriginalFilename();
+        } else {
+            return null;
+        }
+    }
 }

@@ -28,6 +28,7 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -58,6 +59,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebS
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.addAllowedHeader("*");
+        configuration.setAllowedMethods(Arrays.asList(
+                HttpMethod.GET.name(),
+                HttpMethod.HEAD.name(),
+                HttpMethod.POST.name(),
+                HttpMethod.PUT.name(),
+                HttpMethod.DELETE.name(),
+                HttpMethod.TRACE.name(),
+                HttpMethod.OPTIONS.name()));
+        configuration.addExposedHeader("Authorization");
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Override
@@ -105,27 +126,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebS
         return provider;
     }
 
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"," http://localhost:8100", "*"));
-        configuration.addAllowedHeader("*");
-        configuration.setAllowedMethods(Arrays.asList(
-                HttpMethod.GET.name(),
-                HttpMethod.HEAD.name(),
-                HttpMethod.POST.name(),
-                HttpMethod.PUT.name(),
-                HttpMethod.DELETE.name(),
-                HttpMethod.TRACE.name(),
-                HttpMethod.OPTIONS.name()));
-        configuration.addExposedHeader("Authorization");
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        source.registerCorsConfiguration("/", configuration);
-        source.registerCorsConfiguration("/login", configuration);
-        source.registerCorsConfiguration("/socket", configuration);
-        return source;
-    }
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/socket")

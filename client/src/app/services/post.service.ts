@@ -9,78 +9,65 @@ import {consoleTestResultHandler} from 'tslint/lib/test';
 import {addParams} from '../helpers/addQueryParams';
 import {District} from '../models/District';
 import {City} from '../models/City';
+import {ApiService} from './api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient,
+              public apiService: ApiService) {
   }
-
-  url = 'http://localhost:8080';
-
-
   savePost(userPost: Post, user: User, district: District) {
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', token);
     console.log(district.id);
-    return this.http.post<Post>(this.url + '/user/' + user.id + '/addPost/' + district.id, userPost, {headers});
+    return this.http.post<Post>(this.apiService.apiUrl
+      + '/user/' + user.id + '/addPost/' + district.id, userPost, {headers});
   }
 
   savePostWithPet(userPost: Post, user: User, pet: Pet, district: District): Observable<Post> {
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', token);
-    return this.http.post<Post>(this.url + '/user/' + user.id + '/addPost/' + pet.id + '/' + district.id, userPost, {headers});
+    return this.http.post<Post>(this.apiService.apiUrl +
+      '/user/' + user.id + '/addPost/' + pet.id + '/' + district.id, userPost, {headers});
   }
 
 
   getAllPosts(): Observable<Post[]> {
-    // const token = localStorage.getItem('token');
-    // let headers = new HttpHeaders();
-    // headers = headers.append('Authorization', token);
-    return this.http.get<Post[]>(this.url + '/posts');
+    return this.http.get<Post[]>(this.apiService.apiUrl + '/posts', {withCredentials: true});
   }
 
   getPostById(id): Observable<Post> {
-    // const token = localStorage.getItem('token');
-    // let headers = new HttpHeaders();
-    // headers = headers.append('Authorization', token);
-    return this.http.get<Post>(this.url + '/post' + '/' + id);
+    return this.http.get<Post>(this.apiService.apiUrl + '/post' + '/' + id);
   }
 
   getAllUserPostsById(user: User): Observable<Post[]> {
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', token);
-    return this.http.get<Post[]>(this.url + '/user' + '/' + user.id + '/posts', {headers});
+    return this.http.get<Post[]>(this.apiService.apiUrl + '/user' + '/' + user.id + '/posts', {headers});
   }
 
-  // saveLocation(postDistrict: District, city: City): Observable<Post> {
-  //   const token = localStorage.getItem('token');
-  //   let headers = new HttpHeaders();
-  //   headers = headers.append('Authorization', token);
-  //   return this.http.post<Post>(this.url + '/addLocation/' + city.id, postDistrict, {headers});
-  // }
-
   getCity(): Observable<City[]> {
-    return this.http.get<City[]>(this.url + '/getCity');
+    return this.http.get<City[]>(this.apiService.apiUrl + '/getCity');
   }
 
   getDistricts(): Observable<District[]> {
-    return this.http.get<District[]>(this.url + '/getDistricts');
+    return this.http.get<District[]>(this.apiService.apiUrl + '/getDistricts');
   }
 
   isEnabled(id, enabled: boolean): Observable<any> {
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', token);
-    return this.http.put<any>(this.url + '/admin/isEnabled/' + id, enabled, {headers});
+    return this.http.put<any>(this.apiService.apiUrl + '/admin/isEnabled/' + id, enabled, {headers});
   }
 
   getFilteredPosts(query: {}): Observable<Post[]> {
-    const url = addParams(this.url, query);
+    const url = addParams(this.apiService.apiUrl, query);
     console.log(url);
     return this.http.get<Post[]>(url);
   }

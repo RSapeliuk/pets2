@@ -34,14 +34,14 @@
             </div>
             <ng-template mat-card-avatar #photo>
               <img mat-card-avatar
-                   [src]="'http://localhost:8080/images/'+ post.user.avatar">
+                   [src]="this.postService.apiService.apiUrl+ '/images/'+ post.user.avatar">
             </ng-template>
             <mat-card-subtitle>{{post.user.name}} {{post.user.surname}}</mat-card-subtitle>
             <mat-card-title>{{post.title}}</mat-card-title>
           </mat-card-header>
           <div *ngIf="post.kind === 'Залишити'">
             <div *ngIf="post.photo; else blankPhoto">
-              <img mat-card-image class="postImage" [src]="'http://localhost:8080/images/'+ post.photo">
+              <img mat-card-image class="postImage" [src]="this.postService.apiService.apiUrl+ '/images/'+ post.photo">
             </div>
             <ng-template #blankPhoto>
               <img mat-card-image class="postImage"
@@ -49,7 +49,7 @@
                    alt=""></ng-template>
           </div>
           <div *ngIf="post.pet && post.kind === 'Віддати'">
-            <img mat-card-image class="postImage" [src]="'http://localhost:8080/images/'+ post.pet.photo">
+            <img mat-card-image class="postImage" [src]="this.postService.apiService.apiUrl+ '/images/'+ post.pet.photo">
           </div>
           <mat-card-content class="text">{{post.optionalField}}</mat-card-content>
           <mat-card-footer>

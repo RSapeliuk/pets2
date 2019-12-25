@@ -4,15 +4,17 @@ import {Observable} from 'rxjs';
 import {PostService} from './post.service';
 import {Post} from '../models/Post';
 import {User} from '../models/User';
+import {ApiService} from './api.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ImageUploadService {
-  apiURL = 'http://localhost:8080';
 
-  constructor(private http: HttpClient) {
+
+  constructor(private http: HttpClient,
+              private apiService: ApiService) {
   }
 
   uploadImage(file: File, uuid): Observable<any> {
@@ -21,7 +23,7 @@ export class ImageUploadService {
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', token);
-    return this.http.post(this.apiURL + '/addPhoto', formData, {headers});
+    return this.http.post(this.apiService.apiUrl + '/addPhoto', formData, {headers});
   }
   uploadUserAvatar(file: File, uuid): Observable<any> {
     const formData = new FormData();
@@ -29,7 +31,7 @@ export class ImageUploadService {
     // const token = localStorage.getItem('token');
     // let headers = new HttpHeaders();
     // headers = headers.append('Authorization', token);
-    return this.http.post(this.apiURL + '/addAvatar', formData);
+    return this.http.post(this.apiService.apiUrl + '/addAvatar', formData);
   }
   updateUserAvatar(file: File, uuid, user: User): Observable<any> {
     const formData = new FormData();
@@ -37,7 +39,7 @@ export class ImageUploadService {
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', token);
-    return this.http.post(this.apiURL + '/updateAvatar/' + user.id, formData);
+    return this.http.post(this.apiService.apiUrl + '/updateAvatar/' + user.id, formData);
   }
   uploadPetPhoto(file: File, uuid): Observable<any> {
     const formData = new FormData();
@@ -45,6 +47,6 @@ export class ImageUploadService {
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', token);
-    return this.http.post(this.apiURL + '/addPetPhoto', formData, {headers});
+    return this.http.post(this.apiService.apiUrl + '/addPetPhoto', formData, {headers});
   }
 }

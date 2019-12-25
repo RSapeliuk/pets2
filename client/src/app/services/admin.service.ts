@@ -2,21 +2,22 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {User} from '../models/User';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {ApiService} from './api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
-  URL = 'http://localhost:8080';
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient,
+              public apiService: ApiService) {
   }
 
   getUsers(): Observable<User[]> {
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', token);
-    return this.http.get<User[]>(this.URL + '/users', {headers});
+    return this.http.get<User[]>(this.apiService.apiUrl + '/users', {headers});
   }
 
   changeUserRole(role, id): Observable<any> {
@@ -24,6 +25,6 @@ export class AdminService {
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', token);
-    return this.http.put(this.URL + '/admin' + '/changeUserRole' + '/' + id, role, {headers});
+    return this.http.put(this.apiService.apiUrl + '/admin' + '/changeUserRole' + '/' + id, role, {headers});
   }
 }

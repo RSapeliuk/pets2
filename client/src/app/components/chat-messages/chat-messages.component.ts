@@ -6,6 +6,8 @@ import * as SockJS from 'sockjs-client';
 import {ToastrService} from 'ngx-toastr';
 import {Message} from '../../models/message';
 import {WebSocketApiService} from '../../services/web-socket-api.service';
+import {AuthService} from '../../services/auth.service';
+import {User} from '../../models/User';
 
 @Component({
   selector: 'app-chat-messages.component',
@@ -13,19 +15,23 @@ import {WebSocketApiService} from '../../services/web-socket-api.service';
   styleUrls: ['./chat-messages.component.css']
 })
 export class ChatMessagesComponent implements OnInit {
-  private serverUrl = 'http://localhost:8080/socket';
+  private serverUrl = this.socketService.apiService.apiUrl + '/socket';
   isLoaded = false;
   isCustomSocketOpened = false;
   stompClient;
   form: FormGroup;
   userForm: FormGroup;
   messages: Message[] = [];
+  user: User;
 
-  constructor(private socketService: WebSocketApiService, private toastr: ToastrService
+  constructor(private socketService: WebSocketApiService,
+              private toastr: ToastrService,
+              private authService: AuthService
   ) {
   }
 
   ngOnInit() {
+    this.authService.getUser().subscribe(value => this.user = value);
     this.form = new FormGroup({
       message: new FormControl(null, [Validators.required])
     });
