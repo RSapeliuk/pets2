@@ -10,7 +10,7 @@
   <p>Message: </p>
   <input type="text" formControlName="message" name="message" placeholder="Message">
   <input type="submit" [disabled]="form.invalid || userForm.invalid" value="Send using socket subscription">
-  <input type="button" [disabled]="form.invalid || userForm.invalid" value="Send using a rest controller" (click)="sendMessageUsingRest()">
+<!--  <input type="button" [disabled]="form.invalid || userForm.invalid" value="Send using a rest controller" (click)="sendMessageUsingRest()">-->
 </form>
 <ul>
   <li *ngFor="let message of messages">From: {{message.fromId}}, To: {{message.toId}}, Message: {{message.message}}</li>

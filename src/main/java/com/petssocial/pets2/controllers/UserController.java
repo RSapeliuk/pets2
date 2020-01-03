@@ -3,6 +3,7 @@ package com.petssocial.pets2.controllers;
 
 import com.petssocial.pets2.dao.UserDAO;
 import com.petssocial.pets2.models.User;
+import com.petssocial.pets2.models.enums.Role;
 import com.petssocial.pets2.security.services.FileService;
 import com.petssocial.pets2.security.services.UserService;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,8 @@ public class UserController {
     @PostMapping("/signup")
     public User saveUser(@RequestBody User user) {
         user.setPassword(encoder.encode(user.getPassword()));
+        if(user.getId() == 1)
+            user.setRole(Role.ROLE_ADMIN);
         userService.save(user);
         System.out.println(user);
         return user;

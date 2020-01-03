@@ -61,25 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebS
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.addAllowedHeader("*");
-        configuration.setAllowedMethods(Arrays.asList(
-                HttpMethod.GET.name(),
-                HttpMethod.HEAD.name(),
-                HttpMethod.POST.name(),
-                HttpMethod.PUT.name(),
-                HttpMethod.DELETE.name(),
-                HttpMethod.TRACE.name(),
-                HttpMethod.OPTIONS.name()));
-        configuration.addExposedHeader("Authorization");
-        configuration.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -111,11 +93,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebS
                 .antMatchers(HttpMethod.PUT, "/edit/**").hasRole("USER")
                 .antMatchers(HttpMethod.PUT, "/rating/**").permitAll()
                 .antMatchers(HttpMethod.PUT, "/updatePet/**").hasRole("USER")
-                .antMatchers( "/socket").permitAll()
+                .antMatchers( "/socket").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new FilterThatCheckTokenOnEveryRequest(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new LoginCustomFilterThatCreateToken("/login", authenticationManager(), userDetailsService), UsernamePasswordAuthenticationFilter.class);
+    }
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.addAllowedHeader("*");
+        configuration.setAllowedMethods(Arrays.asList(
+                HttpMethod.GET.name(),
+                HttpMethod.HEAD.name(),
+                HttpMethod.POST.name(),
+                HttpMethod.PUT.name(),
+                HttpMethod.DELETE.name(),
+                HttpMethod.TRACE.name(),
+                HttpMethod.OPTIONS.name()));
+        configuration.addExposedHeader("Authorization");
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean

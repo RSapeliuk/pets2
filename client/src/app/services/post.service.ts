@@ -22,7 +22,6 @@ export class PostService {
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', token);
-    console.log(district.id);
     return this.http.post<Post>(this.apiService.apiUrl
       + '/user/' + user.id + '/addPost/' + district.id, userPost, {headers});
   }

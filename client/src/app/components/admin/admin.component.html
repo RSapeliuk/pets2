@@ -123,6 +123,26 @@
       </table>
     </div>
   </mat-tab>
+  <mat-tab label="Додати локацію">
+    <mat-form-field>
+      <input matInput type="text" placeholder="Місто" [(ngModel)]="city.name">
+    </mat-form-field>
+    <button mat-button (click)="saveCity()">Додати місто</button>
+    <div>
+      <mat-form-field>
+        <mat-label>Оберіть місто</mat-label>
+        <mat-select [(ngModel)]="selectedCity"
+                    name="role">
+          <mat-option *ngFor="let city of cities" [value]="city">{{city.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field *ngIf="selectedCity">
+        <input matInput type="text" placeholder="Район" [(ngModel)]="district.name">
+      </mat-form-field>
+      <button mat-button (click)="saveDistrict()">Додати район</button>
+
+    </div>
+  </mat-tab>
 
 </mat-tab-group>
 

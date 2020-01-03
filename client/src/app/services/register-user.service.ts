@@ -17,7 +17,7 @@ export class RegisterUserService {
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', token);
-    return this.http.post<User>(this.apiService.apiUrl + 'signup', someUser);
+    return this.http.post<User>(this.apiService.apiUrl + '/signup', someUser);
   }
 
 

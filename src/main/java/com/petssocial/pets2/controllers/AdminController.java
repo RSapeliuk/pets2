@@ -1,5 +1,9 @@
 package com.petssocial.pets2.controllers;
 
+import com.petssocial.pets2.dao.CityDAO;
+import com.petssocial.pets2.dao.DistrictDAO;
+import com.petssocial.pets2.models.City;
+import com.petssocial.pets2.models.District;
 import com.petssocial.pets2.models.Post;
 import com.petssocial.pets2.models.User;
 import com.petssocial.pets2.models.enums.Role;
@@ -16,11 +20,14 @@ public class AdminController {
     private UserService userService;
     @Autowired
     private PostService postService;
+    @Autowired
+    private CityDAO cityDAO;
+    @Autowired
+    private DistrictDAO districtDAO;
 
     @GetMapping("/users")
     public List<User> getAllUsers() {
-        List<User> userList = userService.findAll();
-        return userList;
+        return userService.findAll();
     }
 
     @PutMapping("/admin/changeUserRole/{userId}")
@@ -45,5 +52,15 @@ public class AdminController {
         }
         postService.savePost(byId);
         return byId.isEnabled();
+    }
+    @PostMapping("/admin/saveCity")
+    public City saveCity(@RequestBody City city){
+        return cityDAO.save(city);
+    }
+    @PostMapping("/admin/saveDistrict/{cityId}")
+    public District saveDistrict(@RequestBody District district, @PathVariable int cityId){
+        City city = cityDAO.getOne(cityId);
+        district.setCity(city);
+        return districtDAO.save(district);
     }
 }

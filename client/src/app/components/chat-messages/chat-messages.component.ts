@@ -44,7 +44,7 @@ export class ChatMessagesComponent implements OnInit {
 
   sendMessageUsingSocket() {
     if (this.form.valid) {
-      let message: Message = {message: this.form.value.message, fromId: this.userForm.value.fromId, toId: this.userForm.value.toId};
+      let message: Message = {message: this.form.value.message, fromId: this.user.name, toId: this.userForm.value.toId};
       this.stompClient.send('/socket-subscriber/send/message', {}, JSON.stringify(message));
     }
   }
