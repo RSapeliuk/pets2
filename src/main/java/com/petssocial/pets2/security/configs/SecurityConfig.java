@@ -85,7 +85,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebS
                 .antMatchers(HttpMethod.POST, "/addPetPhoto/**").hasRole("USER")
                 .antMatchers(HttpMethod.GET, "/post/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/images/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/posts").permitAll()
                 .antMatchers(HttpMethod.GET, "/getCity/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/getDistricts/**").permitAll()

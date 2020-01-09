@@ -17,7 +17,7 @@ export class AdminService {
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', token);
-    return this.http.get<User[]>(this.apiService.apiUrl + '/users', {headers});
+    return this.http.get<User[]>(this.apiService.apiUrl + '/admin/users', {headers});
   }
 
   changeUserRole(role, id): Observable<any> {

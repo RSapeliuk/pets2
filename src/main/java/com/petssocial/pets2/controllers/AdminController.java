@@ -25,7 +25,7 @@ public class AdminController {
     @Autowired
     private DistrictDAO districtDAO;
 
-    @GetMapping("/users")
+    @GetMapping("/admin/users")
     public List<User> getAllUsers() {
         return userService.findAll();
     }
