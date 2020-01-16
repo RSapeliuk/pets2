@@ -7,13 +7,13 @@
         <mat-option *ngFor="let city of cities" [value]="city">{{city.name}}</mat-option>
       </mat-select>
     </mat-form-field>
-    <div *ngIf="selectedCity && selectedCity.name === 'ЛЬВІВ'">
+    <div *ngIf="selectedCity && selectedCity.name === 'Львів'">
       <mat-checkbox *ngFor="let districtLviv of districtsLvivEnumName; let i = index"
                     [checked]="districtLviv.checked"
                     (change)="addParamsToQuery({district: {value: districtsLviv[districtLviv.value], index: i}})"
       >{{districtsLviv[districtLviv.value]}}</mat-checkbox>
     </div>
-    <div *ngIf="selectedCity && selectedCity.name === 'КИЇВ'">
+    <div *ngIf="selectedCity && selectedCity.name === 'Київ'">
       <mat-checkbox *ngFor="let districtKyiv of districtsKyivEnumName; let i = index"
                     (change)="addParamsToQuery({district: {value: districtsKyiv[districtKyiv.value], index: i}})"
       >{{districtsKyiv[districtKyiv.value]}}</mat-checkbox>
@@ -37,7 +37,7 @@
                    [src]="this.postService.apiService.apiUrl+ '/images/'+ post.user.avatar">
             </ng-template>
             <mat-card-subtitle>{{post.user.name}} {{post.user.surname}}</mat-card-subtitle>
-            <mat-card-title>{{post.title}}</mat-card-title>
+            <mat-card-title class="title">{{post.title}}</mat-card-title>
           </mat-card-header>
           <div *ngIf="post.kind === 'Залишити'">
             <div *ngIf="post.photo; else blankPhoto">
@@ -55,6 +55,9 @@
           <mat-card-footer>
             <div *ngIf="post.date && post.expirationDate">
               {{post.date}} - {{post.expirationDate}}
+            </div>
+            <div *ngIf="post.price">
+              Ціна: {{post.price}}
             </div>
           </mat-card-footer>
         </mat-card>

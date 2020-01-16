@@ -57,12 +57,12 @@ export class PostComponent implements OnInit {
       this.districts = value;
       console.log(this.districts);
       for (const district of this.districts) {
-        if (district.city.name === 'ЛЬВІВ') {
+        if (district.city.name === 'Львів') {
           this.districtLviv.push(district);
         }
       }
       for (const district of this.districts) {
-        if (district.city.name === 'КИЇВ') {
+        if (district.city.name === 'Київ') {
           this.districtKyiv.push(district);
         }
       }
@@ -93,13 +93,6 @@ export class PostComponent implements OnInit {
         this.router.navigateByUrl('/');
       }
     );
-  }
-
-  saveLocation() {
-    // setTimeout(() => {
-    //   this.postService.saveLocation(this.postDistrict, this.returnedPost).subscribe(value => console.log(value));
-    // }, 500);
-
   }
 
   savePostWithPet(form: NgForm) {

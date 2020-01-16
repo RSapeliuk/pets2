@@ -17,10 +17,10 @@
       </div>
     </div>
     <div class="w-20">
-      <div>
+      <div class="m-2">
         <p class="text">Власник: {{this.post.user.name}} {{this.post.user.surname}}</p>
-        <p class="text">Власник: {{this.post.user.email}}</p>
-        <p class="text">Власник: {{this.post.user.phoneNumber}}</p>
+        <p class="text">E-mail: {{this.post.user.email}}</p>
+        <p *ngIf="post.user.phoneNumber" class="text">Телефон: {{this.post.user.phoneNumber}}</p>
       </div>
       <star-rating [starType]="'svg'"
                    labelText="{{this.post.user.rating.toString() | slice: 0 : 3}} "
@@ -38,11 +38,19 @@
       <div *ngIf="post.postDistrict">
         Розташування: {{post.postDistrict.city.name}}, {{post.postDistrict.name}}
       </div>
-      <div>
-        <p>Додаткова інформація:</p>
-        {{post.optionalField}}
+      <div *ngIf="post.price">
+        Ціна: {{post.price}}
       </div>
       <div *ngIf="this.post.kind === 'Віддати'">
+        <div>
+          Ім'я тварини: {{post.pet.name}}
+        </div>
+        <div>
+          Вік (років): {{post.pet.age}}
+        </div>
+        <div>
+          Розмір: {{post.pet.size}}
+        </div>
         <div>
           Від: {{post.date}}
         </div>
@@ -50,6 +58,10 @@
           До: {{post.expirationDate}}
         </div>
       </div>
+    </div>
+    <div class="text">
+      <p>Додаткова інформація:</p>
+      {{post.optionalField}}
     </div>
 <!--    <div *ngIf="this.user">-->
 <!--      <button mat-button *ngIf="this.post.user.id === this.user.id">Редагувати</button>-->

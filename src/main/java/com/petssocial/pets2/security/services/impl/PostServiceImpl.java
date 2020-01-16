@@ -18,10 +18,6 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private PostDAO postDAO;
     @Autowired
-    private DistrictDAO districtDAO;
-    @Autowired
-    private CityDAO cityDAO;
-    @Autowired
     private UserService userService;
 
 
@@ -47,35 +43,6 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> findByCityId(Integer id) {
-        return null;
-    }
-
-    @Override
-    public List<Post> filterPostsByCity(String city) {
-        List<Post> filteredPosts = new ArrayList<>();
-        List<Post> posts = postDAO.findAll();
-        posts.forEach(post -> {
-            if ((post.getPostDistrict().getCity().getName().toString().equals(city))) {
-                filteredPosts.add(post);
-            }
-        });
-        return filteredPosts;
-    }
-
-    @Override
-    public List<Post> filterPostsByType(String type) {
-        List<Post> filteredPosts = new ArrayList<>();
-        List<Post> posts = postDAO.findAll();
-        posts.forEach(post -> {
-            if ((post.getKind().toString().equals(type))) {
-                filteredPosts.add(post);
-            }
-        });
-        return filteredPosts;
-    }
-
-    @Override
-    public List<Post> filterPostsByDistrict(String districtLviv, String districtKyiv) {
         return null;
     }
 }

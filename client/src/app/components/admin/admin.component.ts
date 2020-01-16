@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {AdminService} from '../../services/admin.service';
 import {Role} from '../../models/enums/Role';
 import {PostService} from '../../services/post.service';
-import {Location} from '../../models/Location';
 import {City} from '../../models/City';
 import {District} from '../../models/District';
 import {LocationService} from '../../services/location.service';

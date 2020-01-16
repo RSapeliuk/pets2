@@ -2,8 +2,6 @@ package com.petssocial.pets2.models;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-
 @Getter
 @Setter
 @NoArgsConstructor

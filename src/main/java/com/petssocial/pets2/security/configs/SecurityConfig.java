@@ -2,9 +2,6 @@ package com.petssocial.pets2.security.configs;
 
 import com.petssocial.pets2.security.filters.FilterThatCheckTokenOnEveryRequest;
 import com.petssocial.pets2.security.filters.LoginCustomFilterThatCreateToken;
-import com.petssocial.pets2.security.services.FileService;
-import com.petssocial.pets2.security.services.PetService;
-import com.petssocial.pets2.security.services.PostService;
 import com.petssocial.pets2.security.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -39,17 +36,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebS
     @Qualifier("userServiceImpl")
     private UserService userDetailsService;
 
-    @Autowired
-    @Qualifier("postServiceImpl")
-    private PostService postService;
-
-    @Autowired
-    @Qualifier("fileServiceImpl")
-    private FileService fileService;
-
-    @Autowired
-    @Qualifier("petServiceImpl")
-    private PetService petService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -60,7 +46,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebS
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
 
     @Override
@@ -74,24 +59,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebS
                 .antMatchers("/").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/signup").permitAll()
-                .antMatchers("/socket/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/user/**").hasRole("USER")
-                .antMatchers(HttpMethod.GET, "/user/**").hasRole("USER")
-                .antMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/admin/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/addPhoto/**").hasRole("USER")
-                .antMatchers(HttpMethod.POST, "/addAvatar/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/addLocation/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/addPetPhoto/**").hasRole("USER")
-                .antMatchers(HttpMethod.GET, "/post/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/images/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/posts").permitAll()
-                .antMatchers(HttpMethod.GET, "/getCity/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/getDistricts/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/authUser").permitAll()
-                .antMatchers(HttpMethod.PUT, "/edit/**").hasRole("USER")
-                .antMatchers(HttpMethod.PUT, "/rating/**").permitAll()
-                .antMatchers(HttpMethod.PUT, "/updatePet/**").hasRole("USER")
+                .antMatchers( "/user/**").hasRole("USER")
+                .antMatchers( "/admin/**").hasRole("ADMIN")
+                .antMatchers( "/addAvatar/**").permitAll()
+                .antMatchers( "/post/**").permitAll()
+                .antMatchers( "/images/**").permitAll()
+                .antMatchers( "/posts").permitAll()
+                .antMatchers( "/getCity/**").permitAll()
+                .antMatchers( "/getDistricts/**").permitAll()
+                .antMatchers( "/authUser").permitAll()
+                .antMatchers( "/rating/**").permitAll()
                 .antMatchers( "/socket").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
@@ -101,7 +78,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebS
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedOrigins(Collections.singletonList("*"));
         configuration.addAllowedHeader("*");
         configuration.setAllowedMethods(Arrays.asList(
                 HttpMethod.GET.name(),

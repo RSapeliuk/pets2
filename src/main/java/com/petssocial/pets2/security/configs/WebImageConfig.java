@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.io.File;
+
 @Configuration
 public class WebImageConfig implements WebMvcConfigurer {
 
@@ -15,6 +17,6 @@ public class WebImageConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/images/**")
-                .addResourceLocations("classpath:/static/" + uploadPath + "/");
+               .addResourceLocations("file://" + System.getProperty("user.home") + File.separator + "images" + File.separator);
     }
 }

@@ -1,10 +1,10 @@
 <mat-toolbar class="header">
   <mat-toolbar-row class="mat-toolbar-row">
     <div class="flex-class">
-      <span>Pets couchsurfing</span>
+      <span>Клуб власників тварин</span>
     </div>
     <div class="flex-class">
-      <button mat-button routerLink="/" class="flex-class">Головна сторінка</button>
+      <button mat-button routerLink="/" class="flex-class" (click)="reload()">Головна сторінка</button>
       <button *ngIf="this.user" mat-button routerLink="/user/{{this.user.id}}/chat" class="flex-class">Чат</button>
       <div *ngIf="this.logined === null" class="flex-class">
         <button mat-button (click)="onCreate()">Увійти</button>

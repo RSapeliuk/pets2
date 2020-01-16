@@ -1,7 +1,7 @@
 package com.petssocial.pets2.security.services;
 
 import com.petssocial.pets2.models.User;
-
+import com.petssocial.pets2.models.enums.Role;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,4 +16,5 @@ public interface UserService extends UserDetailsService {
     User findOneByID (Integer id);
     @Override
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+    Role changeRole(String role, User user);
 }

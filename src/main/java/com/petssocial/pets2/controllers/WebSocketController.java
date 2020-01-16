@@ -18,7 +18,6 @@ import java.util.Map;
 public class WebSocketController {
 
     @Autowired
-
     private SimpMessagingTemplate simpMessagingTemplate;
 
 //    @RequestMapping(method = RequestMethod.POST)

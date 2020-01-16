@@ -9,7 +9,8 @@
   margin-left: 2%;
 }
 .mat-card{
-  width: 240px;
+  width: 245px;
+  height: 500px;
   margin: 10px;
   background: aquamarine;
   transition: width 1s, height 1s, background-color 0.5s, transform 1s;
@@ -27,7 +28,7 @@ mat-card-footer{
 }
 .text{
   overflow: hidden;
-  height: 50px;
+  height: 60px;
 }
 .example-container {
   width: 100%;
@@ -35,4 +36,11 @@ mat-card-footer{
 }
 .side{
   width: 230px;
+}
+.title{
+  font-size: 1.3em;
+  margin-bottom: 1%;
+}
+mat-card-subtitle{
+  margin-bottom: 1%;
 }

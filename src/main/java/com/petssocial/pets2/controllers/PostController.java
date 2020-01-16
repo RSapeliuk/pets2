@@ -4,10 +4,7 @@ import com.petssocial.pets2.dao.CityDAO;
 import com.petssocial.pets2.dao.DistrictDAO;
 import com.petssocial.pets2.dao.PostDAO;
 import com.petssocial.pets2.models.*;
-import com.petssocial.pets2.security.services.FileService;
-import com.petssocial.pets2.security.services.PetService;
-import com.petssocial.pets2.security.services.PostService;
-import com.petssocial.pets2.security.services.UserService;
+import com.petssocial.pets2.security.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,12 +30,14 @@ public class PostController {
     private PostDAO postDAO;
     @Autowired
     private CityDAO cityDAO;
+    @Autowired
+    private FilterService filterService;
 
     private LocalDate todayDate = LocalDate.now();
 
     @GetMapping("/posts")
     public List<Post> getPosts() {
-        List<Post> posts = postService.findAll();
+        List<Post> posts = postDAO.findAllByEnabledIsTrue();
         for (Post post : posts) {
             if (post.getExpirationDate() != null)
                 if (post.getExpirationDate().toLocalDate().isBefore(todayDate)) {
@@ -107,39 +106,7 @@ public class PostController {
                                        @RequestParam(required = false) String district,
                                        @RequestParam(required = false) String type) {
         List<Post> posts = new ArrayList<>();
-        if (city != null && district == null && type == null) {
-            List<Post> allByPostDistrict_city_name = postDAO.findAllByPostDistrict_City_Name(city);
-            posts.addAll(allByPostDistrict_city_name);
-        }
-        if (city != null && district != null && type == null) {
-            String[] split = district.split(",");
-            for (String s : split) {
-                List<Post> postss = postDAO.findAllByPostDistrict_City_NameAndPostDistrict_Name(city, s);
-                posts.addAll(postss);
-            }
-        }
-        if (type != null && district != null && city != null) {
-            String[] split = district.split(",");
-            for (String s : split) {
-                List<Post> kind = postDAO.findAllByPostDistrict_City_NameAndPostDistrict_NameAndKind(city, s, type);
-                posts.addAll(kind);
-            }
-        }
-        if (type != null && district == null && city == null) {
-            String[] split = district.split(",");
-            for (String s : split) {
-                List<Post> kind = postDAO.findByKind(type);
-                posts.addAll(kind);
-            }
-
-        }
-        if (type != null && district == null && city != null) {
-            List<Post> postList = postDAO.findByKindAndPostDistrict_City_Name(type, city);
-            posts.addAll(postList);
-        }
-        if(posts.isEmpty()){
-            return postDAO.findAll();
-        }
+        filterService.filterPosts(city,district,type,posts);
         return posts;
     }
 }

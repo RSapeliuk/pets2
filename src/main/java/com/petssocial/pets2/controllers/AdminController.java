@@ -33,11 +33,7 @@ public class AdminController {
     @PutMapping("/admin/changeUserRole/{userId}")
     public Role changeUserRole(@PathVariable int userId, @RequestBody String role) {
         User oneByID = userService.findOneByID(userId);
-        if (role.equals(Role.ROLE_USER.toString())){
-            oneByID.setRole(Role.ROLE_USER);
-        } else if (role.equals(Role.ROLE_ADMIN.toString())) {
-            oneByID.setRole(Role.ROLE_ADMIN);
-        }
+        userService.changeRole(role, oneByID);
         userService.save(oneByID);
         return oneByID.getRole();
     }

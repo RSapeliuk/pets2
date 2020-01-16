@@ -35,11 +35,11 @@ public class PetController {
         return petsByUserId;
     }
 
-    @PostMapping("/addPetPhoto")
+    @PostMapping("/user/addPetPhoto")
     public void savePetPhoto(@RequestParam("file") MultipartFile file) throws IOException {
         fileService.storeFile(file);
     }
-    @PutMapping("/updatePet/{petID}")
+    @PutMapping("/user/updatePet/{petID}")
     public Pet updatePet(@PathVariable int petID, @RequestBody Pet pet){
         Pet byId = petService.findById(petID);
         byId.setName(pet.getName());

@@ -43,7 +43,7 @@ public class UserController {
         fileService.storeFile(file);
     }
 
-    @PutMapping("/edit/{userId}")
+    @PutMapping("/user/edit/{userId}")
     public User editUser(@PathVariable int userId, @RequestBody User user) {
         User userbyId = userService.findOneByID(userId);
         userbyId.setName(user.getName());

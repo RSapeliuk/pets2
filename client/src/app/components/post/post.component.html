@@ -14,7 +14,7 @@
     <mat-option *ngFor="let city of this.cities" value="{{city.name}}">{{city.name}}</mat-option>
   </mat-select>
 </mat-form-field>
-<mat-form-field *ngIf="postCity && postCity === 'ЛЬВІВ'">
+<mat-form-field *ngIf="postCity && postCity === 'Львів'">
   <mat-label>Район</mat-label>
   <mat-select [(ngModel)]="post.postDistrict" name="postDistrict">
     <mat-option *ngFor="let dL of districtLviv" [value]="dL">
@@ -22,7 +22,7 @@
     </mat-option>
   </mat-select>
 </mat-form-field>
-<mat-form-field *ngIf="postCity && postCity === 'КИЇВ'">
+<mat-form-field *ngIf="postCity && postCity === 'Київ'">
   <mat-label>Район</mat-label>
   <mat-select [(ngModel)]="post.postDistrict" name="postDistrict">
     <mat-option *ngFor="let dK of districtKyiv" [value]="dK">
@@ -42,12 +42,10 @@
   <mat-form-field>
     <mat-label>Тваринка</mat-label>
     <mat-select [(ngModel)]="post.pet" name="pet">
-      <div *ngFor="let p of this.posts">
         <div *ngFor="let pet of this.pets">
             <mat-option [value]="pet">
               {{pet.name}}
             </mat-option>
-        </div>
       </div>
     </mat-select>
   </mat-form-field>
@@ -68,7 +66,7 @@
         </textarea>
   </mat-form-field>
   <br>
-  <button mat-button class="mat-button " type="submit ">Додати</button>
+  <button mat-button class="mat-button " type="submit">Додати</button>
 </form>
 <form #postForm="ngForm" class="view" *ngIf="post.kind === 'Залишити'" (ngSubmit)="savePost(postForm)">
   <mat-form-field>
@@ -90,5 +88,5 @@
     </div>
   </div>
   <br>
-  <button mat-button class="mat-button " type="submit" (click)="saveLocation()">Додати</button>
+  <button mat-button class="mat-button " type="submit">Додати</button>
 </form>

@@ -3,6 +3,7 @@ import {MatDialog, MatDialogConfig} from '@angular/material';
 import {LoginationComponent} from '../logination/logination.component';
 import {AuthService} from '../../services/auth.service';
 import {User} from '../../models/User';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -10,11 +11,12 @@ import {User} from '../../models/User';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  logined: any;
+  logined: string | boolean;
   user: User;
 
   constructor(public dialog: MatDialog,
-              public authService: AuthService) {
+              public authService: AuthService,
+              public router: Router) {
   }
 
   ngOnInit() {
@@ -34,6 +36,11 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.authService.logout();
     window.location.reload();
+  }
+  reload() {
+    this.router.navigateByUrl('/');
+    setTimeout(() => {location.reload(); }, 100);
+
   }
 
 }

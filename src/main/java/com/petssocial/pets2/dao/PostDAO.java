@@ -12,9 +12,9 @@ public interface PostDAO extends JpaRepository<Post, Integer> {
     List<Post> findByKind(String kind);
     List<Post> findByKindAndPostDistrict_City_Name(String kind, String city);
     List<Post> findAllByPostDistrict_City_Name(String city);
-    List<Post> findAllByPostDistrict_Name(String district);
     List<Post> findAllByPostDistrict_City_NameAndPostDistrict_Name(String city, String district);
     List<Post> findAllByPostDistrict_City_NameAndPostDistrict_NameAndKind(String city,
                                                                 String district,
                                                                 String kind);
+    List<Post> findAllByEnabledIsTrue();
 }

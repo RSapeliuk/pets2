@@ -38,6 +38,6 @@ export class PetService {
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', token);
-    return this.http.put<Pet>(this.apiService.apiUrl + '/updatePet/' + pet.id, pet, {headers});
+    return this.http.put<Pet>(this.apiService.apiUrl + '/user/updatePet/' + pet.id, pet, {headers});
   }
 }

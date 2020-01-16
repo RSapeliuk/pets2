@@ -29,7 +29,7 @@ export class AuthService {
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', token);
-    return this.http.put<User>(this.apiService.apiUrl + '/edit/' + user.id, user,
+    return this.http.put<User>(this.apiService.apiUrl + '/user/edit/' + user.id, user,
       {headers});
   }
 

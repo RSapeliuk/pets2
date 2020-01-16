@@ -47,6 +47,6 @@ export class ImageUploadService {
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', token);
-    return this.http.post(this.apiService.apiUrl + '/addPetPhoto', formData, {headers});
+    return this.http.post(this.apiService.apiUrl + '/user/addPetPhoto', formData, {headers});
   }
 }
