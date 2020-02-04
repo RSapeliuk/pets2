@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -27,6 +29,19 @@ public class UserController {
         userService.save(user);
         System.out.println(user);
         return user;
+    }
+    @GetMapping("/user/users")
+    public List<User> getAllUsers() {
+        List<User> usersByRoleUser = new ArrayList<>();
+        List<User> all = userService.findAll();
+        all.forEach(user -> {
+            if(user.getRole().toString().equals("ROLE_USER")){
+                usersByRoleUser.add(user);
+            }
+        });
+        System.out.println(all);
+        System.out.println(usersByRoleUser);
+        return usersByRoleUser;
     }
 
     @GetMapping("/authUser")

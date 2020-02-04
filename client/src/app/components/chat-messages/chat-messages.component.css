@@ -1,0 +1,34 @@
+.message{
+  width: 300px;
+  alignment: right;
+  background: #336699;
+  border-radius: 25px;
+  float: right;
+  margin: 1%
+}
+.sended-message{
+  width: 300px;
+  alignment: right;
+  background: #336699;
+  border-radius: 25px;
+  float: left;
+  margin: 1%
+}
+.user{
+  font-weight: bold;
+  margin-right: 7%;
+  text-align: right;
+  color: #efefef;
+}
+.content{
+  margin-left: 7%;
+  color: #efefef;
+  overflow: fragments;
+  word-wrap: break-word;;
+}
+.sender{
+  font-weight: bold;
+  margin-left: 7%;
+  text-align: left;
+  color: #efefef;
+}

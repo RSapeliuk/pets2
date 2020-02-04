@@ -12,4 +12,6 @@ import lombok.*;
 public class HelloMessage {
 
     private String name;
+    private String fromId;
+    private String toId;
 }

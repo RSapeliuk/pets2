@@ -52,6 +52,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Pet> pets;
+    @OneToMany
+    @JsonIgnore
+    private List<Greetings> greetings;
 
     @JsonIgnore
     @Override

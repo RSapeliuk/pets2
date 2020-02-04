@@ -20,10 +20,14 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.getUser().subscribe(value => {
-      this.user = value;
-      console.log(this.user); });
+    if (localStorage.getItem('token') != null) {
+      this.authService.getUser().subscribe(value => {
+        this.user = value;
+        console.log(this.user);
+      });
+    }
     this.logined = localStorage.getItem('token');
+
   }
 
   onCreate() {
@@ -33,13 +37,21 @@ export class HeaderComponent implements OnInit {
     dialogConfig.width = '50%';
     this.dialog.open(LoginationComponent, dialogConfig);
   }
+
   logout() {
     this.authService.logout();
-    window.location.reload();
+    this.router.navigateByUrl('/');
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
+
   }
+
   reload() {
     this.router.navigateByUrl('/');
-    setTimeout(() => {location.reload(); }, 100);
+    setTimeout(() => {
+      location.reload();
+    }, 100);
 
   }
 

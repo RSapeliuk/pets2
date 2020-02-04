@@ -40,6 +40,7 @@ import {WebSocketApiService} from '../../services/web-socket-api.service';
     MainPageModule,
     MatSidenavModule,
     MatTabsModule,
+    ToastrModule.forRoot({ timeOut: 3000 }),
     MatCardModule,
     MatExpansionModule,
     MatIconModule,

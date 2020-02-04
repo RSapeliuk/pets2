@@ -20,6 +20,12 @@ export class AuthService {
     headers = headers.append('Authorization', token);
     return this.http.get<User>(this.apiService.apiUrl + '/authUser', {headers});
   }
+  getUsers(): Observable<User[]> {
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    headers = headers.append('Authorization', token);
+    return this.http.get<User[]>(this.apiService.apiUrl + '/user/users', {headers});
+  }
 
   logout() {
     localStorage.clear();

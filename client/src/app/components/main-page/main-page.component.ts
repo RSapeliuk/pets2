@@ -1,4 +1,4 @@
-import {Component, OnInit, Query} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import {PostService} from '../../services/post.service';
 import {MatDialog, MatDialogConfig} from '@angular/material';
@@ -8,7 +8,6 @@ import {AuthService} from '../../services/auth.service';
 import {User} from '../../models/User';
 import {DistrictsKyiv} from '../../models/enums/DistrictsKyiv';
 import {DistrictsLviv} from '../../models/enums/DistrictsLviv';
-import {Cities} from '../../models/enums/Cities';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Kind} from '../../models/enums/Kind';
 import {City} from '../../models/City';
@@ -70,7 +69,11 @@ export class MainPageComponent implements OnInit {
     this.postService.getCity().subscribe(value => {
       this.cities = value;
     });
-    this.authService.getUser().subscribe(value => this.user = value);
+    if (localStorage.getItem('token')) {
+      this.authService.getUser().subscribe(value => {
+          this.user = value;
+      });
+    }
     this.activatedRoute.queryParamMap.subscribe((res: any) => {
       if (res.params.city) {
 

@@ -1,17 +1,45 @@
-<form [formGroup]="userForm" (submit)="openSocket()" *ngIf="isLoaded">
-  <p>User Information: (if user id(toId) is null the message will be sended to all users) </p>
-  <div style="margin-bottom: 20px;">
-    <input type="text" formControlName="fromId" name="fromId" placeholder="Your id" [value]="user.name">
-    <input type="submit" [disabled]="userForm.invalid || isCustomSocketOpened" value="open socket to recieve custom messages">
+<app-header></app-header>
+<div id="main-content" class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <form class="form-inline">
+        <div class="form-group">
+          <mat-form-field>
+            <mat-label>Користувач</mat-label>
+            <mat-select [(ngModel)]="greeting.toId" name="toId">
+              <mat-option *ngFor="let u of users" [value]="u.username">{{u.name}} {{u.surname}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group">
+          <label>Message</label>
+          <input type="text" [(ngModel)]="greeting.content" class="form-control" name="name"> <br>
+        </div>
+        <button (click)="sendMessage(greeting)" class="btn btn-default" type="click">Send</button>
+        <div *ngFor="let m of recievedMessages">
+          <ng-container
+            *ngIf="(greeting.toId != null && m.fromId.username === greeting.fromId && m.toId.username === greeting.toId); else second">
+            <div class="message">
+              <p class="user">{{m.fromId.username}}</p>
+              <p class="content">{{m.content}}</p>
+            </div>
+          </ng-container>
+          <ng-template #second>
+            <ng-container
+              *ngIf="(greeting.toId != null && m.toId.username === greeting.fromId && m.fromId.username === greeting.toId) ">
+              <div class="sended-message">
+                <p class="sender">{{m.fromId.username}}</p>
+                <p class="content">{{m.content}}</p>
+              </div>
+            </ng-container>
+          </ng-template>
+        </div>
+        <ul *ngFor="let message of messages">
+          <li>
+            From: {{message.fromId}}, To: {{message.toId}}, Message: {{message.content}}</li>
+        </ul>
+      </form>
+    </div>
   </div>
-  <input type="text" formControlName="toId" name="toId" placeholder="User id to send the message to">
-</form>
-<form [formGroup]="form" (submit)="sendMessageUsingSocket()">
-  <p>Message: </p>
-  <input type="text" formControlName="message" name="message" placeholder="Message">
-  <input type="submit" [disabled]="form.invalid || userForm.invalid" value="Send using socket subscription">
-<!--  <input type="button" [disabled]="form.invalid || userForm.invalid" value="Send using a rest controller" (click)="sendMessageUsingRest()">-->
-</form>
-<ul>
-  <li *ngFor="let message of messages">From: {{message.fromId}}, To: {{message.toId}}, Message: {{message.message}}</li>
-</ul>
+</div>

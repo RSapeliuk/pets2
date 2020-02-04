@@ -69,7 +69,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebS
                 .antMatchers( "/getDistricts/**").permitAll()
                 .antMatchers( "/authUser").permitAll()
                 .antMatchers( "/rating/**").permitAll()
-                .antMatchers( "/socket").hasRole("USER")
+                .antMatchers( "/ws/**").permitAll()
+                .antMatchers( "/api/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new FilterThatCheckTokenOnEveryRequest(), UsernamePasswordAuthenticationFilter.class)
@@ -105,15 +106,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebS
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/socket")
-                .setAllowedOrigins("*")
+        registry.addEndpoint("/ws")
+                .setAllowedOrigins("http://localhost:4200")
                 .withSockJS();
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.setApplicationDestinationPrefixes("/socket-subscriber")
-                .enableSimpleBroker("/socket-publisher");
+        registry.setApplicationDestinationPrefixes("/app")
+                .enableSimpleBroker("/topic");
     }
 }
 
