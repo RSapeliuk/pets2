@@ -1,7 +1,5 @@
 package com.petssocial.pets2.security.services.impl;
 
-import com.petssocial.pets2.dao.CityDAO;
-import com.petssocial.pets2.dao.DistrictDAO;
 import com.petssocial.pets2.dao.PostDAO;
 import com.petssocial.pets2.models.Post;
 import com.petssocial.pets2.models.User;
@@ -10,7 +8,6 @@ import com.petssocial.pets2.security.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

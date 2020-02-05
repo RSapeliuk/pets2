@@ -34,7 +34,6 @@ export class UserViewComponent implements OnInit {
 
   ngOnInit() {
     this.authUser.getUser().subscribe(value => {
-      console.log(value);
       this.user = value;
     });
     setTimeout(() => {
@@ -56,7 +55,6 @@ export class UserViewComponent implements OnInit {
   updateUser() {
     if (this.file != null) {
       this.imageService.updateUserAvatar(this.file, this.user.avatar, this.user).subscribe(value => {
-        console.log(value);
       });
     }
     this.authUser.updateUser(this.user).subscribe(value => console.log(value));
@@ -78,11 +76,9 @@ export class UserViewComponent implements OnInit {
   getOnePet(id) {
     this.petService.getOnePet(id).subscribe(value => {
       this.pet = value;
-      console.log(value);
     });
   }
   postDetails(post) {
-    console.log(post);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;

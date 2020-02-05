@@ -21,7 +21,6 @@ export class AdminService {
   }
 
   changeUserRole(role, id): Observable<any> {
-    console.log(typeof role);
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', token);

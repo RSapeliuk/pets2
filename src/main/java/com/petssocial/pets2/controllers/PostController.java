@@ -58,12 +58,9 @@ public class PostController {
         User user = userService.findOneByID(id);
         Pet pet = petService.findById(petId);
         District one = districtDAO.getOne(districtId);
-        System.out.println(2);
         post.setPet(pet);
         post.setUser(user);
         post.setPostDistrict(one);
-        System.out.println(user);
-        System.out.println(pet);
         postService.savePost(post);
         return post;
     }
@@ -72,10 +69,8 @@ public class PostController {
     public Post savePost(@RequestBody Post post, @PathVariable int id, @PathVariable int districtID) {
         User user = userService.findOneByID(id);
         District one = districtDAO.getOne(districtID);
-        System.out.println(2);
         post.setUser(user);
         post.setPostDistrict(one);
-        System.out.println(user);
         postService.savePost(post);
         return post;
     }

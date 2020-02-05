@@ -26,12 +26,10 @@ export class LoginationComponent implements OnInit {
   login() {
     this.loginUserService.loginUser(this.user).subscribe(response => {
         const token = response.headers.get('Authorization');
-        console.log(token);
         localStorage.setItem('token', token);
         if (token != null) {
           this.authService.getUser().subscribe(value => {
             this.returnedUser = value;
-            console.log(this.returnedUser);
             if (this.returnedUser.role === 'ROLE_USER') {
               this.router.navigateByUrl(`/`);
             } else {

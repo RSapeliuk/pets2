@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class FilterServiceImpl implements FilterService {
     @Autowired
     private PostDAO postDAO;
+
     @Override
     public List<Post> filterPosts(String city,
                                   String district,

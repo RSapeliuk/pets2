@@ -25,7 +25,6 @@ public class UserServiceImpl implements UserService {
         if (user != null) {
             userDAO.save(user);
         }
-        System.out.println("Error! User is not defined");
     }
 
     @Override

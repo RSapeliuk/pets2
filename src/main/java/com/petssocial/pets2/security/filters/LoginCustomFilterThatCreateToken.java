@@ -32,11 +32,9 @@ public class LoginCustomFilterThatCreateToken extends AbstractAuthenticationProc
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws AuthenticationException, IOException {
-        System.out.println("Its working");
         User user = new ObjectMapper()
                 .readValue(httpServletRequest.getInputStream(),
                         User.class);
-        System.out.println(user);
         return getAuthenticationManager().authenticate(
                 new UsernamePasswordAuthenticationToken(
                         user.getUsername(),
@@ -51,19 +49,16 @@ public class LoginCustomFilterThatCreateToken extends AbstractAuthenticationProc
             HttpServletResponse response,
             FilterChain chain,
             Authentication authResult) {
-        System.out.println("yes");
         UserDetails userDetails = userDetailsService.loadUserByUsername(authResult.getName());
         String jwt_token = userDetails.getUsername() + " ";
         for (GrantedAuthority authority : userDetails.getAuthorities()) {
              jwt_token += authority.getAuthority();
         }
-        System.out.println(jwt_token);
         String token = Jwts.builder()
                 .setSubject(jwt_token)
                 .signWith(SignatureAlgorithm.HS512, "test".getBytes())
                 //.setExpiration(new Date(System.currentTimeMillis() + 999999999))
                 .compact();
-        System.out.println(token);
         //send token to user
         response.addHeader("Authorization", "Bearer " + token);
     }

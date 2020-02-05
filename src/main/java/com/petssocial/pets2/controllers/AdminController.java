@@ -40,7 +40,6 @@ public class AdminController {
     @PutMapping("/admin/isEnabled/{postId}")
     public boolean isEnabled(@PathVariable int postId, @RequestBody String enabled){
         Post byId = postService.findById(postId);
-        System.out.println(enabled);
         if(enabled.equals("true")){
             byId.setEnabled(true);
         } else if (enabled.equals("false")){

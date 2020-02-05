@@ -1,8 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {PostService} from './post.service';
-import {Post} from '../models/Post';
 import {User} from '../models/User';
 import {ApiService} from './api.service';
 
@@ -39,7 +37,7 @@ export class ImageUploadService {
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', token);
-    return this.http.post(this.apiService.apiUrl + '/updateAvatar/' + user.id, formData);
+    return this.http.post(this.apiService.apiUrl + '/updateAvatar/' + user.id, formData, {headers});
   }
   uploadPetPhoto(file: File, uuid): Observable<any> {
     const formData = new FormData();

@@ -23,7 +23,6 @@ export class HeaderComponent implements OnInit {
     if (localStorage.getItem('token') != null) {
       this.authService.getUser().subscribe(value => {
         this.user = value;
-        console.log(this.user);
       });
     }
     this.logined = localStorage.getItem('token');

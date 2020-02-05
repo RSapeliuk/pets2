@@ -63,7 +63,6 @@ export class MainPageComponent implements OnInit {
     setTimeout(() => {
       this.postService.getAllPosts().subscribe(value => {
         this.posts = value;
-        console.log(this.posts);
       });
     }, 500);
     this.postService.getCity().subscribe(value => {
@@ -120,7 +119,6 @@ export class MainPageComponent implements OnInit {
   addParamsToQuery(query) {
     if (query.district) {
       let arr = [];
-      console.log(query.district);
       if (this.queryParamsDistrictLviv) {
         arr = this.queryParamsDistrictLviv.split(',');
         this.queryParamsDistrictLviv = '';
@@ -141,7 +139,6 @@ export class MainPageComponent implements OnInit {
     }
     if (query.districtKyiv) {
       let arr = [];
-      console.log(query.districtKyiv);
       if (this.queryParamsDistrictKyiv) {
         arr = this.queryParamsDistrictKyiv.split(',');
         this.queryParamsDistrictKyiv = '';
@@ -170,7 +167,6 @@ export class MainPageComponent implements OnInit {
 
   getPost(query: {}) {
     this.postService.getFilteredPosts(query).subscribe((res) => {
-      console.log(res);
       this.posts = res;
     });
   }

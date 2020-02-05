@@ -25,7 +25,6 @@ export class PostDetailsComponent implements OnInit {
   ngOnInit() {
     this.postService.getPostById(this.data.id).subscribe(value => {
       this.post = value;
-      console.log(this.post);
     });
     this.authUser.getUser().subscribe(value => this.user = value);
   }

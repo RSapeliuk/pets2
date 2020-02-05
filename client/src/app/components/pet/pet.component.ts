@@ -21,7 +21,6 @@ export class PetComponent implements OnInit {
   type: string[] = ['КІТ', 'ПЕС', 'ПТАХ'];
   petPreview: string | ArrayBuffer = '';
   name: any;
-  selectedType: string;
 
   constructor(public petService: PetService,
               public authService: AuthService,
@@ -40,7 +39,6 @@ export class PetComponent implements OnInit {
     this.pet.photo = this.uuidService.randomName(this.name, this.file, this.pet.photo);
     if (this.file != null) {
       this.imageService.uploadPetPhoto(this.file, this.pet.photo).subscribe(value => {
-        console.log(value);
       });
     }
     this.petService.savePet(this.pet, this.user).subscribe(value => console.log(value));

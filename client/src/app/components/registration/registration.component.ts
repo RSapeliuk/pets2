@@ -34,11 +34,9 @@ export class RegistrationComponent implements OnInit {
 
     if (this.file != null) {
       this.imageService.uploadUserAvatar(this.file, this.user.avatar).subscribe(value => {
-        console.log(value);
       });
     }
     this.registerUserService.saveUser(this.user).subscribe(value => {
-      console.log(value);
      // this.router.navigateByUrl('/');
       this.returnedUser = value;
     });
@@ -46,7 +44,6 @@ export class RegistrationComponent implements OnInit {
     setTimeout(() => {
       this.loginService.loginUser(this.user).subscribe(response => {
         const token = response.headers.get('Authorization');
-        console.log(token);
         localStorage.setItem('token', token);
         location.reload();
       });

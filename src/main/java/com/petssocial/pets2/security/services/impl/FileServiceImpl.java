@@ -28,7 +28,7 @@ public class FileServiceImpl implements FileService {
             log.error(e.getMessage());
         }
         if (image != null) {
-            String path = System.getProperty("user.home") + File.separator + uploadPath+File.separator+file.getOriginalFilename();
+            String path = System.getProperty("user.home") + File.separator + uploadPath + File.separator + file.getOriginalFilename();
             Path uploadFolder = Paths.get(path);
             file.transferTo(uploadFolder);
             return file.getOriginalFilename();

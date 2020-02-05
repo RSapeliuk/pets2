@@ -6,7 +6,7 @@
         <div class="form-group">
           <mat-form-field>
             <mat-label>Користувач</mat-label>
-            <mat-select [(ngModel)]="greeting.toId" name="toId">
+            <mat-select [(ngModel)]="greeting.toId" (selectionChange)="randomColor()" name="toId">
               <mat-option *ngFor="let u of users" [value]="u.username">{{u.name}} {{u.surname}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -35,10 +35,24 @@
             </ng-container>
           </ng-template>
         </div>
-        <ul *ngFor="let message of messages">
-          <li>
-            From: {{message.fromId}}, To: {{message.toId}}, Message: {{message.content}}</li>
-        </ul>
+        <div *ngFor="let message of messages">
+          <ng-container
+            *ngIf="(greeting.toId != null && message.fromId === greeting.fromId && message.toId === greeting.toId); else second">
+            <div class="message">
+              <p class="user">{{message.fromId}}</p>
+              <p class="content">{{message.content}}</p>
+            </div>
+          </ng-container>
+          <ng-template #second>
+            <ng-container
+              *ngIf="(greeting.toId != null && message.toId === greeting.fromId && message.fromId === greeting.toId) ">
+              <div class="sended-message">
+                <p class="sender">{{message.fromId}}</p>
+                <p class="content">{{message.content}}</p>
+              </div>
+            </ng-container>
+          </ng-template>
+        </div>
       </form>
     </div>
   </div>

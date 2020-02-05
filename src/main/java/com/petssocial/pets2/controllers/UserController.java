@@ -27,7 +27,6 @@ public class UserController {
     public User saveUser(@RequestBody User user) {
         user.setPassword(encoder.encode(user.getPassword()));
         userService.save(user);
-        System.out.println(user);
         return user;
     }
     @GetMapping("/user/users")
@@ -39,8 +38,6 @@ public class UserController {
                 usersByRoleUser.add(user);
             }
         });
-        System.out.println(all);
-        System.out.println(usersByRoleUser);
         return usersByRoleUser;
     }
 
@@ -49,7 +46,6 @@ public class UserController {
         String s = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         String[] s1 = s.split(" ");
         User byUsername = userDAO.findByUsername(s1[0]);
-        System.out.println(byUsername);
         return byUsername;
     }
 
@@ -82,7 +78,6 @@ public class UserController {
         } else if (userById.getRating() > 0) {
             userById.setRating((userById.getRating() + user.getRating()) / 2);
         }
-        System.out.println(userById);
         userService.save(userById);
         return userById.getRating();
     }

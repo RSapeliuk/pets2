@@ -4,8 +4,6 @@ import {Post} from '../models/Post';
 import {Observable} from 'rxjs';
 import {User} from '../models/User';
 import {Pet} from '../models/Pet';
-import {Location} from '../models/Location';
-import {consoleTestResultHandler} from 'tslint/lib/test';
 import {addParams} from '../helpers/addQueryParams';
 import {District} from '../models/District';
 import {City} from '../models/City';
@@ -67,7 +65,6 @@ export class PostService {
 
   getFilteredPosts(query: {}): Observable<Post[]> {
     const url = addParams(this.apiService.apiUrl, query);
-    console.log(url);
     return this.http.get<Post[]>(url);
   }
 }

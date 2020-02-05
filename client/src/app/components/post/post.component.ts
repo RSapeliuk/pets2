@@ -47,15 +47,12 @@ export class PostComponent implements OnInit {
   ngOnInit() {
     this.authService.getUser().subscribe(value => {
       this.user = value;
-      console.log(this.user);
     });
     this.postService.getCity().subscribe(value => {
       this.cities = value;
-      console.log(this.cities);
     });
     this.postService.getDistricts().subscribe(value => {
       this.districts = value;
-      console.log(this.districts);
       for (const district of this.districts) {
         if (district.city.name === 'Львів') {
           this.districtLviv.push(district);
@@ -69,26 +66,21 @@ export class PostComponent implements OnInit {
     });
     setTimeout(() => {
       this.petService.getPets(this.user).subscribe(value => {
-        console.log(value);
         this.pets = value;
       });
       this.postService.getAllPosts().subscribe(value => {
-        console.log(value);
         this.posts = value;
       });
     }, 500);
   }
 
   savePost(form: NgForm) {
-    console.log(form.value);
     this.post.photo = this.uuidService.randomName(this.namePhoto, this.file, this.post.photo);
     if (this.file != null) {
       this.imageService.uploadImage(this.file, this.post.photo).subscribe(value => {
-        console.log(value);
       });
     }
     this.postService.savePost(this.post, this.user, this.post.postDistrict).subscribe(value => {
-        console.log(value);
         this.returnedPost = value;
         this.router.navigateByUrl('/');
       }
@@ -96,9 +88,7 @@ export class PostComponent implements OnInit {
   }
 
   savePostWithPet(form: NgForm) {
-    console.log(form.value);
     this.postService.savePostWithPet(this.post, this.user, this.post.pet, this.post.postDistrict).subscribe(value => {
-        console.log(value);
         this.router.navigateByUrl('/');
       }
     );

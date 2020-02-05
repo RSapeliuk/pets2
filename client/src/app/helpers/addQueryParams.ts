@@ -5,7 +5,5 @@ export function addParams(url = '?', query = {}) {
       url += `${key}=${query[key]}&`;
     }
   }
-  console.log(url);
-
   return url;
 }

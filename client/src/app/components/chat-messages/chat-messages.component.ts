@@ -6,6 +6,7 @@ import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import {ApiService} from '../../services/api.service';
 import {WebSocketApiService} from '../../services/web-socket-api.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-chat-messages.component',
@@ -27,7 +28,8 @@ export class ChatMessagesComponent implements OnInit {
   constructor(public authService: AuthService,
               public apiService: ApiService,
               public webApiService: WebSocketApiService,
-              public ref: ChangeDetectorRef) {
+              public ref: ChangeDetectorRef,
+              public toastr: ToastrService) {
   }
 
   ngOnInit() {
@@ -42,20 +44,19 @@ export class ChatMessagesComponent implements OnInit {
           this.users.splice(this.users.indexOf(u), 1);
         }
       }
-      console.log(this.users);
     });
     this.connect();
     this.webApiService.getMessages().subscribe(value => {
       this.recievedMessages = value;
-      console.log(this.recievedMessages);
     });
+
   }
 
 
   connect() {
-    console.log('Initialize WebSocket Connection');
     const ws = new SockJS(this.webSocketEndPoint);
     this.stompClient = Stomp.over(ws);
+    // tslint:disable-next-line:variable-name
     const _this = this;
     _this.stompClient.connect({}, (frame) => {
       this.isLoaded = true;
@@ -93,16 +94,23 @@ export class ChatMessagesComponent implements OnInit {
   handleMessage(message) {
     if (message.body) {
       const messageResult: Greeting = JSON.parse(message.body);
-      console.log(messageResult);
       this.messages = [...this.messages, messageResult];
-      console.log(this.messages);
       this.ref.detectChanges();
+      this.toastr.success('You have new message', messageResult.fromId, {timeOut: 3000});
     }
   }
 
   sendMessageUsingRest() {
     this.webApiService.post(this.greeting).subscribe(res => {
-      console.log(res);
     });
+  }
+
+  randomColor() {
+    // tslint:disable-next-line:no-bitwise
+    const randomColor = '#' + ((1 << 24) * Math.random() | 0).toString(16);
+    // tslint:disable-next-line:no-bitwise
+    const randomColor2 = '#' + ((1 << 24) * Math.random() | 0).toString(16);
+    document.documentElement.style.setProperty('--main-bg-color', randomColor);
+    document.documentElement.style.setProperty('--main-bg-color2', randomColor2);
   }
 }
