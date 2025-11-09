@@ -1,8 +1,7 @@
 package com.petssocial.pets2.models;
 
+import jakarta.persistence.*;
 import lombok.*;
-
-import javax.persistence.*;
 
 @Getter
 @Setter
@@ -22,3 +21,4 @@ public class Greetings {
     @ManyToOne
     private User toId;
 }
+

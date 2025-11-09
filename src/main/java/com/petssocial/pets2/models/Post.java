@@ -2,9 +2,9 @@ package com.petssocial.pets2.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import lombok.*;
 
-import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
@@ -31,6 +31,7 @@ public class Post {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Pet pet;
     private int price;
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private District postDistrict;
 }
+

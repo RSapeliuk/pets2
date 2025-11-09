@@ -2,6 +2,7 @@ package com.petssocial.pets2.security.configs;
 
 import com.petssocial.pets2.security.filters.FilterThatCheckTokenOnEveryRequest;
 import com.petssocial.pets2.security.filters.LoginCustomFilterThatCreateToken;
+import com.petssocial.pets2.security.jwt.JwtTokenProvider;
 import com.petssocial.pets2.security.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,13 +10,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -30,52 +36,66 @@ import java.util.Collections;
 @Configuration
 @EnableWebSecurity
 @EnableWebSocketMessageBroker
-public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebSocketMessageBrokerConfigurer {
+public class SecurityConfig implements WebSocketMessageBrokerConfigurer {
 
     @Autowired
     @Qualifier("userServiceImpl")
     private UserService userDetailsService;
 
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .cors()
-                .and()
-                .csrf()
-                .disable()
-                .authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers(HttpMethod.POST, "/login").permitAll()
-                .antMatchers(HttpMethod.POST, "/signup").permitAll()
-                .antMatchers( "/user/**").hasRole("USER")
-                .antMatchers( "/admin/**").hasRole("ADMIN")
-                .antMatchers( "/addAvatar/**").permitAll()
-                .antMatchers( "/post/**").permitAll()
-                .antMatchers( "/images/**").permitAll()
-                .antMatchers( "/posts").permitAll()
-                .antMatchers( "/getCity/**").permitAll()
-                .antMatchers( "/getDistricts/**").permitAll()
-                .antMatchers( "/authUser").permitAll()
-                .antMatchers( "/rating/**").permitAll()
-                .antMatchers( "/ws/**").permitAll()
-                .antMatchers( "/api/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .addFilterBefore(new FilterThatCheckTokenOnEveryRequest(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new LoginCustomFilterThatCreateToken("/login", authenticationManager(), userDetailsService), UsernamePasswordAuthenticationFilter.class);
+    @Bean
+    public FilterThatCheckTokenOnEveryRequest tokenFilter() {
+        return new FilterThatCheckTokenOnEveryRequest(jwtTokenProvider);
     }
+
+    // Rely on Spring Boot auto-configuration for AuthenticationManager and DaoAuthenticationProvider
+
+    @Bean
+    public LoginCustomFilterThatCreateToken loginFilter(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        AuthenticationManager authenticationManager = authenticationConfiguration.getAuthenticationManager();
+        return new LoginCustomFilterThatCreateToken("/login", authenticationManager, userDetailsService, jwtTokenProvider);
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                                   FilterThatCheckTokenOnEveryRequest tokenFilter,
+                                                   LoginCustomFilterThatCreateToken loginFilter) throws Exception {
+        http.cors(Customizer.withDefaults())
+            .csrf(AbstractHttpConfigurer::disable)
+            .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/").permitAll()
+                .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/signup").permitAll()
+                .requestMatchers("/user/**").hasRole("USER")
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/addAvatar/**").permitAll()
+                .requestMatchers("/post/**").permitAll()
+                .requestMatchers("/images/**").permitAll()
+                .requestMatchers("/posts").permitAll()
+                .requestMatchers("/getCity/**").permitAll()
+                .requestMatchers("/getDistricts/**").permitAll()
+                .requestMatchers("/authUser").permitAll()
+                .requestMatchers("/rating/**").permitAll()
+                .requestMatchers("/ws/**").permitAll()
+                .requestMatchers("/api/**").permitAll()
+                .anyRequest().authenticated()
+            );
+
+        http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(loginFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+     }
+
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -97,11 +117,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebS
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(passwordEncoder());
-        return provider;
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> {};
     }
 
     @Override
@@ -117,7 +134,3 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebS
                 .enableSimpleBroker("/topic");
     }
 }
-
-
-
-

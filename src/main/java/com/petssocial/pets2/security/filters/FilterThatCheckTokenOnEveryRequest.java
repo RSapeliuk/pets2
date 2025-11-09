@@ -1,24 +1,30 @@
 package com.petssocial.pets2.security.filters;
 
-import io.jsonwebtoken.Jwts;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import com.petssocial.pets2.security.jwt.JwtTokenProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 
+@Component
 public class FilterThatCheckTokenOnEveryRequest extends GenericFilterBean {
+
+    private final JwtTokenProvider tokenProvider;
+
+    @Autowired
+    public FilterThatCheckTokenOnEveryRequest(JwtTokenProvider tokenProvider) {
+        this.tokenProvider = tokenProvider;
+    }
+
     @Override
     public void doFilter(ServletRequest servletRequest,
                          ServletResponse servletResponse,
@@ -26,19 +32,12 @@ public class FilterThatCheckTokenOnEveryRequest extends GenericFilterBean {
         Authentication authentication = null;
         HttpServletRequest request = (HttpServletRequest) servletRequest;
 
-
         String token = request.getHeader("Authorization");
-        if (token != null) {
-            String decodedTicket = Jwts.parser()
-                    .setSigningKey("test".getBytes())
-                    .parseClaimsJws(token.replace("Bearer", ""))
-                    .getBody()
-                    .getSubject();
-            String[] array = decodedTicket.split(" ");
-            List<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority(array[1]));
-            authentication = new UsernamePasswordAuthenticationToken(array[0], null, authorities);
-
+        if (token != null && !token.trim().isEmpty()) {
+            String jwt = token.replaceFirst("(?i)^Bearer\\s+", "").trim();
+            if (!jwt.isEmpty()) {
+                authentication = tokenProvider.getAuthentication(jwt);
+            }
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(servletRequest, servletResponse);

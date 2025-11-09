@@ -2,32 +2,33 @@ package com.petssocial.pets2.security.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.petssocial.pets2.models.User;
+import com.petssocial.pets2.security.jwt.JwtTokenProvider;
 import com.petssocial.pets2.security.services.UserService;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
-import javax.servlet.FilterChain;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
 
 public class LoginCustomFilterThatCreateToken extends AbstractAuthenticationProcessingFilter {
 
 
-    private UserService userDetailsService;
-    public LoginCustomFilterThatCreateToken(String defaultFilterProcessesUrl, AuthenticationManager manager,UserService userDetailsService) {
-        super(new AntPathRequestMatcher(defaultFilterProcessesUrl));
+    private final UserService userDetailsService;
+    private final JwtTokenProvider tokenProvider;
+
+    public LoginCustomFilterThatCreateToken(String defaultFilterProcessesUrl, AuthenticationManager manager, UserService userDetailsService, JwtTokenProvider tokenProvider) {
+        super((RequestMatcher) request -> defaultFilterProcessesUrl.equals(request.getServletPath()) && "POST".equalsIgnoreCase(request.getMethod()));
         setAuthenticationManager(manager);
         this.userDetailsService = userDetailsService;
+        this.tokenProvider = tokenProvider;
     }
 
     @Override
@@ -50,15 +51,8 @@ public class LoginCustomFilterThatCreateToken extends AbstractAuthenticationProc
             FilterChain chain,
             Authentication authResult) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(authResult.getName());
-        String jwt_token = userDetails.getUsername() + " ";
-        for (GrantedAuthority authority : userDetails.getAuthorities()) {
-             jwt_token += authority.getAuthority();
-        }
-        String token = Jwts.builder()
-                .setSubject(jwt_token)
-                .signWith(SignatureAlgorithm.HS512, "test".getBytes())
-                //.setExpiration(new Date(System.currentTimeMillis() + 999999999))
-                .compact();
+
+        String token = tokenProvider.createToken(userDetails);
         //send token to user
         response.addHeader("Authorization", "Bearer " + token);
     }

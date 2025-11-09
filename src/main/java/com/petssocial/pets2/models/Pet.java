@@ -5,9 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.petssocial.pets2.models.enums.HairLength;
 import com.petssocial.pets2.models.enums.Size;
 import com.petssocial.pets2.models.enums.Type;
+import jakarta.persistence.*;
 import lombok.*;
-
-import javax.persistence.*;
 
 @Entity
 @Getter
@@ -39,3 +38,4 @@ public class Pet {
     public Pet() {
     }
 }
+
